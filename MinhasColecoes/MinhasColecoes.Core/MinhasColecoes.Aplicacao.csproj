@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Input\" />
+    <Folder Include="Models\View\" />
+    <Folder Include="Models\Update\" />
+    <Folder Include="Enumerators\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Servicos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinhasColecoes.Persistencia\MinhasColecoes.Persistencia.csproj" />
+  </ItemGroup>
+
+</Project>
