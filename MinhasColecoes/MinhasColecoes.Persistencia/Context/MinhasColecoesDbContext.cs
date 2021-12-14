@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MinhasColecoes.Persistencia.Context
 {
-	public class MinhasColecoesContext : DbContext
+	public class MinhasColecoesDbContext : DbContext
 	{
-		public MinhasColecoesContext(DbContextOptions<MinhasColecoesContext> options)
+		public MinhasColecoesDbContext(DbContextOptions<MinhasColecoesDbContext> options)
 			: base(options)
 		{
 
@@ -59,17 +59,20 @@ namespace MinhasColecoes.Persistencia.Context
 			modelBuilder.Entity<Colecao>()
 				.HasMany(c => c.Itens)
 				.WithOne()
-				.HasForeignKey(i => i.IdColecao);
+				.HasForeignKey(i => i.IdColecao)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<Colecao>()
 				.HasMany(c => c.UsuariosColecao)
 				.WithOne()
-				.HasForeignKey(u => u.IdColecao);
+				.HasForeignKey(u => u.IdColecao)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<Colecao>()
 				.HasMany(c => c.Colecoes)
 				.WithOne()
-				.HasForeignKey(cc => cc.IdColecaoMaior);
+				.HasForeignKey(cc => cc.IdColecaoMaior)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			/* --------------- ITEM --------------- */
 			modelBuilder.Entity<Item>()
@@ -78,7 +81,14 @@ namespace MinhasColecoes.Persistencia.Context
 			modelBuilder.Entity<Item>()
 				.HasOne(i => i.ItemOriginal)
 				.WithOne()
-				.HasForeignKey<Item>(io => io.IdOriginal);
+				.HasForeignKey<Item>(io => io.IdOriginal)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Item>()
+				.HasMany(i => i.RelacoesUsuarios)
+				.WithOne()
+				.HasForeignKey(r => r.IdItem)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			/* --------------- COLECAO DO USUARIO --------------- */
 			modelBuilder.Entity<ColecaoUsuario>()

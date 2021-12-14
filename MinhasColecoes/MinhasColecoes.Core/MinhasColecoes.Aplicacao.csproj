@@ -6,9 +6,15 @@
 
   <ItemGroup>
     <Folder Include="Models\Input\" />
+    <Folder Include="Models\Input\" />
+    <Folder Include="Models\View\" />
+    <Folder Include="Models\Update\" />
     <Folder Include="Models\View\" />
     <Folder Include="Models\Update\" />
     <Folder Include="Enumerators\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Servicos\" />
+    <Folder Include="Profiles\" />
     <Folder Include="Validators\" />
     <Folder Include="Profiles\" />
     <Folder Include="Servicos\" />

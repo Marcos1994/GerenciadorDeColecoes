@@ -28,8 +28,8 @@ namespace MinhasColecoes.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<MinhasColecoesContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MePoupe2Cs")));
-			services.AddScoped<MinhasColecoesContext>();
+			services.AddDbContext<MinhasColecoesDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MinhasColecoesCs")));
+			services.AddScoped<MinhasColecoesDbContext>();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
