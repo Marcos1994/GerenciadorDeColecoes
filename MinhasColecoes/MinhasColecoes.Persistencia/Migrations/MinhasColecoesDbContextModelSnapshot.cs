@@ -155,7 +155,7 @@ namespace MinhasColecoes.Persistencia.Migrations
                     b.HasOne("MinhasColecoes.Persistencia.Entities.Usuario", null)
                         .WithMany("ColecoesDono")
                         .HasForeignKey("IdDono")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -185,7 +185,7 @@ namespace MinhasColecoes.Persistencia.Migrations
                     b.HasOne("MinhasColecoes.Persistencia.Entities.Usuario", null)
                         .WithMany("ItensDono")
                         .HasForeignKey("IdDonoParticular")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MinhasColecoes.Persistencia.Entities.Item", "ItemOriginal")
                         .WithOne()

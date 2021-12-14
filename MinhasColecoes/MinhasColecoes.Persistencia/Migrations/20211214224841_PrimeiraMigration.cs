@@ -47,7 +47,7 @@ namespace MinhasColecoes.Persistencia.Migrations
                         column: x => x.IdDono,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,7 +108,7 @@ namespace MinhasColecoes.Persistencia.Migrations
                         column: x => x.IdDonoParticular,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

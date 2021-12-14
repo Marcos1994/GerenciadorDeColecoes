@@ -10,7 +10,7 @@ using MinhasColecoes.Persistencia.Context;
 namespace MinhasColecoes.Persistencia.Migrations
 {
     [DbContext(typeof(MinhasColecoesDbContext))]
-    [Migration("20211214223130_PrimeiraMigration")]
+    [Migration("20211214224841_PrimeiraMigration")]
     partial class PrimeiraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,7 +157,7 @@ namespace MinhasColecoes.Persistencia.Migrations
                     b.HasOne("MinhasColecoes.Persistencia.Entities.Usuario", null)
                         .WithMany("ColecoesDono")
                         .HasForeignKey("IdDono")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -187,7 +187,7 @@ namespace MinhasColecoes.Persistencia.Migrations
                     b.HasOne("MinhasColecoes.Persistencia.Entities.Usuario", null)
                         .WithMany("ItensDono")
                         .HasForeignKey("IdDonoParticular")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("MinhasColecoes.Persistencia.Entities.Item", "ItemOriginal")
                         .WithOne()

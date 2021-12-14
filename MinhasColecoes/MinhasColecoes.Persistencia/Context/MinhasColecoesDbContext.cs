@@ -32,7 +32,7 @@ namespace MinhasColecoes.Persistencia.Context
 				.HasMany(u => u.ColecoesDono)
 				.WithOne()
 				.HasForeignKey(c => c.IdDono)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<Usuario>()
 				.HasMany(u => u.ColecoesParticipa)
@@ -44,7 +44,7 @@ namespace MinhasColecoes.Persistencia.Context
 				.HasMany(u => u.ItensDono)
 				.WithOne()
 				.HasForeignKey(i => i.IdDonoParticular)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<Usuario>()
 				.HasMany(u => u.RelacoesItens)
