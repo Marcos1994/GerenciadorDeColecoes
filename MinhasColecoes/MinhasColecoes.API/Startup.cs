@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,7 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MinhasColecoes.Aplicacao.Profiles;
 using MinhasColecoes.Persistencia.Context;
+using MinhasColecoes.Persistencia.Interfaces;
+using MinhasColecoes.Persistencia.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +32,15 @@ namespace MinhasColecoes.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+
+			services.AddScoped<IColecaoRepository, ColecaoRepository>();
+			services.AddScoped<IItemRepository, ItemRepository>();
+
 			services.AddDbContext<MinhasColecoesDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MinhasColecoesCs")));
 			services.AddScoped<MinhasColecoesDbContext>();
 
+			services.AddAutoMapper(typeof(ColecaoProfile));
+			
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{

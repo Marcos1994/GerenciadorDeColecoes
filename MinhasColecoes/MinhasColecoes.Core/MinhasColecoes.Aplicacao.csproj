@@ -5,19 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Servicos\**" />
+    <EmbeddedResource Remove="Servicos\**" />
+    <None Remove="Servicos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\Input\" />
     <Folder Include="Models\Input\" />
-    <Folder Include="Models\View\" />
     <Folder Include="Models\Update\" />
-    <Folder Include="Models\View\" />
     <Folder Include="Models\Update\" />
     <Folder Include="Enumerators\" />
+    <Folder Include="Exceptions\" />
     <Folder Include="Validators\" />
-    <Folder Include="Servicos\" />
-    <Folder Include="Profiles\" />
+    <Folder Include="Services\" />
     <Folder Include="Validators\" />
-    <Folder Include="Profiles\" />
-    <Folder Include="Servicos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="1.1.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
 
   <ItemGroup>

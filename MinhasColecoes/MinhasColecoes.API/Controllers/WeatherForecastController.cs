@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MinhasColecoes.Aplicacao.Models.View;
+using MinhasColecoes.Persistencia.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,8 @@ namespace MinhasColecoes.API.Controllers
 	[Route("[controller]")]
 	public class WeatherForecastController : ControllerBase
 	{
+		private readonly IMapper mapper;
+
 		private static readonly string[] Summaries = new[]
 		{
 			"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -18,9 +23,10 @@ namespace MinhasColecoes.API.Controllers
 
 		private readonly ILogger<WeatherForecastController> _logger;
 
-		public WeatherForecastController(ILogger<WeatherForecastController> logger)
+		public WeatherForecastController(ILogger<WeatherForecastController> logger, IMapper mapper)
 		{
 			_logger = logger;
+			this.mapper = mapper;
 		}
 
 		[HttpGet]
