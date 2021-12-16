@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
 using System;
@@ -13,6 +14,8 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public ColecaoProfile()
 		{
+			CreateMap<ColecaoInputModel, Colecao>();
+
 			CreateMap<Colecao, ColecaoBasicViewModel>();
 			CreateMap<Colecao, ColecaoViewModel>()
 				.ForMember(view => view.Dono, opt => opt.MapFrom(ent => new UsuarioBasicViewModel(ent.IdDono)));

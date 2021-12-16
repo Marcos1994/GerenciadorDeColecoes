@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MinhasColecoes.Aplicacao.Enumerators;
+using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
 using System;
@@ -32,6 +34,12 @@ namespace MinhasColecoes.API.Controllers
 		[HttpGet]
 		public IEnumerable<WeatherForecast> Get()
 		{
+			RelacaoItemUsuarioViewModel relacaoView = new RelacaoItemUsuarioViewModel { IdItem = 1, IdUsuario = 1, Relacao = EnumRelacaoUsuarioItem.Desejo };
+			ItemUsuario relacao = mapper.Map<ItemUsuario>(relacaoView);
+
+			relacaoView = new RelacaoItemUsuarioViewModel { IdItem = 1, IdUsuario = 1, Relacao = EnumRelacaoUsuarioItem.NaoPossuo };
+			relacao = mapper.Map<ItemUsuario>(relacaoView);
+
 			var rng = new Random();
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{

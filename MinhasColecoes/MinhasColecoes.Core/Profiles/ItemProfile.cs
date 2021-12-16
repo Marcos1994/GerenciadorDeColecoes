@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MinhasColecoes.Aplicacao.Enumerators;
+using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
 using System;
@@ -14,10 +15,13 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public ItemProfile()
 		{
+			CreateMap<ItemInputModel, Item>();
+			CreateMap<RelacaoItemUsuarioViewModel, ItemUsuario>();
+
 			CreateMap<Item, ItemBasicViewModel>().IncludeMembers(r => r.RelacoesUsuarios.FirstOrDefault());
 			CreateMap<ItemUsuario, ItemBasicViewModel>();
 			CreateMap<ItemUsuario, EnumRelacaoUsuarioItem>(MemberList.None)
-				.ConvertUsing(src => (EnumRelacaoUsuarioItem) src.Relacao);
+				.ConvertUsing(src => (EnumRelacaoUsuarioItem)src.Relacao);
 		}
 	}
 }

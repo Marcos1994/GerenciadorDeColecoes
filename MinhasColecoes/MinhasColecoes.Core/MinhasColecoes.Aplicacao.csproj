@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Input\" />
-    <Folder Include="Models\Input\" />
     <Folder Include="Models\Update\" />
     <Folder Include="Models\Update\" />
     <Folder Include="Enumerators\" />
@@ -23,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="1.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.6" />
   </ItemGroup>
 
   <ItemGroup>
