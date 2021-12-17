@@ -9,7 +9,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 {
 	public interface IColecaoRepository : IRepository
 	{
-		IEnumerable<Colecao> GetAll(int idUsuario);
+		IEnumerable<Colecao> GetAll(int idUsuario, string nome);
 		IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int idColecao);
 		IEnumerable<Colecao> GetAllPessoais(int idDono);
 		IEnumerable<Colecao> GetAllMembro(int idMembro);

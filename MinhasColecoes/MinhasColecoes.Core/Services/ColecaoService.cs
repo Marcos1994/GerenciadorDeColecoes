@@ -83,7 +83,7 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public void AdicionarMembro(int idColecao)
 		{
-
+			repositoryColecao.Add(new ColecaoUsuario(_idUsuario, idColecao));
 		}
 
 		public void Delete(int idColecao)
@@ -116,22 +116,26 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public IEnumerable<ColecaoBasicViewModel> GetAll(string nome)
 		{
-			throw new NotImplementedException();
+			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
+				(repositoryColecao.GetAll(_idUsuario, nome));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllProprias(string nome)
 		{
-			throw new NotImplementedException();
+			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
+				(repositoryColecao.GetAllPessoais(_idUsuario).Where(c => c.Nome.Contains(nome)));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(string nome)
 		{
-			throw new NotImplementedException();
+			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
+				(repositoryColecao.GetAllMembro(_idUsuario).Where(c => c.Nome.Contains(nome)));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idColecao)
 		{
-			throw new NotImplementedException();
+			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
+				(repositoryColecao.GetAllSubcolecoes(_idUsuario, idColecao)));
 		}
 
 		public IEnumerable<UsuarioBasicViewModel> GetAllMembros(int idColecao)
