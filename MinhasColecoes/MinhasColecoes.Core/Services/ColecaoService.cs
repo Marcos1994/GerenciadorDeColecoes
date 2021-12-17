@@ -52,7 +52,7 @@ namespace MinhasColecoes.Aplicacao.Services
 
 			Colecao colecao = repositorioColecao.GetById(update.Id);
 			if (colecao.IdDono != _idUsuario)
-				throw new Exception("O usuário atual não é o dono da coleção a ser atualizada.");
+				throw new Exception("O usuário atual não tem permissão para atualizar a coleção.");
 
 			if (!update.Publica && colecao.Publica)
 			{
@@ -75,7 +75,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			Colecao subcolecao = repositorioColecao.GetById(idSubcolecao);
 
 			if (subcolecao.IdDono != _idUsuario)
-				throw new Exception("O usuário atual não é o dono da coleção a ser posta como subcoleção.");
+				throw new Exception("O usuário atual não tem permissão para adicionar esta coleção como subcoleção.");
 
 			subcolecao.SetColecaoMaior(idColecao);
 			repositorioColecao.Update(subcolecao);

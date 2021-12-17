@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MinhasColecoes.Aplicacao.Enumerators;
 using MinhasColecoes.Aplicacao.Models.Input;
+using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
 using System;
@@ -15,6 +16,8 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public ItemProfile()
 		{
+			CreateMap<ItemUpdateModel, ItemInputModel>();
+
 			CreateMap<ItemInputModel, Item>()
 				.ForMember(d => d.RelacoesUsuarios, opt =>
 				{
@@ -23,10 +26,14 @@ namespace MinhasColecoes.Aplicacao.Profiles
 				});
 			CreateMap<RelacaoItemUsuarioInputModel, ItemUsuario>();
 
-			CreateMap<Item, ItemBasicViewModel>().IncludeMembers(r => r.RelacoesUsuarios.FirstOrDefault());
+			CreateMap<Item, ItemViewModel>()
+				.IncludeBase<Item, ItemBasicViewModel>();
+			CreateMap<Item, ItemBasicViewModel>()
+				.IncludeMembers(r => r.RelacoesUsuarios.FirstOrDefault());
 			CreateMap<ItemUsuario, ItemBasicViewModel>();
 			CreateMap<ItemUsuario, EnumRelacaoUsuarioItem>(MemberList.None)
 				.ConvertUsing(src => (EnumRelacaoUsuarioItem)src.Relacao);
+
 		}
 	}
 }

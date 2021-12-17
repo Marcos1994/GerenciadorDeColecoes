@@ -33,21 +33,41 @@ namespace MinhasColecoes.Persistencia.Repositories
 		{
 			List<Item> itens = dbContext.Itens.Where(i => i.IdColecao == idColecao && (i.Original == true || i.IdDonoParticular == idUsuario)).ToList();
 
+			List<int> idsSubstituidos = (from i in itens
+										 where i.IdOriginal != null
+										 select (int)i.IdOriginal).ToList();
+
+			//Pegar apenas os itens que não são modificações particulares de outros itens
+			List<Item> itensPessoais = itens.Where(i => !idsSubstituidos.Contains(i.Id)).ToList();
+
+			for (int j = 0; j < itensPessoais.Count(); j++)
+				if (itensPessoais[j].IdOriginal != null)
+					itensPessoais[j].SetItemOriginal(itens.FirstOrDefault(i => i.Id == (int)itensPessoais[j].IdOriginal));
+
 			List<ItemUsuario> relacoes = (from iu in dbContext.ItensUsuario
 										  where iu.IdUsuario == idUsuario
-										  join i in itens
+										  join i in itensPessoais
 										  on iu.IdItem equals i.Id
 										  select iu).ToList();
 
 			for (int i = 0; i < relacoes.Count(); i++)
-				itens.First(item => item.Id == relacoes[i].IdItem).RelacoesUsuarios.Add(relacoes[i]);
+				itensPessoais.First(item => item.Id == relacoes[i].IdItem).RelacoesUsuarios.Add(relacoes[i]);
 
-			return itens;
+			return itensPessoais;
 		}
 
 		public Item GetById(int id)
 		{
 			return dbContext.Itens.First(i => i.Id == id);
+		}
+
+		public Item GetById(int id, int idUsuario)
+		{
+			Item item = dbContext.Itens.First(i => i.Id == id);
+			if (item.IdOriginal != null)
+				item.SetItemOriginal(dbContext.Itens.First(i => i.Id == (int)item.IdOriginal));
+			item.RelacoesUsuarios.Add(dbContext.ItensUsuario.FirstOrDefault(iu => iu.IdItem == id && iu.IdUsuario == idUsuario));
+			return item;
 		}
 
 		public ItemUsuario GetByKey(int idUsuario, int idItem)

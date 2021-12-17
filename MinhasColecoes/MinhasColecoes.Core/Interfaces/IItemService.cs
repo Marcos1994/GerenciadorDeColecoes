@@ -13,7 +13,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 	{
 		void SetUsuario(int idUsuario);
 		ItemViewModel Criar(ItemInputModel input);
-		void Atualizar(ItemUpdateModel update);
+		ItemViewModel Atualizar(ItemUpdateModel update);
 		void DefinirRelacoes(List<RelacaoItemUsuarioInputModel> relacoesInput);
 		void Excluir(int idItem);
 		ItemViewModel GetById(int idItem);

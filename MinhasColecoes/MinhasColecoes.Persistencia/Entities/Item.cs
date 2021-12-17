@@ -36,6 +36,13 @@ namespace MinhasColecoes.Persistencia.Entities
 		public string Descricao { get; private set; }
 		public List<ItemUsuario> RelacoesUsuarios { get; private set; } = new List<ItemUsuario>();
 
+		public void Update(string nome, string codigo, string descricao)
+		{
+			Nome = nome;
+			Codigo = codigo;
+			Descricao = descricao;
+		}
+
 		public void SetItemOriginal(Item itemOriginal)
 		{
 			ItemOriginal = itemOriginal;
@@ -44,7 +51,6 @@ namespace MinhasColecoes.Persistencia.Entities
 
 		public void SetItemOriginal(int? idItemOriginal)
 		{
-			SetOriginal(idItemOriginal == null);
 			IdOriginal = idItemOriginal;
 		}
 

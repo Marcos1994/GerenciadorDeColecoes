@@ -12,6 +12,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		IEnumerable<Item> GetAll(int idColecao);
 		IEnumerable<Item> GetAllPessoais(int idColecao, int idUsuario);
 		Item GetById(int id);
+		Item GetById(int id, int idUsuario);
 		ItemUsuario GetByKey(int idUsuario, int idItem);
 		void Add(Item item);
 		void AddRange(List<Item> itens);
