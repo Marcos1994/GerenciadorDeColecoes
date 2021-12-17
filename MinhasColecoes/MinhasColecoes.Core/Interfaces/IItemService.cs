@@ -14,7 +14,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		void SetUsuario(int idUsuario);
 		ItemViewModel Criar(ItemInputModel input);
 		void Atualizar(ItemUpdateModel update);
-		void DefinirRelacoes(List<RelacaoItemUsuarioViewModel> relacoesInput);
+		void DefinirRelacoes(List<RelacaoItemUsuarioInputModel> relacoesInput);
 		void Excluir(int idItem);
 		ItemViewModel GetById(int idItem);
 		List<ItemBasicViewModel> GetAll(int idColecao);

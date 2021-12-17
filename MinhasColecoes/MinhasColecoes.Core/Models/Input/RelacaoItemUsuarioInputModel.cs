@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MinhasColecoes.Aplicacao.Models.Input
 {
-	public class RelacaoItemUsuarioViewModel
+	public class RelacaoItemUsuarioInputModel
 	{
 		public int IdUsuario { get; set; }
 		public int IdItem { get; set; }

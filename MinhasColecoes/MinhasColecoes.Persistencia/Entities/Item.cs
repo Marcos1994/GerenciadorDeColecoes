@@ -35,5 +35,27 @@ namespace MinhasColecoes.Persistencia.Entities
 		public string Codigo { get; private set; }
 		public string Descricao { get; private set; }
 		public List<ItemUsuario> RelacoesUsuarios { get; private set; } = new List<ItemUsuario>();
+
+		public void SetItemOriginal(Item itemOriginal)
+		{
+			ItemOriginal = itemOriginal;
+			SetItemOriginal((itemOriginal == null) ? null : itemOriginal.Id);
+		}
+
+		public void SetItemOriginal(int? idItemOriginal)
+		{
+			SetOriginal(idItemOriginal == null);
+			IdOriginal = idItemOriginal;
+		}
+
+		public void SetOriginal(bool original)
+		{
+			Original = original;
+		}
+
+		public void SetDonoParticular(int? idDonoParticular)
+		{
+			IdDonoParticular = idDonoParticular;
+		}
 	}
 }

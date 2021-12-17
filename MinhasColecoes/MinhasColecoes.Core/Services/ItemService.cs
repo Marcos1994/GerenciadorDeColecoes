@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using MinhasColecoes.Aplicacao.Enumerators;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
+using MinhasColecoes.Persistencia.Entities;
 using MinhasColecoes.Persistencia.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,13 +17,15 @@ namespace MinhasColecoes.Aplicacao.Services
 	public class ItemService : IItemService
 	{
 		private readonly IMapper mapper;
-		private readonly IItemRepository repositoryItem;
+		private readonly IItemRepository repositorioItem;
+		private readonly IColecaoRepository repositorioColecao;
 		private int? _idUsuario;
 
-		public ItemService(IMapper mapper, IItemRepository repositoryItem)
+		public ItemService(IMapper mapper, IItemRepository repositoryItem, IColecaoRepository repositoryColecao)
 		{
 			this.mapper = mapper;
-			this.repositoryItem = repositoryItem;
+			this.repositorioItem = repositoryItem;
+			this.repositorioColecao = repositoryColecao;
 		}
 
 		public void SetUsuario(int idUsuario)
@@ -31,7 +35,17 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public ItemViewModel Criar(ItemInputModel input)
 		{
-			throw new NotImplementedException();
+			input.IdUsuario = (int)_idUsuario;
+			Item item = mapper.Map<Item>(input);
+			Colecao colecao = repositorioColecao.GetById(input.IdColecao);
+			if(colecao.IdDono != _idUsuario)
+			{
+				item.SetOriginal(false);
+				item.SetDonoParticular(_idUsuario);
+			}
+
+			repositorioItem.Add(item);
+			return mapper.Map<ItemViewModel>(item);
 		}
 
 		public void Atualizar(ItemUpdateModel update)
@@ -39,7 +53,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			throw new NotImplementedException();
 		}
 
-		public void DefinirRelacoes(List<RelacaoItemUsuarioViewModel> relacoesInput)
+		public void DefinirRelacoes(List<RelacaoItemUsuarioInputModel> relacoesInput)
 		{
 			throw new NotImplementedException();
 		}

@@ -19,9 +19,9 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		void AdicionarMembro(int idColecao);
 		void Delete(int idColecao);
 		ColecaoViewModel GetById(int idColecao);
-		IEnumerable<ColecaoBasicViewModel> GetAll(string nome);
-		IEnumerable<ColecaoBasicViewModel> GetAllProprias(string nome);
-		IEnumerable<ColecaoBasicViewModel> GetAllParticipa(string nome);
+		IEnumerable<ColecaoBasicViewModel> GetAll(string nome = "");
+		IEnumerable<ColecaoBasicViewModel> GetAllProprias(string nome = "");
+		IEnumerable<ColecaoBasicViewModel> GetAllParticipa(string nome = "");
 		IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idColecao);
 		IEnumerable<UsuarioBasicViewModel> GetAllMembros(int idColecao);
 	}
