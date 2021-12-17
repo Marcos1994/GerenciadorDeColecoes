@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MinhasColecoes.Aplicacao.Models.Input;
+using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
 using System;
@@ -18,7 +19,7 @@ namespace MinhasColecoes.Aplicacao.Profiles
 
 			CreateMap<Colecao, ColecaoBasicViewModel>();
 			CreateMap<Colecao, ColecaoViewModel>()
-				.ForMember(view => view.Dono, opt => opt.MapFrom(ent => new UsuarioBasicViewModel(ent.IdDono)));
+				.ForMember(view => view.Dono, opt => opt.MapFrom(ent => new UsuarioBasicViewModel(ent.IdDono, "")));
 		}
 	}
 }

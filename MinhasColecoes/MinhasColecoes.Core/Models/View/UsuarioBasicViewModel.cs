@@ -13,12 +13,13 @@ namespace MinhasColecoes.Aplicacao.Models.View
 
 		}
 
-		public UsuarioBasicViewModel(int id)
+		public UsuarioBasicViewModel(int id, string nome)
 		{
 			Id = id;
+			Nome = nome;
 		}
 
 		public int Id { get; private set; }
-		public int Nome { get; private set; }
+		public string Nome { get; private set; }
 	}
 }

@@ -15,7 +15,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		ColecaoViewModel Create(ColecaoInputModel input);
 		void Update(ColecaoUpdateModel update);
 		void TransferirParaMembro(int idColecao, int idMembro);
-		void AdicionarSubcolecao(int idColecao, int idSubcolecao);
+		void AdicionarSubcolecao(int idSubcolecao, int? idColecao);
+		void AdicionarMembro(int idColecao);
 		void Delete(int idColecao);
 		ColecaoViewModel GetById(int idColecao);
 		IEnumerable<ColecaoBasicViewModel> GetAll(string nome);

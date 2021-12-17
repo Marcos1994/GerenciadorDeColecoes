@@ -32,5 +32,18 @@ namespace MinhasColecoes.Persistencia.Entities
 		public List<Colecao> Colecoes { get; private set; } = new List<Colecao>();
 		public List<ColecaoUsuario> UsuariosColecao { get; private set; } = new List<ColecaoUsuario>();
 		public List<Item> Itens { get; private set; } = new List<Item>();
+
+		public void Update(string nome, string descricao, string foto, bool publica)
+		{
+			Nome = nome;
+			Descricao = descricao;
+			Foto = foto;
+			Publica = publica;
+		}
+
+		public void SetColecaoMaior(int? idColecaoMaior)
+		{
+			IdColecaoMaior = idColecaoMaior;
+		}
 	}
 }
