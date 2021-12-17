@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Update\" />
-    <Folder Include="Models\Update\" />
     <Folder Include="Enumerators\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Validators\" />

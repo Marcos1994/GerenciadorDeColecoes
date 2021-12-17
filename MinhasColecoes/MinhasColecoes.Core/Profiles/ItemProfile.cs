@@ -15,7 +15,8 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public ItemProfile()
 		{
-			CreateMap<ItemInputModel, Item>();
+			CreateMap<ItemInputModel, Item>()
+				.ForMember(d => d.IdDonoParticular, opt => opt.MapFrom(s => s.IdUsuario));
 			CreateMap<RelacaoItemUsuarioViewModel, ItemUsuario>();
 
 			CreateMap<Item, ItemBasicViewModel>().IncludeMembers(r => r.RelacoesUsuarios.FirstOrDefault());

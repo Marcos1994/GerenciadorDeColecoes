@@ -34,11 +34,6 @@ namespace MinhasColecoes.API.Controllers
 		[HttpGet]
 		public IEnumerable<WeatherForecast> Get()
 		{
-			RelacaoItemUsuarioViewModel relacaoView = new RelacaoItemUsuarioViewModel { IdItem = 1, IdUsuario = 1, Relacao = EnumRelacaoUsuarioItem.Desejo };
-			ItemUsuario relacao = mapper.Map<ItemUsuario>(relacaoView);
-
-			relacaoView = new RelacaoItemUsuarioViewModel { IdItem = 1, IdUsuario = 1, Relacao = EnumRelacaoUsuarioItem.NaoPossuo };
-			relacao = mapper.Map<ItemUsuario>(relacaoView);
 
 			var rng = new Random();
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast

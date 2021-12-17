@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
 using System;
@@ -13,6 +14,7 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public UsuarioProfile()
 		{
+			CreateMap<UsuarioBasicInputModel, Usuario>();
 			CreateMap<Usuario, UsuarioBasicViewModel>();
 		}
 	}
