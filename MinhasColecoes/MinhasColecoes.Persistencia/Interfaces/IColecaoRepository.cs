@@ -9,16 +9,78 @@ namespace MinhasColecoes.Persistencia.Interfaces
 {
 	public interface IColecaoRepository : IRepository
 	{
+		/// <summary>
+		/// Retorna todas as coleções que o usuário pode visualizar filtrando pelo nome.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="nome"></param>
+		/// <returns>Lista de coleções com as informações básicas.</returns>
 		IEnumerable<Colecao> GetAll(int idUsuario, string nome = "");
+
+		/// <summary>
+		/// Retorna todas as subcoleções de uma coleção que o usuário pode visualizar.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="idColecao"></param>
+		/// <returns>Lista de coleções com as informações básicas.</returns>
 		IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int idColecao);
+
+		/// <summary>
+		/// Retorna todas as coleções que tem o usuário como dono.
+		/// </summary>
+		/// <param name="idDono"></param>
+		/// <returns>Lista de coleções com as informações básicas.</returns>
 		IEnumerable<Colecao> GetAllPessoais(int idDono);
+
+		/// <summary>
+		/// Retorna todas as coleções das quais o usuário é membro.
+		/// </summary>
+		/// <param name="idMembro"></param>
+		/// <returns>Lista de coleções com as informações básicas.</returns>
 		IEnumerable<Colecao> GetAllMembro(int idMembro);
+
+		/// <summary>
+		/// Retorna todos os membros de uma coleção.
+		/// </summary>
+		/// <param name="idColecao"></param>
+		/// <returns>Lista de usuários com as informações básicas.</returns>
 		IEnumerable<Usuario> GetMembros(int idColecao);
+
+		/// <summary>
+		/// Retorna A coleção que possui o id correspondente.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Coleção com informações básicas.</returns>
 		Colecao GetById(int id);
+
+		/// <summary>
+		/// Cadastra uma coleção.
+		/// </summary>
+		/// <param name="colecao"></param>
 		void Add(Colecao colecao);
+
+		/// <summary>
+		/// Cadastra uma relação entre coleção e usuário.
+		/// </summary>
+		/// <param name="colecaoUsuario"></param>
 		void Add(ColecaoUsuario colecaoUsuario);
+
+		/// <summary>
+		/// Atualiza uma coleção.
+		/// </summary>
+		/// <param name="colecao"></param>
 		void Update(Colecao colecao);
+
+		/// <summary>
+		/// Exclui uma coleção.
+		/// </summary>
+		/// <param name="colecao"></param>
 		void Delete(Colecao colecao);
+
+		/// <summary>
+		/// Exclui uma relação entre coleção e usuário.
+		/// </summary>
+		/// <param name="colecaoUsuario"></param>
 		void Delete(ColecaoUsuario colecaoUsuario);
 	}
 }

@@ -71,7 +71,7 @@ namespace MinhasColecoes.Aplicacao.Services
 		}
 
 		public void AdicionarSubcolecao(int idSubcolecao, int? idColecao)
-		{
+		{//ATUALIZAR: Caso o usuário não seja dono da supercoleção, deverá ser criada uma solicitação.
 			Colecao subcolecao = repositorioColecao.GetById(idSubcolecao);
 
 			if (subcolecao.IdDono != _idUsuario)
