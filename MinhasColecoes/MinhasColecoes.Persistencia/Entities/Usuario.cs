@@ -12,14 +12,18 @@ namespace MinhasColecoes.Persistencia.Entities
 		{
 
 		}
-		public Usuario(string nome, string foto)
+		public Usuario(string nome, string foto, string senha, string descricao)
 		{
 			Nome = nome;
 			Foto = foto;
+			Senha = senha;
+			Descricao = descricao;
 		}
 
 		public int Id { get; private set; }
 		public string Nome { get; private set; }
+		public string Senha { get; private set; }
+		public string Descricao { get; private set; }
 		public string Foto { get; private set; }
 		public List<Colecao> ColecoesDono { get; private set; } = new List<Colecao>();
 		public List<ColecaoUsuario> ColecoesParticipa { get; private set; } = new List<ColecaoUsuario>();
