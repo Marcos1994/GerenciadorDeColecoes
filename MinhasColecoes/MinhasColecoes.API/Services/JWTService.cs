@@ -34,9 +34,9 @@ namespace MinhasColecoes.API.Services
 			{
 				Subject = new ClaimsIdentity(claims),
 				Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(configuration.GetSection("JWT:ExpiraEmMinutos").Value)),
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(chave), SecurityAlgorithms.HmacSha256Signature)
-				//Audience = configuration.GetSection("JWT:Audience").Value,
-				//Issuer = configuration.GetSection("JWT:Issuer").Value
+				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(chave), SecurityAlgorithms.HmacSha256Signature),
+				Audience = configuration.GetSection("JWT:Audience").Value,
+				Issuer = configuration.GetSection("JWT:Issuer").Value
 			};
 
 			var token = tokenHandler.CreateToken(tokenDescriptor);
