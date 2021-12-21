@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,14 +9,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MinhasColecoes.API.Interfaces;
+using MinhasColecoes.API.Services;
+using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Profiles;
+using MinhasColecoes.Aplicacao.Services;
 using MinhasColecoes.Persistencia.Context;
 using MinhasColecoes.Persistencia.Interfaces;
 using MinhasColecoes.Persistencia.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MinhasColecoes.API
@@ -32,7 +39,29 @@ namespace MinhasColecoes.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton<IJWTService, JWTService>();
+			byte[] chave = Encoding.ASCII.GetBytes(Configuration.GetSection("JWT:Secret").Value);
+			services.AddAuthentication(a =>
+				{
+					a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				})
+				.AddJwtBearer(a =>
+				{
+					a.RequireHttpsMetadata = false;
+					a.SaveToken = true;
+					a.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuerSigningKey = true,
+						IssuerSigningKey = new SymmetricSecurityKey(chave),
+						ValidateIssuer = false,
+						ValidateLifetime = true
+					};
+				});
 
+			services.AddScoped<IUsuarioService, UsuarioService>();
+
+			services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 			services.AddScoped<IColecaoRepository, ColecaoRepository>();
 			services.AddScoped<IItemRepository, ItemRepository>();
 
@@ -63,6 +92,10 @@ namespace MinhasColecoes.API
 			app.UseRouting();
 
 			app.UseAuthorization();
+
+			//JWT
+			app.UseAuthentication();
+			//app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
