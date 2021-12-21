@@ -18,7 +18,6 @@ namespace MinhasColecoes.Aplicacao.Services
 		private readonly IMapper mapper;
 		private readonly IColecaoRepository repositorioColecao;
 		private readonly IItemRepository repositorioItem;
-		private int _idUsuario;
 
 		public ColecaoService(IMapper mapper, IColecaoRepository repositoryColecao, IItemRepository repositoryItem)
 		{
@@ -27,31 +26,26 @@ namespace MinhasColecoes.Aplicacao.Services
 			this.repositorioItem = repositoryItem;
 		}
 
-		public void SetUsuario(int idUsuario)
+		public ColecaoViewModel Create(int idUsuario, ColecaoInputModel input)
 		{
-			_idUsuario = idUsuario;
-		}
-
-		public ColecaoViewModel Create(ColecaoInputModel input)
-		{
-			bool nomeRepetido = repositorioColecao.GetAll(_idUsuario).Any(c => c.Nome.ToLower() == input.Nome.ToLower());
+			bool nomeRepetido = repositorioColecao.GetAll(idUsuario).Any(c => c.Nome.ToLower() == input.Nome.ToLower());
 			if (nomeRepetido)
 				throw new Exception("Já existe uma coleção com esse nome.");
 
-			input.IdDono = _idUsuario;
+			input.IdDono = idUsuario;
 			Colecao colecao = mapper.Map<Colecao>(input);
 			repositorioColecao.Add(colecao);
 			return mapper.Map<ColecaoViewModel>(colecao);
 		}
 
-		public void Update(ColecaoUpdateModel update)
+		public void Update(int idUsuario, ColecaoUpdateModel update)
 		{
-			bool nomeRepetido = repositorioColecao.GetAll(_idUsuario).Any(c => c.Nome.ToLower() == update.Nome.ToLower());
+			bool nomeRepetido = repositorioColecao.GetAll(idUsuario).Any(c => c.Nome.ToLower() == update.Nome.ToLower());
 			if (nomeRepetido)
 				throw new Exception("Já existe uma coleção com esse nome.");
 
 			Colecao colecao = repositorioColecao.GetById(update.Id);
-			if (colecao.IdDono != _idUsuario)
+			if (colecao.IdDono != idUsuario)
 				throw new Exception("O usuário atual não tem permissão para atualizar a coleção.");
 
 			if (!update.Publica && colecao.Publica)
@@ -65,31 +59,31 @@ namespace MinhasColecoes.Aplicacao.Services
 			repositorioColecao.Update(colecao);
 		}
 
-		public void TransferirParaMembro(int idColecao, int idMembro)
+		public void TransferirParaMembro(int idDono, int idMembro, int idColecao)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void AdicionarSubcolecao(int idSubcolecao, int? idColecao)
+		public void AdicionarSubcolecao(int idUsuario, int idSubcolecao, int? idColecao)
 		{//ATUALIZAR: Caso o usuário não seja dono da supercoleção, deverá ser criada uma solicitação.
 			Colecao subcolecao = repositorioColecao.GetById(idSubcolecao);
 
-			if (subcolecao.IdDono != _idUsuario)
+			if (subcolecao.IdDono != idUsuario)
 				throw new Exception("O usuário atual não tem permissão para adicionar esta coleção como subcoleção.");
 
 			subcolecao.SetColecaoMaior(idColecao);
 			repositorioColecao.Update(subcolecao);
 		}
 
-		public void AdicionarMembro(int idColecao)
+		public void AdicionarMembro(int idUsuario, int idColecao)
 		{
-			repositorioColecao.Add(new ColecaoUsuario(_idUsuario, idColecao));
+			repositorioColecao.Add(new ColecaoUsuario(idUsuario, idColecao));
 		}
 
-		public void Delete(int idColecao)
+		public void Delete(int idUsuario, int idColecao)
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
-			if (colecao.IdDono == _idUsuario)
+			if (colecao.IdDono == idUsuario)
 			{
 				if (colecao.Publica)
 				{
@@ -101,41 +95,41 @@ namespace MinhasColecoes.Aplicacao.Services
 			}
 			else
 			{
-				ColecaoUsuario relacao = new ColecaoUsuario(_idUsuario, idColecao);
+				ColecaoUsuario relacao = new ColecaoUsuario(idUsuario, idColecao);
 				repositorioColecao.Delete(relacao);
 			}
 		}
 
-		public ColecaoViewModel GetById(int idColecao)
+		public ColecaoViewModel GetById(int idUsuario, int idColecao)
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
-			colecao.Colecoes.AddRange(repositorioColecao.GetAllSubcolecoes(_idUsuario, idColecao));
-			colecao.Itens.AddRange(repositorioItem.GetAllPessoais(idColecao, _idUsuario));
+			colecao.Colecoes.AddRange(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao));
+			colecao.Itens.AddRange(repositorioItem.GetAllPessoais(idColecao, idUsuario));
 			return mapper.Map<ColecaoViewModel>(colecao);
 		}
 
-		public IEnumerable<ColecaoBasicViewModel> GetAll(string nome = "")
+		public IEnumerable<ColecaoBasicViewModel> GetAll(int idUsuario, string nome = "")
 		{
 			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAll(_idUsuario, nome));
+				(repositorioColecao.GetAll(idUsuario, nome));
 		}
 
-		public IEnumerable<ColecaoBasicViewModel> GetAllProprias(string nome = "")
+		public IEnumerable<ColecaoBasicViewModel> GetAllProprias(int idUsuario, string nome = "")
 		{
 			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllPessoais(_idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
+				(repositorioColecao.GetAllPessoais(idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
-		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(string nome = "")
+		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(int idUsuario, string nome = "")
 		{
 			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllMembro(_idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
+				(repositorioColecao.GetAllMembro(idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
-		public IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idColecao)
+		public IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idUsuario, int idColecao)
 		{
 			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllSubcolecoes(_idUsuario, idColecao));
+				(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao));
 		}
 
 		public IEnumerable<UsuarioBasicViewModel> GetAllMembros(int idColecao)
