@@ -14,7 +14,7 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public UsuarioProfile()
 		{
-			CreateMap<UsuarioBasicInputModel, Usuario>();
+			CreateMap<UsuarioInputModel, Usuario>();
 			CreateMap<Usuario, UsuarioBasicViewModel>();
 		}
 	}
