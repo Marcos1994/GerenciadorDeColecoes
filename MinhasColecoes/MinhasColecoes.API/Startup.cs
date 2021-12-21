@@ -54,11 +54,8 @@ namespace MinhasColecoes.API
 					{
 						ValidateIssuerSigningKey = true,
 						IssuerSigningKey = new SymmetricSecurityKey(chave),
-						ValidateIssuer = true,
-						ValidIssuer = Configuration.GetSection("JWT:Issuer").Value,
-
-						ValidateAudience = true,
-						ValidAudience = Configuration.GetSection("JWT:Audience").Value,
+						ValidateIssuer = false,
+						ValidateAudience = false,
 						ValidateLifetime = true
 					};
 				});
@@ -116,9 +113,6 @@ namespace MinhasColecoes.API
 
 			app.UseRouting();
 
-			//app.UseAuthorization();
-
-			//JWT
 			app.UseAuthentication();
 			app.UseAuthorization();
 
