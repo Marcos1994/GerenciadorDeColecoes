@@ -7,24 +7,34 @@ using MinhasColecoes.Aplicacao.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MinhasColecoes.API.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class UsuariosController : ControllerBase
+	public class UsuarioController : ControllerBase
 	{
 		private readonly IUsuarioService serviceUsuario;
 		private readonly IJWTService jwt;
 
-		public UsuariosController(IUsuarioService serviceUsuario, IJWTService jwt)
+		public UsuarioController(IUsuarioService serviceUsuario, IJWTService jwt)
 		{
 			this.serviceUsuario = serviceUsuario;
 			this.jwt = jwt;
 		}
 
 		[HttpPost]
+		[Route("Cadastro")]
+		public IActionResult Post(UsuarioInputModel usuario)
+		{
+			serviceUsuario.Create(usuario);
+			return Ok();
+		}
+
+		[HttpPost]
+		[Route("Login")]
 		public IActionResult Post(UsuarioLoginInputModel usuario)
 		{
 			UsuarioLoginViewModel usuarioLogado = serviceUsuario.ValidarUsuario(usuario);
@@ -38,8 +48,9 @@ namespace MinhasColecoes.API.Controllers
 		[HttpGet]
 		public IActionResult Get()
 		{
-			string login = User.Identity.Name;
-			return Ok(login);
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			UsuarioViewModel usuario = serviceUsuario.GetById(idUsuario);
+			return Ok(usuario);
 		}
 	}
 }

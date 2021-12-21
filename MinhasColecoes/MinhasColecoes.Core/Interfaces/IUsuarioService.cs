@@ -1,4 +1,5 @@
 ﻿using MinhasColecoes.Aplicacao.Models.Input;
+using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,31 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="usuario"></param>
 		/// <returns>Usuario com login e token.</returns>
 		UsuarioLoginViewModel ValidarUsuario(UsuarioLoginInputModel usuario);
+
+		/// <summary>
+		/// Busca um usuário pelo Id.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Usuário com informações básicas.</returns>
+		UsuarioViewModel GetById(int id);
+
+		/// <summary>
+		/// Cadastra um usuário com login único.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns>Usuário cadastrado.</returns>
+		UsuarioViewModel Create(UsuarioInputModel input);
+
+		/// <summary>
+		/// Atualiza as informações do usuário.
+		/// </summary>
+		/// <param name="update"></param>
+		void Update(UsuarioUpdateModel update);
+
+		/// <summary>
+		/// Atualiza a senha do usuário.
+		/// </summary>
+		/// <param name="update"></param>
+		void Update(UsuarioSenhaUpdateModel update);
 	}
 }

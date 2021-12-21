@@ -12,8 +12,9 @@ namespace MinhasColecoes.Persistencia.Entities
 		{
 
 		}
-		public Usuario(string nome, string foto, string senha, string descricao)
+		public Usuario(string login, string nome, string foto, string senha, string descricao)
 		{
+			Login = login;
 			Nome = nome;
 			Foto = foto;
 			Senha = senha;
@@ -30,5 +31,17 @@ namespace MinhasColecoes.Persistencia.Entities
 		public List<ColecaoUsuario> ColecoesParticipa { get; private set; } = new List<ColecaoUsuario>();
 		public List<ItemUsuario> RelacoesItens { get; private set; } = new List<ItemUsuario>();
 		public List<Item> ItensDono { get; private set; } = new List<Item>();
+
+		public void Update(string nome, string foto, string descricao)
+		{
+			Nome = nome;
+			Foto = foto;
+			Descricao = descricao;
+		}
+
+		public void UpdateSenha(string senha)
+		{
+			Senha = senha;
+		}
 	}
 }

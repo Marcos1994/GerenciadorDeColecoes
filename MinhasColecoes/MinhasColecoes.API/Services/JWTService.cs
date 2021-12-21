@@ -27,7 +27,8 @@ namespace MinhasColecoes.API.Services
 
 			List<Claim> claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.Name, usuario.Nome)
+				new Claim(ClaimTypes.Name, usuario.Nome),
+				new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString())
 			};
 
 			SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor

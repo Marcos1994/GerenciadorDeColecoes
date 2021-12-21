@@ -20,7 +20,32 @@ namespace MinhasColecoes.Persistencia.Repositories
 
 		public Usuario Get(string login, string senha)
 		{
-			return dbContext.Usuarios.FirstOrDefault(u => u.Login.Equals(login) && u.Senha.Equals(senha));
+			Usuario usuario = this.GetByLogin(login);
+			return (usuario != null && usuario.Senha == senha)
+				? usuario
+				: null;
+		}
+
+		public Usuario GetById(int id)
+		{
+			return dbContext.Usuarios.First(u => u.Id == id);
+		}
+
+		public Usuario GetByLogin(string login)
+		{
+			return dbContext.Usuarios.FirstOrDefault(u => u.Login == login);
+		}
+
+		public void Create(Usuario usuario)
+		{
+			dbContext.Add(usuario);
+			dbContext.SaveChanges();
+		}
+
+		public void Update(Usuario usuario)
+		{
+			dbContext.Update(usuario);
+			dbContext.SaveChanges();
 		}
 	}
 }

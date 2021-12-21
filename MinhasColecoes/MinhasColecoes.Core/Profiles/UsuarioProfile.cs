@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace MinhasColecoes.Aplicacao.Profiles
 {
-	class UsuarioProfile : Profile
+	public class UsuarioProfile : Profile
 	{
 		public UsuarioProfile()
 		{
 			CreateMap<UsuarioInputModel, Usuario>();
 			CreateMap<Usuario, UsuarioBasicViewModel>();
+			CreateMap<Usuario, UsuarioViewModel>();
 			CreateMap<Usuario, UsuarioLoginViewModel>();
 		}
 	}

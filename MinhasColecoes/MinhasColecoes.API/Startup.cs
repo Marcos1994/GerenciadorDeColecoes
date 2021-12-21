@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using MinhasColecoes.API.Interfaces;
 using MinhasColecoes.API.Services;
 using MinhasColecoes.Aplicacao.Interfaces;
+using MinhasColecoes.Aplicacao.Models.Validators;
 using MinhasColecoes.Aplicacao.Profiles;
 using MinhasColecoes.Aplicacao.Services;
 using MinhasColecoes.Persistencia.Context;
@@ -46,32 +48,46 @@ namespace MinhasColecoes.API
 					a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 					a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 				})
-				.AddJwtBearer(a =>
+			.AddJwtBearer(a =>
+			{
+				a.RequireHttpsMetadata = false;
+				a.SaveToken = true;
+				a.TokenValidationParameters = new TokenValidationParameters
 				{
-					a.RequireHttpsMetadata = false;
-					a.SaveToken = true;
-					a.TokenValidationParameters = new TokenValidationParameters
-					{
-						ValidateIssuerSigningKey = true,
-						IssuerSigningKey = new SymmetricSecurityKey(chave),
-						ValidateIssuer = false,
-						ValidateAudience = false,
-						ValidateLifetime = true
-					};
-				});
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(chave),
+					ValidateIssuer = false,
+					ValidateAudience = false,
+					ValidateLifetime = true
+				};
+			});
+
+			services.AddAutoMapper(typeof(UsuarioProfile));
+			services.AddAutoMapper(typeof(ColecaoProfile));
+			services.AddAutoMapper(typeof(ItemProfile));
 
 			services.AddScoped<IUsuarioService, UsuarioService>();
-
 			services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+			services.AddScoped<IColecaoService, ColecaoService>();
 			services.AddScoped<IColecaoRepository, ColecaoRepository>();
+
+			services.AddScoped<IItemService, ItemService>();
 			services.AddScoped<IItemRepository, ItemRepository>();
 
 			services.AddDbContext<MinhasColecoesDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MinhasColecoesCs")));
 			services.AddScoped<MinhasColecoesDbContext>();
 
-			services.AddAutoMapper(typeof(ColecaoProfile));
-			
-			services.AddControllers();
+			services.AddControllers()
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<UsuarioInputValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<UsuarioLoginInputValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<UsuarioUpdateValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<UsuarioSenhaUpdateValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<ColecaoInputValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<ColecaoUpdateValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<ItemInputValidator>())
+				.AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<ItemUpdateValidator>());
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "MinhasColecoes.API", Version = "v1" });
