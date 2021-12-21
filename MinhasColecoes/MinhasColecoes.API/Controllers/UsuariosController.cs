@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MinhasColecoes.API.Interfaces;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
@@ -31,6 +32,14 @@ namespace MinhasColecoes.API.Controllers
 				return BadRequest();
 			usuarioLogado.SetToken(jwt.GerarToken(usuarioLogado));
 			return Ok(usuarioLogado);
+		}
+
+		[Authorize]
+		[HttpGet]
+		public IActionResult Get()
+		{
+			string login = User.Identity.Name;
+			return Ok(login);
 		}
 	}
 }

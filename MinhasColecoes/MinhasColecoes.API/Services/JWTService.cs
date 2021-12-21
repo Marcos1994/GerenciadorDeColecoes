@@ -40,7 +40,7 @@ namespace MinhasColecoes.API.Services
 			};
 
 			var token = tokenHandler.CreateToken(tokenDescriptor);
-			return token.ToString();
+			return tokenHandler.WriteToken(token);
 		}
 	}
 }

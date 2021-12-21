@@ -74,6 +74,27 @@ namespace MinhasColecoes.API
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "MinhasColecoes.API", Version = "v1" });
+				c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				{
+					In = ParameterLocation.Header,
+					Description = "Insira o token",
+					Name = "Authorization",
+					Type = SecuritySchemeType.ApiKey
+				});
+				c.AddSecurityRequirement(new OpenApiSecurityRequirement
+				{
+					{
+						new OpenApiSecurityScheme
+						{
+							Reference= new OpenApiReference
+							{
+								Type = ReferenceType.SecurityScheme,
+								Id ="Bearer"
+							}
+						},
+						new string[]{ }
+					}
+				});
 			});
 		}
 
@@ -91,11 +112,11 @@ namespace MinhasColecoes.API
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+			//app.UseAuthorization();
 
 			//JWT
 			app.UseAuthentication();
-			//app.UseAuthorization();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
