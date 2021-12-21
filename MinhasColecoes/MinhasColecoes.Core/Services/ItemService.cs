@@ -19,7 +19,6 @@ namespace MinhasColecoes.Aplicacao.Services
 		private readonly IMapper mapper;
 		private readonly IItemRepository repositorioItem;
 		private readonly IColecaoRepository repositorioColecao;
-		private int? _idUsuario;
 
 		public ItemService(IMapper mapper, IItemRepository repositoryItem, IColecaoRepository repositoryColecao)
 		{
@@ -28,20 +27,15 @@ namespace MinhasColecoes.Aplicacao.Services
 			this.repositorioColecao = repositoryColecao;
 		}
 
-		public void SetUsuario(int idUsuario)
+		public ItemViewModel Criar(int idUsuario, ItemInputModel input)
 		{
-			_idUsuario = idUsuario;
-		}
-
-		public ItemViewModel Criar(ItemInputModel input)
-		{
-			input.IdUsuario = (int)_idUsuario;
+			input.IdUsuario = idUsuario;
 			Item item = mapper.Map<Item>(input);
 			Colecao colecao = repositorioColecao.GetById(input.IdColecao);
-			if(colecao.IdDono != _idUsuario)
+			if(colecao.IdDono != idUsuario)
 			{
 				item.SetOriginal(false);
-				item.SetDonoParticular(_idUsuario);
+				item.SetDonoParticular(idUsuario);
 			}
 			else
 			{
@@ -54,12 +48,12 @@ namespace MinhasColecoes.Aplicacao.Services
 			return mapper.Map<ItemViewModel>(item);
 		}
 
-		public ItemViewModel Atualizar(ItemUpdateModel update)
+		public ItemViewModel Atualizar(int idUsuario, ItemUpdateModel update)
 		{
 			ItemViewModel itemView;
-			Item item = repositorioItem.GetById(update.Id, (int)_idUsuario);
+			Item item = repositorioItem.GetById(update.Id, idUsuario);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
-			if (colecao.IdDono == _idUsuario || item.IdDonoParticular == _idUsuario)
+			if (colecao.IdDono == idUsuario || item.IdDonoParticular == idUsuario)
 			{
 				Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, update.Codigo);
 				if (itemMesmoCodigo != null && itemMesmoCodigo.Id != update.Id)
@@ -80,7 +74,7 @@ namespace MinhasColecoes.Aplicacao.Services
 					if (item.RelacoesUsuarios.Count() > 0)
 						repositorioItem.Delete(item.RelacoesUsuarios.First());
 
-					Item novoItem = repositorioItem.GetById(this.Criar(input).Id, (int)_idUsuario);
+					Item novoItem = repositorioItem.GetById(this.Criar(idUsuario, input).Id, idUsuario);
 					novoItem.SetItemOriginal(item);
 					novoItem.SetOriginal(false);
 					repositorioItem.Update(novoItem);
@@ -102,23 +96,23 @@ namespace MinhasColecoes.Aplicacao.Services
 			throw new NotImplementedException();
 		}
 
-		public void Excluir(int idItem)
+		public void Excluir(int idUsuario, int idItem)
 		{
 			Item item = repositorioItem.GetById(idItem);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
-			if (colecao.IdDono == _idUsuario || item.IdDonoParticular == _idUsuario)
+			if (colecao.IdDono == idUsuario || item.IdDonoParticular == idUsuario)
 				throw new Exception("O usuário atual não tem permissão para excluir o item.");
 			repositorioItem.Delete(item);
 		}
 
-		public ItemViewModel GetById(int idItem)
+		public ItemViewModel GetById(int idUsuario, int idItem)
 		{
-			return mapper.Map<ItemViewModel>(repositorioItem.GetById(idItem, (int)_idUsuario));
+			return mapper.Map<ItemViewModel>(repositorioItem.GetById(idItem, idUsuario));
 		}
 
-		public List<ItemBasicViewModel> GetAll(int idColecao)
+		public List<ItemBasicViewModel> GetAll(int idUsuario, int idColecao)
 		{
-			return mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, (int)_idUsuario));
+			return mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario));
 		}
 
 		public List<ItemBasicViewModel> GetAllOriginais(int idColecao)
