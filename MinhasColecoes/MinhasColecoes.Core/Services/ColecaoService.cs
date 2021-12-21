@@ -123,13 +123,13 @@ namespace MinhasColecoes.Aplicacao.Services
 		public IEnumerable<ColecaoBasicViewModel> GetAllProprias(string nome = "")
 		{
 			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllPessoais(_idUsuario).Where(c => c.Nome.Contains(nome)));
+				(repositorioColecao.GetAllPessoais(_idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(string nome = "")
 		{
 			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllMembro(_idUsuario).Where(c => c.Nome.Contains(nome)));
+				(repositorioColecao.GetAllMembro(_idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idColecao)

@@ -40,6 +40,13 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		Item GetById(int id, int idUsuario);
 
 		/// <summary>
+		/// Retorna um item de uma coleção, caso exista, que possua o código informado. Apenas itens originais são considerados na busca.
+		/// </summary>
+		/// <param name="codigo"></param>
+		/// <returns>Item apenas com informações básicas.</returns>
+		Item GetByCodigo(int idColecao, string codigo);
+
+		/// <summary>
 		/// Procura por uma relação entre um usuário e um item.
 		/// </summary>
 		/// <param name="idUsuario"></param>

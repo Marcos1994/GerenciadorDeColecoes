@@ -43,6 +43,13 @@ namespace MinhasColecoes.Aplicacao.Services
 				item.SetOriginal(false);
 				item.SetDonoParticular(_idUsuario);
 			}
+			else
+			{
+				Item itemMesmoCodigo = repositorioItem.GetByCodigo(input.IdColecao, input.Codigo);
+				if (itemMesmoCodigo != null)
+					throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+			}
+
 			repositorioItem.Add(item);
 			return mapper.Map<ItemViewModel>(item);
 		}
@@ -54,6 +61,10 @@ namespace MinhasColecoes.Aplicacao.Services
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
 			if (colecao.IdDono == _idUsuario || item.IdDonoParticular == _idUsuario)
 			{
+				Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, update.Codigo);
+				if (itemMesmoCodigo != null && itemMesmoCodigo.Id != update.Id)
+					throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+
 				item.Update(update.Nome, update.Codigo, update.Descricao);
 				repositorioItem.Update(item);
 				itemView = mapper.Map<ItemViewModel>(item);

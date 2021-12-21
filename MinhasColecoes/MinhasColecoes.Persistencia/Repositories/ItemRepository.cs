@@ -70,6 +70,17 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return item;
 		}
 
+		public Item GetByCodigo(int idColecao, string codigo)
+		{
+			if (codigo.Length == 0)
+				return null;
+			return dbContext.Itens
+				.FirstOrDefault(i =>
+				i.IdColecao == idColecao
+				&& i.Original
+				&& i.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase));
+		}
+
 		public ItemUsuario GetByKey(int idUsuario, int idItem)
 		{
 			return dbContext.ItensUsuario.FirstOrDefault(i => i.IdUsuario == idUsuario && i.IdItem == idItem);
