@@ -8,9 +8,9 @@ namespace MinhasColecoes.Aplicacao.Models.Update
 {
 	public class UsuarioUpdateModel
 	{
-		public int Id { get; private set; }
-		public string Nome { get; private set; }
-		public string Descricao { get; private set; }
-		public string Foto { get; private set; }
+		public int Id { get; set; }
+		public string Nome { get; set; }
+		public string Descricao { get; set; }
+		public string Foto { get; set; }
 	}
 }
