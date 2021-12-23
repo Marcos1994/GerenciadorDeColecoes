@@ -103,15 +103,16 @@ namespace MinhasColecoes.Aplicacao.Services
 		public ColecaoViewModel GetById(int idUsuario, int idColecao)
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
-			colecao.Colecoes.AddRange(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao));
-			colecao.Itens.AddRange(repositorioItem.GetAllPessoais(idColecao, idUsuario));
-			return mapper.Map<ColecaoViewModel>(colecao);
+			ColecaoViewModel colecaoView = mapper.Map<ColecaoViewModel>(colecao);
+			colecaoView.Colecoes.AddRange(mapper.Map<List<ColecaoBasicViewModel>>(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao)));
+			colecaoView.Itens.AddRange(mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario)));
+			return colecaoView;
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAll(int idUsuario, string nome = "")
 		{
-			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAll(idUsuario, nome));
+			List<Colecao> colecoes = repositorioColecao.GetAll(idUsuario, nome).ToList();
+			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>(colecoes);
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllProprias(int idUsuario, string nome = "")

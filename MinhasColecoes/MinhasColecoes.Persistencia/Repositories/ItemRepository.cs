@@ -44,11 +44,9 @@ namespace MinhasColecoes.Persistencia.Repositories
 				if (itensPessoais[j].IdOriginal != null)
 					itensPessoais[j].SetItemOriginal(itens.FirstOrDefault(i => i.Id == (int)itensPessoais[j].IdOriginal));
 
-			List<ItemUsuario> relacoes = (from iu in dbContext.ItensUsuario
-										  where iu.IdUsuario == idUsuario
-										  join i in itensPessoais
-										  on iu.IdItem equals i.Id
-										  select iu).ToList();
+			List<ItemUsuario> relacoes = dbContext.ItensUsuario.Where(iu => iu.IdUsuario == idUsuario).ToList();
+			relacoes = (from r in relacoes join i in itensPessoais on r.IdItem equals i.Id select r).ToList();
+
 
 			for (int i = 0; i < relacoes.Count(); i++)
 				itensPessoais.First(item => item.Id == relacoes[i].IdItem).RelacoesUsuarios.Add(relacoes[i]);

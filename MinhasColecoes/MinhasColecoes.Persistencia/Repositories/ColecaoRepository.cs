@@ -26,7 +26,7 @@ namespace MinhasColecoes.Persistencia.Repositories
 
 		public IEnumerable<Colecao> GetAll(int idUsuario, string nome = "")
 		{
-			return dbContext.Colecoes.Where(c => (c.Publica == true || c.IdDono == idUsuario) && c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase));
+			return dbContext.Colecoes.Where(c => (c.Publica == true || c.IdDono == idUsuario) && c.Nome.Contains(nome));
 		}
 
 		public IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int idColecao)
