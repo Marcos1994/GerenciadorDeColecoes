@@ -17,7 +17,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="input"></param>
 		/// <returns>Coleção criada.</returns>
-		ColecaoViewModel Create(int idUsuario, ColecaoInputModel input);
+		ColecaoViewModel Create(ColecaoInputModel input);
 
 		/// <summary>
 		/// Atualiza as informações básicas da coleção.

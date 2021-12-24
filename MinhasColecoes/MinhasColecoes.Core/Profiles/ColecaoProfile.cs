@@ -15,11 +15,14 @@ namespace MinhasColecoes.Aplicacao.Profiles
 	{
 		public ColecaoProfile()
 		{
-			CreateMap<ColecaoInputModel, Colecao>();
+			CreateMap<ColecaoInputModel, Colecao>()
+				.ForMember(d => d.UsuariosColecao, opt => opt.MapFrom(s => new[] { new ColecaoUsuario(s.IdDono, 0) }));
 
 			CreateMap<Colecao, ColecaoBasicViewModel>();
 			CreateMap<Colecao, ColecaoViewModel>()
 				.ForMember(view => view.Dono, opt => opt.MapFrom(ent => new UsuarioBasicViewModel(ent.IdDono, "")));
+			CreateMap<ColecaoUsuario, UsuarioBasicViewModel>()
+				.ForMember(d => d.Id, opt => opt.MapFrom(s => s.IdUsuario));
 		}
 	}
 }

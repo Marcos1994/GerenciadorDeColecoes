@@ -95,5 +95,17 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// </summary>
 		/// <param name="itemUsuario"></param>
 		void Delete(ItemUsuario itemUsuario);
+
+		/// <summary>
+		/// Remove todos os itens particulares do usuário na coleção.
+		/// </summary>
+		/// <param name="relacaoUsuarioColecao"></param>
+		void DeleteItensParticulares(ColecaoUsuario relacaoUsuarioColecao);
+
+		/// <summary>
+		/// Remove todas as relações entre o usuário e os itens da coleção
+		/// </summary>
+		/// <param name="relacaoUsuarioColecao"></param>
+		void DeleteRelacoes(ColecaoUsuario relacaoUsuarioColecao);
 	}
 }

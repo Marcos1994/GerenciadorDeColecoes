@@ -82,6 +82,10 @@ namespace MinhasColecoes.Persistencia.Repositories
 		public void Delete(Colecao colecao)
 		{
 			dbContext.Colecoes.Remove(colecao);
+			List<Colecao> subcolecoes = dbContext.Colecoes.Where(c => c.IdColecaoMaior == colecao.Id).ToList();
+			for (int i = 0; i < subcolecoes.Count; i++)
+				subcolecoes[i].SetColecaoMaior(null) ;
+			dbContext.Colecoes.UpdateRange(subcolecoes);
 			dbContext.SaveChanges();
 		}
 

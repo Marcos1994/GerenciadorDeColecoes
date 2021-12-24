@@ -26,13 +26,12 @@ namespace MinhasColecoes.Aplicacao.Services
 			this.repositorioItem = repositoryItem;
 		}
 
-		public ColecaoViewModel Create(int idUsuario, ColecaoInputModel input)
+		public ColecaoViewModel Create(ColecaoInputModel input)
 		{
-			bool nomeRepetido = repositorioColecao.GetAll(idUsuario).Any(c => c.Nome.ToLower() == input.Nome.ToLower());
+			bool nomeRepetido = repositorioColecao.GetAll(input.IdDono, input.Nome).Any();
 			if (nomeRepetido)
 				throw new Exception("Já existe uma coleção com esse nome.");
 
-			input.IdDono = idUsuario;
 			Colecao colecao = mapper.Map<Colecao>(input);
 			repositorioColecao.Add(colecao);
 			return mapper.Map<ColecaoViewModel>(colecao);
@@ -40,7 +39,7 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public void Update(int idUsuario, ColecaoUpdateModel update)
 		{
-			bool nomeRepetido = repositorioColecao.GetAll(idUsuario).Any(c => c.Nome.ToLower() == update.Nome.ToLower());
+			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, update.Nome).Any(c => c.Id != update.Id);
 			if (nomeRepetido)
 				throw new Exception("Já existe uma coleção com esse nome.");
 
@@ -96,13 +95,30 @@ namespace MinhasColecoes.Aplicacao.Services
 			else
 			{
 				ColecaoUsuario relacao = new ColecaoUsuario(idUsuario, idColecao);
-				repositorioColecao.Delete(relacao);
+				try
+				{
+					repositorioColecao.StartTransaction("DesvincularUsuarioColecao");
+
+					repositorioColecao.Delete(relacao);
+					repositorioItem.DeleteItensParticulares(relacao);
+					repositorioItem.DeleteRelacoes(relacao);
+
+					repositorioColecao.FinishTransaction();
+				}
+				catch (Exception ex)
+				{
+					repositorioColecao.RollbackTransaction("DesvincularUsuarioColecao");
+					throw ex;
+				}
+
 			}
 		}
 
 		public ColecaoViewModel GetById(int idUsuario, int idColecao)
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
+			if (!colecao.Publica && colecao.IdDono != idUsuario)
+				throw new Exception("O usuário não tem permissão para acessar essa coleção.");
 			ColecaoViewModel colecaoView = mapper.Map<ColecaoViewModel>(colecao);
 			colecaoView.Colecoes.AddRange(mapper.Map<List<ColecaoBasicViewModel>>(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao)));
 			colecaoView.Itens.AddRange(mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario)));

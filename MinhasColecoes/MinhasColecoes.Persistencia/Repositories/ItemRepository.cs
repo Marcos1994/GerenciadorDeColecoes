@@ -125,5 +125,25 @@ namespace MinhasColecoes.Persistencia.Repositories
 			dbContext.ItensUsuario.Remove(itemUsuario);
 			dbContext.SaveChanges();
 		}
+
+		public void DeleteItensParticulares(ColecaoUsuario relacao)
+		{
+			dbContext.Itens.RemoveRange(dbContext.Itens
+				.Where(i => i.IdDonoParticular == relacao.IdUsuario
+				&& i.IdColecao == relacao.IdColecao));
+			dbContext.SaveChanges();
+		}
+
+		public void DeleteRelacoes(ColecaoUsuario relacao)
+		{
+			dbContext.ItensUsuario.RemoveRange(
+				from iu in dbContext.ItensUsuario
+				where iu.IdUsuario == relacao.IdUsuario
+				join i in dbContext.Itens
+				on iu.IdItem equals i.Id
+				where i.IdColecao == relacao.IdColecao
+				select iu);
+			dbContext.SaveChanges();
+		}
 	}
 }
