@@ -17,13 +17,13 @@ namespace MinhasColecoes.API.Controllers
 	[Route("[controller]")]
 	public class UsuarioController : ControllerBase
 	{
-		private readonly IUsuarioService serviceUsuario;
+		private readonly IUsuarioService service;
 		private readonly IColecaoService serviceColecao;
 		private readonly IJWTService jwt;
 
-		public UsuarioController(IUsuarioService serviceUsuario, IColecaoService serviceColecao, IJWTService jwt)
+		public UsuarioController(IUsuarioService service, IColecaoService serviceColecao, IJWTService jwt)
 		{
-			this.serviceUsuario = serviceUsuario;
+			this.service = service;
 			this.serviceColecao = serviceColecao;
 			this.jwt = jwt;
 		}
@@ -34,7 +34,7 @@ namespace MinhasColecoes.API.Controllers
 		{
 			try
 			{
-				serviceUsuario.Create(usuario);
+				service.Create(usuario);
 			}
 			catch (Exception ex)
 			{
@@ -47,7 +47,7 @@ namespace MinhasColecoes.API.Controllers
 		[Route("Login")]
 		public IActionResult Post(UsuarioLoginInputModel usuario)
 		{
-			UsuarioLoginViewModel usuarioLogado = serviceUsuario.ValidarUsuario(usuario);
+			UsuarioLoginViewModel usuarioLogado = service.ValidarUsuario(usuario);
 			if (usuarioLogado == null)
 				return BadRequest();
 			usuarioLogado.SetToken(jwt.GerarToken(usuarioLogado));
@@ -62,7 +62,7 @@ namespace MinhasColecoes.API.Controllers
 			UsuarioViewModel usuario;
 			try
 			{
-				usuario = serviceUsuario.GetById(idUsuario);
+				usuario = service.GetById(idUsuario);
 			}
 			catch (Exception ex)
 			{
@@ -81,7 +81,7 @@ namespace MinhasColecoes.API.Controllers
 			usuario.Id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			try
 			{
-				serviceUsuario.Update(usuario);
+				service.Update(usuario);
 			}
 			catch (Exception ex)
 			{
@@ -98,13 +98,23 @@ namespace MinhasColecoes.API.Controllers
 			usuario.Id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			try
 			{
-				serviceUsuario.Update(usuario);
+				service.Update(usuario);
 			}
 			catch (Exception ex)
 			{
 				return BadRequest(ex.Message);
 			}
 			return Ok();
+		}
+
+		[Authorize]
+		[HttpGet]
+		[Route("minhas_colecoes")]
+		public IActionResult GetParticipo(string nome = "")
+		{
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			List<ColecaoBasicViewModel> colecoes = serviceColecao.GetAllParticipa(idUsuario, nome).ToList();
+			return Ok(colecoes);
 		}
 	}
 }

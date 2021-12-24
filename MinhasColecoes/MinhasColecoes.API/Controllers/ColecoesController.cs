@@ -15,11 +15,11 @@ namespace MinhasColecoes.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ColecaoController : ControllerBase
+	public class ColecoesController : ControllerBase
 	{
 		private readonly IColecaoService service;
 
-		public ColecaoController(IColecaoService serviceColecao)
+		public ColecoesController(IColecaoService serviceColecao)
 		{
 			this.service = serviceColecao;
 		}

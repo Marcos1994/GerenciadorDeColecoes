@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MinhasColecoes.Aplicacao.Interfaces;
+using MinhasColecoes.Aplicacao.Models.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,18 @@ namespace MinhasColecoes.API.Controllers
 	[ApiController]
 	public class ItensController : ControllerBase
 	{
+		private readonly IItemService service;
 
+		public ItensController(IItemService service)
+		{
+			this.service = service;
+		}
+
+		[Authorize]
+		[HttpPost("{idColecao}")]
+		public IActionResult PostComment(int idColecao, ItemInputModel item)
+		{
+			return NoContent();
+		}
 	}
 }
