@@ -39,7 +39,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idSubcolecao"></param>
 		/// <param name="idColecao"></param>
-		void AdicionarSubcolecao(int idUsuario, int idSubcolecao, int? idColecao);
+		void AdicionarSupercolecao(int idUsuario, int idSubcolecao, int? idColecao);
 
 		/// <summary>
 		/// Adiciona o usuário como membro da coleção.

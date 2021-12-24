@@ -20,7 +20,9 @@ namespace MinhasColecoes.Aplicacao.Profiles
 
 			CreateMap<Colecao, ColecaoBasicViewModel>();
 			CreateMap<Colecao, ColecaoViewModel>()
-				.ForMember(view => view.Dono, opt => opt.MapFrom(ent => new UsuarioBasicViewModel(ent.IdDono, "")));
+				.ForMember(view => view.Dono, opt => opt.MapFrom(ent => new UsuarioBasicViewModel(ent.IdDono, "")))
+				.ForMember(view => view.ColecaoMaior, opt => opt.MapFrom(ent =>
+				(ent.IdColecaoMaior == null) ? null : new ColecaoBasicViewModel((int)ent.IdColecaoMaior)));
 			CreateMap<ColecaoUsuario, UsuarioBasicViewModel>()
 				.ForMember(d => d.Id, opt => opt.MapFrom(s => s.IdUsuario));
 		}

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MinhasColecoes.API.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class ColecoesController : ControllerBase
 	{
@@ -34,7 +34,7 @@ namespace MinhasColecoes.API.Controllers
 
 		[Authorize]
 		[HttpGet]
-		[Route("minhas_colecoes")]
+		[Route("MinhasColecoes")]
 		public IActionResult GetParticipo(string nome = "")
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -76,13 +76,30 @@ namespace MinhasColecoes.API.Controllers
 		}
 
 		[Authorize]
-		[HttpPut]
-		public IActionResult Put(ColecaoUpdateModel colecao)
+		[HttpPut("{idColecao}")]
+		public IActionResult Put(int idColecao, ColecaoUpdateModel colecao)
+		{
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			colecao.Id = idColecao;
+			try
+			{
+				service.Update(idUsuario, colecao);
+				return NoContent();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+		[Authorize]
+		[HttpPut("{idColecao}/Supercolecao")]
+		public IActionResult PutSupercolecao(int idColecao, int idSupercolecao)
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			try
 			{
-				service.Update(idUsuario, colecao);
+				service.AdicionarSupercolecao(idUsuario, idColecao, idSupercolecao);
 				return NoContent();
 			}
 			catch (Exception ex)
@@ -99,6 +116,22 @@ namespace MinhasColecoes.API.Controllers
 			try
 			{
 				service.Delete(idUsuario, idColecao);
+				return NoContent();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+		[Authorize]
+		[HttpDelete("{idColecao}/Supercolecao")]
+		public IActionResult DeleteSupercolecao(int idColecao)
+		{
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			try
+			{
+				service.AdicionarSupercolecao(idUsuario, idColecao, null);
 				return NoContent();
 			}
 			catch (Exception ex)

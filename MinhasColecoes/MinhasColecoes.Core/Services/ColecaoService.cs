@@ -63,7 +63,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			throw new NotImplementedException();
 		}
 
-		public void AdicionarSubcolecao(int idUsuario, int idSubcolecao, int? idColecao)
+		public void AdicionarSupercolecao(int idUsuario, int idSubcolecao, int? idColecao)
 		{//ATUALIZAR: Caso o usuário não seja dono da supercoleção, deverá ser criada uma solicitação.
 			Colecao subcolecao = repositorioColecao.GetById(idSubcolecao);
 

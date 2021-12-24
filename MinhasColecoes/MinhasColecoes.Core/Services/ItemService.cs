@@ -65,6 +65,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			else
 			{
 				ItemInputModel input = mapper.Map<ItemInputModel>(update);
+				input.IdUsuario = idUsuario;
 				input.IdColecao = item.IdColecao;
 				try
 				{
@@ -73,7 +74,7 @@ namespace MinhasColecoes.Aplicacao.Services
 					if (item.RelacoesUsuarios.Count() > 0)
 						repositorioItem.Delete(item.RelacoesUsuarios.First());
 
-					Item novoItem = repositorioItem.GetById(this.Create(idUsuario, input).Id, idUsuario);
+					Item novoItem = repositorioItem.GetById(this.Create(input).Id, idUsuario);
 					novoItem.SetItemOriginal(item);
 					novoItem.SetOriginal(false);
 					repositorioItem.Update(novoItem);

@@ -8,6 +8,16 @@ namespace MinhasColecoes.Aplicacao.Models.View
 {
 	public class ColecaoBasicViewModel
 	{
+		public ColecaoBasicViewModel()
+		{
+
+		}
+
+		public ColecaoBasicViewModel(int id)
+		{
+			Id = id;
+		}
+
 		public int Id { get; private set; }
 		public string Nome { get; private set; }
 		public string Descricao { get; private set; }
