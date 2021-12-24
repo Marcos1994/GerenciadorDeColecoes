@@ -27,15 +27,14 @@ namespace MinhasColecoes.Aplicacao.Services
 			this.repositorioColecao = repositoryColecao;
 		}
 
-		public ItemViewModel Criar(int idUsuario, ItemInputModel input)
+		public ItemViewModel Create(ItemInputModel input)
 		{
-			input.IdUsuario = idUsuario;
 			Item item = mapper.Map<Item>(input);
 			Colecao colecao = repositorioColecao.GetById(input.IdColecao);
-			if(colecao.IdDono != idUsuario)
+			if(colecao.IdDono != input.IdUsuario)
 			{
 				item.SetOriginal(false);
-				item.SetDonoParticular(idUsuario);
+				item.SetDonoParticular(input.IdUsuario);
 			}
 			else
 			{
@@ -48,7 +47,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			return mapper.Map<ItemViewModel>(item);
 		}
 
-		public ItemViewModel Atualizar(int idUsuario, ItemUpdateModel update)
+		public ItemViewModel Update(int idUsuario, ItemUpdateModel update)
 		{
 			ItemViewModel itemView;
 			Item item = repositorioItem.GetById(update.Id, idUsuario);
@@ -74,7 +73,7 @@ namespace MinhasColecoes.Aplicacao.Services
 					if (item.RelacoesUsuarios.Count() > 0)
 						repositorioItem.Delete(item.RelacoesUsuarios.First());
 
-					Item novoItem = repositorioItem.GetById(this.Criar(idUsuario, input).Id, idUsuario);
+					Item novoItem = repositorioItem.GetById(this.Create(idUsuario, input).Id, idUsuario);
 					novoItem.SetItemOriginal(item);
 					novoItem.SetOriginal(false);
 					repositorioItem.Update(novoItem);
@@ -96,7 +95,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			throw new NotImplementedException();
 		}
 
-		public void Excluir(int idUsuario, int idItem)
+		public void Delete(int idUsuario, int idItem)
 		{
 			Item item = repositorioItem.GetById(idItem);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);

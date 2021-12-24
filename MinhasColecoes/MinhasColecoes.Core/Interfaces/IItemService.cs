@@ -14,10 +14,9 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <summary>
 		/// Cria um item e cadastra, se houver, a relação desse item com o usuário.
 		/// </summary>
-		/// <param name="idUsuario"></param>
 		/// <param name="input"></param>
 		/// <returns>Item criado.</returns>
-		ItemViewModel Criar(int idUsuario, ItemInputModel input);
+		ItemViewModel Create(ItemInputModel input);
 
 		/// <summary>
 		/// Atualiza o item selecionado. Caso o usuário não seja dono da coleção da qual o item faz parte, será criado um item particular para ele com as novas informações.
@@ -25,7 +24,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="update"></param>
 		/// <returns>Item atualizado.</returns>
-		ItemViewModel Atualizar(int idUsuario, ItemUpdateModel update);
+		ItemViewModel Update(int idUsuario, ItemUpdateModel update);
 
 		/// <summary>
 		/// Cria ou atualiza as relações entre itens e usuários.
@@ -38,7 +37,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idItem"></param>
-		void Excluir(int idUsuario, int idItem);
+		void Delete(int idUsuario, int idItem);
 
 		/// <summary>
 		/// Retorna o item referente ao id com a relação com o usuário e o item original, caso possua.
