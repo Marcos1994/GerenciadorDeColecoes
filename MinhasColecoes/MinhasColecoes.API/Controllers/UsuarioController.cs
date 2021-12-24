@@ -29,7 +29,7 @@ namespace MinhasColecoes.API.Controllers
 		}
 
 		[HttpPost]
-		[Route("Cadastro")]
+		[Route("Novo")]
 		public IActionResult Post(UsuarioInputModel usuario)
 		{
 			try
