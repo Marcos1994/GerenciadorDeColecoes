@@ -78,7 +78,7 @@ namespace MinhasColecoes.Persistencia.Repositories
 			Item item = dbContext.Itens.First(i => i.Id == id);
 			if (item.IdOriginal != null)
 				item.SetItemOriginal(dbContext.Itens.First(i => i.Id == (int)item.IdOriginal));
-			item.RelacoesUsuarios.Add(dbContext.ItensUsuario.FirstOrDefault(iu => iu.IdItem == id && iu.IdUsuario == idUsuario));
+			dbContext.ItensUsuario.FirstOrDefault(iu => iu.IdItem == id && iu.IdUsuario == idUsuario);
 			return item;
 		}
 
@@ -90,7 +90,7 @@ namespace MinhasColecoes.Persistencia.Repositories
 				.FirstOrDefault(i =>
 				i.IdColecao == idColecao
 				&& i.Original
-				&& i.Codigo.Equals(codigo, StringComparison.OrdinalIgnoreCase));
+				&& i.Codigo == codigo);
 		}
 
 		public ItemUsuario GetByKey(int idUsuario, int idItem)

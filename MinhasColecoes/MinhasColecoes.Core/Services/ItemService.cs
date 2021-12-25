@@ -50,12 +50,21 @@ namespace MinhasColecoes.Aplicacao.Services
 		public void Oficializar(int idUsuario, int idItemParticular)
 		{
 			Item itemParticular = repositorioItem.GetById(idItemParticular);
-			Colecao colecao = repositorioColecao.GetById(itemParticular.IdColecao);
 
+			Colecao colecao = repositorioColecao.GetById(itemParticular.IdColecao);
 			if (colecao.IdDono != idUsuario)
 				throw new Exception("O usuário não tem permissão para oficializar o item.");
 
-			if (itemParticular.IdOriginal == null) //Item novo não oficial
+			Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, itemParticular.Codigo);
+			Item itemOficial = (itemParticular.IdOriginal != null)
+				? repositorioItem.GetById((int)itemParticular.IdOriginal)
+				: null;
+
+			//Verifica se existe algum item com o novo código que não seja o item original.
+			if (itemMesmoCodigo != null && (itemOficial == null || itemMesmoCodigo.Id != itemOficial.Id))
+				throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+
+			if (itemOficial == null) //Item novo não oficial
 			{
 				itemParticular.SetOriginal(true);
 				itemParticular.SetDonoParticular(null);
@@ -63,22 +72,17 @@ namespace MinhasColecoes.Aplicacao.Services
 			}
 			else //Versão não oficial de um item
 			{
-				Item itemOficial = repositorioItem.GetById((int)itemParticular.IdOriginal);
-
 				try
 				{
 					repositorioItem.StartTransaction("OficializacaoItem");
 
-					//Verifica se existe algum item com o novo código que não seja o item original.
-					Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, itemParticular.Codigo);
-					if (itemMesmoCodigo != null && itemMesmoCodigo.Id != itemOficial.Id)
-						throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
-
 					//Exclui alguma possível relação entre o dono do item particular com o item oficial.
-					repositorioItem.Delete(repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemOficial.Id));
+					ItemUsuario relacao = repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemOficial.Id);
+					if(relacao != null)
+						repositorioItem.Delete(relacao);
 
 					//Transfere a relação do item particular para o item oficial.
-					ItemUsuario relacao = repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemParticular.Id);
+					relacao = repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemParticular.Id);
 					if (relacao != null)
 						itemOficial.RelacoesUsuarios.Add(new ItemUsuario(relacao.IdUsuario, itemOficial.Id, relacao.Relacao));
 

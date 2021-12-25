@@ -61,7 +61,15 @@ namespace MinhasColecoes.API.Controllers
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			item.Id = idItem;
-			return Ok("Funcionalidade não implementada.\nAtualiza um item de acordo com o Id.");
+			try
+			{
+				service.Update(idUsuario, item);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			return NoContent();
 		}
 
 		[Authorize]
@@ -69,7 +77,16 @@ namespace MinhasColecoes.API.Controllers
 		public IActionResult GetParticularesItem(int idItem)
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			return Ok("Funcionalidade não implementada.\nLista todos os itens particulares deste item.\nLiberado apenas para o dono da coleção.");
+			List<ItemBasicViewModel> itens;
+			try
+			{
+				itens = service.GetAllParticularesItem(idUsuario, idItem).ToList();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			return Ok(itens);
 		}
 
 		[Authorize]
@@ -77,7 +94,15 @@ namespace MinhasColecoes.API.Controllers
 		public IActionResult PutJuntar(int idItem, int idItemParticular)
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			return Ok("Funcionalidade não implementada.\nAtualiza o item idItem com as informações do item idItemParticular e exclui ele.");
+			try
+			{
+				service.Oficializar(idUsuario, idItemParticular);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			return NoContent();
 		}
 
 		[Authorize]
@@ -85,7 +110,16 @@ namespace MinhasColecoes.API.Controllers
 		public IActionResult GetParticularesColecao(int idColecao)
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			return Ok("Funcionalidade não implementada.\nLista todos os itens particulares de uma coleção.");
+			List<ItemBasicViewModel> itens;
+			try
+			{
+				itens = service.GetAllParticularesColecao(idUsuario, idColecao).ToList();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			return Ok(itens);
 		}
 
 		[Authorize]
@@ -93,7 +127,15 @@ namespace MinhasColecoes.API.Controllers
 		public IActionResult PutOficializar(int idItem)
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			return Ok("Funcionalidade não implementada.\nTorna um item particular como oficial.");
+			try
+			{
+				service.Oficializar(idUsuario, idItem);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			return NoContent();
 		}
 	}
 }
