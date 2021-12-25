@@ -151,9 +151,23 @@ namespace MinhasColecoes.Aplicacao.Services
 			return itemView;
 		}
 
-		public void DefinirRelacoes(List<RelacaoItemUsuarioInputModel> relacoesInput)
+		public void DefinirRelacoes(RelacaoItemUsuarioInputModel relacaoInput)
 		{
-			throw new NotImplementedException();
+			ItemUsuario relacao = mapper.Map<ItemUsuario>(relacaoInput);
+			ItemUsuario relacaoExistente = repositorioItem.GetByKey(relacaoInput.IdItem, relacaoInput.IdUsuario);
+
+			if(relacao == null)
+			{
+				if (relacaoExistente != null)
+					repositorioItem.Delete(relacaoExistente);
+			}
+			else
+			{
+				if (relacaoExistente == null)
+					repositorioItem.Add(relacao);
+				else
+					repositorioItem.Update(relacao);
+			}
 		}
 
 		public void Delete(int idUsuario, int idItem)

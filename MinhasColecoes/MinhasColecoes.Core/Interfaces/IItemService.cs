@@ -35,10 +35,10 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		ItemViewModel Update(int idUsuario, ItemUpdateModel update);
 
 		/// <summary>
-		/// Cria ou atualiza as relações entre itens e usuários.
+		/// Cria ou atualiza a relação entre o item e o usuário.
 		/// </summary>
 		/// <param name="relacoesInput"></param>
-		void DefinirRelacoes(List<RelacaoItemUsuarioInputModel> relacoesInput);
+		void DefinirRelacoes(RelacaoItemUsuarioInputModel relacaoInput);
 
 		/// <summary>
 		/// Exclui o item.

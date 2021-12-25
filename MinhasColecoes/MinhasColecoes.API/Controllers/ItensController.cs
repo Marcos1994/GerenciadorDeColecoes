@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MinhasColecoes.Aplicacao.Enumerators;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
@@ -70,6 +71,26 @@ namespace MinhasColecoes.API.Controllers
 				return BadRequest(ex.Message);
 			}
 			return NoContent();
+		}
+
+		[Authorize]
+		[HttpPut("{idItem}/Relacao")]
+		public IActionResult Put(int idItem, EnumRelacaoUsuarioItem relacao)
+		{
+			try
+			{
+				service.DefinirRelacoes(new RelacaoItemUsuarioInputModel
+				{
+					IdUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+					IdItem = idItem,
+					Relacao = relacao
+				});
+				return NoContent();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
 
 		[Authorize]
