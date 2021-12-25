@@ -19,6 +19,14 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		ItemViewModel Create(ItemInputModel input);
 
 		/// <summary>
+		/// Transforma o item particular em um item original. Se o item possuir uma versão original, a relação entre o usuário e o item será transferida para o novo item.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="idItem"></param>
+		/// <returns>Item original criado.</returns>
+		void Oficializar(int idUsuario, int idItem);
+
+		/// <summary>
 		/// Atualiza o item selecionado. Caso o usuário não seja dono da coleção da qual o item faz parte, será criado um item particular para ele com as novas informações.
 		/// </summary>
 		/// <param name="idUsuario"></param>
@@ -53,13 +61,29 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
 		/// <returns>Lista de itens com os respectivos itens originais, caso tenham, e as relações com o usuário.</returns>
-		List<ItemBasicViewModel> GetAll(int idUsuario, int idColecao);
+		IEnumerable<ItemBasicViewModel> GetAll(int idUsuario, int idColecao);
 
 		/// <summary>
 		/// Retorna todos os itens originais de uma coleção.
 		/// </summary>
 		/// <param name="idColecao"></param>
 		/// <returns>Lista de itens originais com as informações básicas de cada item.</returns>
-		List<ItemBasicViewModel> GetAllOriginais(int idColecao);
+		IEnumerable<ItemBasicViewModel> GetAllOriginais(int idColecao);
+
+		/// <summary>
+		/// Retorna todos os itens particulares que não são versões de um item original da coleção. Apenas o dono da coleção pode listar esses itens.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="idColecao"></param>
+		/// <returns>Lista de itens particulares com as informações básicas de cada item.</returns>
+		IEnumerable<ItemBasicViewModel> GetAllParticularesColecao(int idUsuario, int idColecao);
+
+		/// <summary>
+		/// Retorna todas as versões particulares de um item. Apenas o dono da coleção pode listar esses itens.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="idItemOficial"></param>
+		/// <returns>Lista de itens particulares com as informações básicas de cada item.</returns>
+		IEnumerable<ItemBasicViewModel> GetAllParticularesItem(int idUsuario, int idItemOficial);
 	}
 }

@@ -54,6 +54,20 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return itensPessoais;
 		}
 
+		public IEnumerable<Item> GetAllParticularesColecao(int idColecao)
+		{
+			return dbContext.Itens
+				.Where(i =>
+				i.IdColecao == idColecao
+				&& !i.Original
+				&& i.IdOriginal == null);
+		}
+
+		public IEnumerable<Item> GetAllParticularesItem(int idItemOficial)
+		{
+			return dbContext.Itens.Where(i => i.IdOriginal == idItemOficial);
+		}
+
 		public Item GetById(int id)
 		{
 			return dbContext.Itens.First(i => i.Id == id);

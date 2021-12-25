@@ -31,26 +31,82 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Item item = mapper.Map<Item>(input);
 			Colecao colecao = repositorioColecao.GetById(input.IdColecao);
-			if(colecao.IdDono != input.IdUsuario)
-			{
-				item.SetOriginal(false);
-				item.SetDonoParticular(input.IdUsuario);
-			}
-			else
+			item.SetOriginal(colecao.IdDono == input.IdUsuario);
+			if (item.Original)
 			{
 				Item itemMesmoCodigo = repositorioItem.GetByCodigo(input.IdColecao, input.Codigo);
 				if (itemMesmoCodigo != null)
 					throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+			}
+			else
+			{
+				item.SetDonoParticular(input.IdUsuario);
 			}
 
 			repositorioItem.Add(item);
 			return mapper.Map<ItemViewModel>(item);
 		}
 
+		public void Oficializar(int idUsuario, int idItemParticular)
+		{
+			Item itemParticular = repositorioItem.GetById(idItemParticular);
+			Colecao colecao = repositorioColecao.GetById(itemParticular.IdColecao);
+
+			if (colecao.IdDono != idUsuario)
+				throw new Exception("O usuário não tem permissão para oficializar o item.");
+
+			if (itemParticular.IdOriginal == null) //Item novo não oficial
+			{
+				itemParticular.SetOriginal(true);
+				itemParticular.SetDonoParticular(null);
+				repositorioItem.Update(itemParticular);
+			}
+			else //Versão não oficial de um item
+			{
+				Item itemOficial = repositorioItem.GetById((int)itemParticular.IdOriginal);
+
+				try
+				{
+					repositorioItem.StartTransaction("OficializacaoItem");
+
+					//Verifica se existe algum item com o novo código que não seja o item original.
+					Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, itemParticular.Codigo);
+					if (itemMesmoCodigo != null && itemMesmoCodigo.Id != itemOficial.Id)
+						throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+
+					//Exclui alguma possível relação entre o dono do item particular com o item oficial.
+					repositorioItem.Delete(repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemOficial.Id));
+
+					//Transfere a relação do item particular para o item oficial.
+					ItemUsuario relacao = repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemParticular.Id);
+					if (relacao != null)
+						itemOficial.RelacoesUsuarios.Add(new ItemUsuario(relacao.IdUsuario, itemOficial.Id, relacao.Relacao));
+
+					//Atualiza o item oficial e exclui o item particular
+					itemOficial.Update(itemParticular.Nome, itemParticular.Codigo, itemParticular.Descricao);
+					repositorioItem.Update(itemOficial);
+					repositorioItem.Delete(itemParticular);
+
+					repositorioItem.FinishTransaction();
+				}
+				catch (Exception ex)
+				{
+					repositorioItem.RollbackTransaction("OficializacaoItem");
+					throw new Exception($"Não foi possível tornar o item {itemParticular.Nome} oficial.\n{ex.Message}");
+				}
+
+				itemParticular = itemOficial;
+			}
+		}
+
 		public ItemViewModel Update(int idUsuario, ItemUpdateModel update)
 		{
 			ItemViewModel itemView;
 			Item item = repositorioItem.GetById(update.Id, idUsuario);
+
+			if (item.IdDonoParticular != null && item.IdDonoParticular != idUsuario)
+				throw new Exception("O usuário não tem permissão para editar o item.");
+
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
 			if (colecao.IdDono == idUsuario || item.IdDonoParticular == idUsuario)
 			{
@@ -110,14 +166,30 @@ namespace MinhasColecoes.Aplicacao.Services
 			return mapper.Map<ItemViewModel>(repositorioItem.GetById(idItem, idUsuario));
 		}
 
-		public List<ItemBasicViewModel> GetAll(int idUsuario, int idColecao)
+		public IEnumerable<ItemBasicViewModel> GetAll(int idUsuario, int idColecao)
 		{
-			return mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario));
+			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario));
 		}
 
-		public List<ItemBasicViewModel> GetAllOriginais(int idColecao)
+		public IEnumerable<ItemBasicViewModel> GetAllOriginais(int idColecao)
 		{
-			return mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAll(idColecao));
+			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAll(idColecao));
+		}
+
+		public IEnumerable<ItemBasicViewModel> GetAllParticularesColecao(int idUsuario, int idColecao)
+		{
+			Colecao colecao = repositorioColecao.GetById(idColecao);
+			if (colecao.IdDono != idUsuario)
+				throw new Exception("Apenas o dono da coleção pode ter acesso aos itens particulares dela.");
+			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAllParticularesColecao(idColecao));
+		}
+		public IEnumerable<ItemBasicViewModel> GetAllParticularesItem(int idUsuario, int idItemOficial)
+		{
+			Item item = repositorioItem.GetById(idItemOficial, idUsuario);
+			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
+			if (colecao.IdDono != idUsuario)
+				throw new Exception("Apenas o dono da coleção pode ter acesso aos itens particulares do item.");
+			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAllParticularesItem(idItemOficial));
 		}
 	}
 }

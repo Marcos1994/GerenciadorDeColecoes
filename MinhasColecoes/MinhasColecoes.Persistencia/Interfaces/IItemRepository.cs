@@ -25,6 +25,20 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		IEnumerable<Item> GetAllPessoais(int idColecao, int idUsuario);
 
 		/// <summary>
+		/// Retorna todos os itens particulares da coleção que não forem versões de um item oficial.
+		/// </summary>
+		/// <param name="idColecao"></param>
+		/// <returns>Itens apenas com informações básicas.</returns>
+		IEnumerable<Item> GetAllParticularesColecao(int idColecao);
+
+		/// <summary>
+		/// Retorna todos os itens particulares que são versões do item oficial.
+		/// </summary>
+		/// <param name="idItemOficial"></param>
+		/// <returns>Itens apenas com informações básicas.</returns>
+		IEnumerable<Item> GetAllParticularesItem(int idItemOficial);
+
+		/// <summary>
 		/// Retorna um item com base no Id.
 		/// </summary>
 		/// <param name="id"></param>
