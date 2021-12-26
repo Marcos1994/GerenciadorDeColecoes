@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using MinhasColecoes.Aplicacao.Exceptions;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Persistencia.Entities;
+using MinhasColecoes.Persistencia.Exceptions;
 using MinhasColecoes.Persistencia.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,8 +31,8 @@ namespace MinhasColecoes.Aplicacao.Services
 		public ColecaoViewModel Create(ColecaoInputModel input)
 		{
 			bool nomeRepetido = repositorioColecao.GetAll(input.IdDono, input.Nome).Any();
-			if (nomeRepetido)
-				throw new Exception("Já existe uma coleção com esse nome.");
+			if (nomeRepetido) //São consideradas apenas as coleções que são visiveis para o usuário.
+				throw new ObjetoDuplicadoException("Coleção", "Nome");
 
 			Colecao colecao = mapper.Map<Colecao>(input);
 			repositorioColecao.Add(colecao);
@@ -39,19 +41,24 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public void Update(int idUsuario, ColecaoUpdateModel update)
 		{
-			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, update.Nome).Any(c => c.Id != update.Id);
-			if (nomeRepetido)
-				throw new Exception("Já existe uma coleção com esse nome.");
-
 			Colecao colecao = repositorioColecao.GetById(update.Id);
 			if (colecao.IdDono != idUsuario)
-				throw new Exception("O usuário atual não tem permissão para atualizar a coleção.");
+				throw new UsuarioNaoAutorizadoException("atualizar", "Coleção");
+
+			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, update.Nome).Any(c => c.Id != update.Id);
+			if (nomeRepetido)
+			{
+				if (!colecao.Publica && update.Publica)
+					throw new FalhaDeValidacaoException("Já existe uma coleção pública com esse nome.");
+				else
+					throw new ObjetoDuplicadoException("Coleção", "Nome");
+			}
 
 			if (!update.Publica && colecao.Publica)
 			{
 				bool possuiOutrosMembros = repositorioColecao.GetMembros(update.Id).Count() > 1;
 				if (possuiOutrosMembros)
-					throw new Exception("Não é possível tornar privada uma coleção pública que já possui algum outro membro.");
+					throw new FalhaDeValidacaoException("Não é possível tornar privada uma coleção pública que já possui algum outro membro.");
 			}
 
 			colecao.Update(update.Nome, update.Descricao, update.Foto, update.Publica);
@@ -68,9 +75,17 @@ namespace MinhasColecoes.Aplicacao.Services
 			Colecao subcolecao = repositorioColecao.GetById(idSubcolecao);
 
 			if (subcolecao.IdDono != idUsuario)
-				throw new Exception("O usuário atual não tem permissão para adicionar esta coleção como subcoleção.");
+				throw new UsuarioNaoAutorizadoException("adicionar esta coleção como subcoleção de outra");
 
-			subcolecao.SetColecaoMaior(idColecao);
+			try
+			{
+				subcolecao.SetColecaoMaior(idColecao);
+			}
+			catch (ObjetoNaoEncontradoException ex)
+			{
+				throw new ObjetoNaoEncontradoException("supercoleção", ex.InnerException);
+			}
+
 			repositorioColecao.Update(subcolecao);
 		}
 
@@ -78,11 +93,8 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
 
-			if(colecao.IdDono == idUsuario)
-				throw new Exception("O usuário já é membro dessa coleção.");
-
 			if (!colecao.Publica)
-				throw new Exception("O usuário não tem permissão para participar desta coleção.");
+				throw new UsuarioNaoAutorizadoException("participar desta coleção");
 
 			repositorioColecao.Add(new ColecaoUsuario(idUsuario, idColecao));
 		}
@@ -96,7 +108,7 @@ namespace MinhasColecoes.Aplicacao.Services
 				{
 					bool possuiOutrosMembros = repositorioColecao.GetMembros(idColecao).Count() > 1;
 					if (possuiOutrosMembros)
-						throw new Exception("Não é possível excluir uma coleção que já possui algum outro membro.");
+						throw new FalhaDeValidacaoException("Não é possível excluir uma coleção que já possui algum outro membro.");
 				}
 				repositorioColecao.Delete(colecao);
 			}
@@ -126,7 +138,7 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
 			if (!colecao.Publica && colecao.IdDono != idUsuario)
-				throw new Exception("O usuário não tem permissão para acessar essa coleção.");
+				throw new UsuarioNaoAutorizadoException("acessar", "coleção");
 			ColecaoViewModel colecaoView = mapper.Map<ColecaoViewModel>(colecao);
 			colecaoView.Colecoes.AddRange(mapper.Map<List<ColecaoBasicViewModel>>(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao)));
 			colecaoView.Itens.AddRange(mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario)));

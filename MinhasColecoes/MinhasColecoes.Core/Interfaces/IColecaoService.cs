@@ -17,6 +17,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="input"></param>
 		/// <returns>Coleção criada.</returns>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
 		ColecaoViewModel Create(ColecaoInputModel input);
 
 		/// <summary>
@@ -24,6 +25,10 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="update"></param>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void Update(int idUsuario, ColecaoUpdateModel update);
 
 		/// <summary>
@@ -39,6 +44,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idSubcolecao"></param>
 		/// <param name="idColecao"></param>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		void AdicionarSupercolecao(int idUsuario, int idSubcolecao, int? idColecao);
 
 		/// <summary>
@@ -46,13 +53,17 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		void AdicionarMembro(int idUsuario, int idColecao);
 
 		/// <summary>
-		/// Caso o usuário seja dono da coleção e não possua nenhum membro além ele, ela será excluída. Se o usuário for apenas membro, a relação entre ele e a coleção será desfeita.
+		/// Remove a relação entre o usuário e a coleção. Caso o usuário seja o dono e não haja nenhum membro nela, a coleção será excluída.
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void Delete(int idUsuario, int idColecao);
 
 		/// <summary>
@@ -61,6 +72,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
 		/// <returns>Coleção com os itens e subcoleções com suas respectivas relações com o usuário.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		ColecaoViewModel GetById(int idUsuario, int idColecao);
 
 		/// <summary>
