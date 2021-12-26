@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MinhasColecoes.Aplicacao.Enumerators;
+using MinhasColecoes.Aplicacao.Exceptions;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
+using MinhasColecoes.Persistencia.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +38,8 @@ namespace MinhasColecoes.API.Controllers
 				ItemViewModel itemView = service.Create(item);
 				return CreatedAtAction(nameof(GetById), new { idColecao = idColecao, idItem = itemView.Id }, itemView);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
 		[HttpGet("{idItem}")]
@@ -50,10 +50,8 @@ namespace MinhasColecoes.API.Controllers
 			{
 				return Ok(service.GetById(idUsuario, idItem));
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
 		[Authorize]
@@ -66,10 +64,9 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(idUsuario, item);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			return NoContent();
 		}
 
@@ -103,10 +100,9 @@ namespace MinhasColecoes.API.Controllers
 			{
 				itens = service.GetAllParticularesItem(idUsuario, idItem).ToList();
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			return Ok(itens);
 		}
 
@@ -119,10 +115,9 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Oficializar(idUsuario, idItemParticular);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			return NoContent();
 		}
 
@@ -136,10 +131,9 @@ namespace MinhasColecoes.API.Controllers
 			{
 				itens = service.GetAllParticularesColecao(idUsuario, idColecao).ToList();
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			return Ok(itens);
 		}
 
@@ -152,10 +146,9 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Oficializar(idUsuario, idItem);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			return NoContent();
 		}
 	}

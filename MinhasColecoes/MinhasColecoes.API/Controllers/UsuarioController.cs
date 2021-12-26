@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhasColecoes.API.Interfaces;
+using MinhasColecoes.Aplicacao.Exceptions;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
 using MinhasColecoes.Aplicacao.Models.View;
+using MinhasColecoes.Persistencia.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,10 +66,8 @@ namespace MinhasColecoes.API.Controllers
 			{
 				usuario = service.GetById(idUsuario);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idUsuario));
 			usuario.ColecoesDono.AddRange(serviceColecao.GetAllProprias(idUsuario));
 			return Ok(usuario);
@@ -83,10 +83,8 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(usuario);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex);
-			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
 			return Ok();
 		}
 
@@ -100,16 +98,14 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(usuario);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-			return Ok();
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
+			return NoContent();
 		}
 
 		[Authorize]
 		[HttpGet]
-		[Route("minhas_colecoes")]
+		[Route("MinhasColecoes")]
 		public IActionResult GetParticipo(string nome = "")
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
