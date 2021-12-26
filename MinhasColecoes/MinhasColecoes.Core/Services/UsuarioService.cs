@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MinhasColecoes.Aplicacao.Exceptions;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
@@ -38,7 +39,7 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			bool loginExistente = repositorioUsuario.GetByLogin(input.Login) != null;
 			if (loginExistente)
-				throw new Exception("Já existe um usuário com este login.");
+				throw new ObjetoDuplicadoException("usuário", "login");
 			Usuario usuario = mapper.Map<Usuario>(input);
 			repositorioUsuario.Create(usuario);
 			return mapper.Map<UsuarioViewModel>(usuario);
@@ -55,7 +56,7 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Usuario usuario = repositorioUsuario.Get(update.Login, update.Senha);
 			if (usuario == null)
-				throw new Exception("Combinação de Login e Senha inválida.");
+				throw new FalhaDeValidacaoException("Combinação de Login e Senha inválida.");
 			usuario.UpdateSenha(update.NovaSenha);
 			repositorioUsuario.Update(usuario);
 		}

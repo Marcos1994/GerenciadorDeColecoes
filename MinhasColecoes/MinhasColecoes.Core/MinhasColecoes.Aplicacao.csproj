@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Enumerators\" />
-    <Folder Include="Exceptions\" />
   </ItemGroup>
 
   <ItemGroup>

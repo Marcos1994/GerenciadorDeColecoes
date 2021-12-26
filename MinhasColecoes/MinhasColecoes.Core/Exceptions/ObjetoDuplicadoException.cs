@@ -21,7 +21,7 @@ namespace MinhasColecoes.Aplicacao.Exceptions
 		}
 
 		public ObjetoDuplicadoException(string objeto, string campoDuplicata, string mensagemAdicional)
-			: base($"Já existe um registro de {objeto} com este {campoDuplicata}.\n{mensagem}")
+			: base($"Já existe um registro de {objeto} com este {campoDuplicata}.\n{mensagemAdicional}")
 		{
 
 		}

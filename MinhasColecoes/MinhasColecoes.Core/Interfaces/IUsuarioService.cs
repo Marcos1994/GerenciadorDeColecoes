@@ -23,6 +23,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>Usuário com informações básicas.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		UsuarioViewModel GetById(int id);
 
 		/// <summary>
@@ -30,18 +31,21 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns>Usuário cadastrado.</returns>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
 		UsuarioViewModel Create(UsuarioInputModel input);
 
 		/// <summary>
 		/// Atualiza as informações do usuário.
 		/// </summary>
 		/// <param name="update"></param>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		void Update(UsuarioUpdateModel update);
 
 		/// <summary>
 		/// Atualiza a senha do usuário.
 		/// </summary>
 		/// <param name="update"></param>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void Update(UsuarioSenhaUpdateModel update);
 	}
 }
