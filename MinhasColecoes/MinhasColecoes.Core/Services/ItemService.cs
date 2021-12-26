@@ -153,20 +153,22 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public void DefinirRelacoes(RelacaoItemUsuarioInputModel relacaoInput)
 		{
-			ItemUsuario relacao = mapper.Map<ItemUsuario>(relacaoInput);
-			ItemUsuario relacaoExistente = repositorioItem.GetByKey(relacaoInput.IdItem, relacaoInput.IdUsuario);
+			ItemUsuario relacao = repositorioItem.GetByKey(relacaoInput.IdUsuario, relacaoInput.IdItem);
 
-			if(relacao == null)
+			if (relacaoInput.Relacao == EnumRelacaoUsuarioItem.NaoPossuo)
 			{
-				if (relacaoExistente != null)
-					repositorioItem.Delete(relacaoExistente);
+				if (relacao != null)
+					repositorioItem.Delete(relacao);
 			}
 			else
 			{
-				if (relacaoExistente == null)
-					repositorioItem.Add(relacao);
+				if (relacao == null)
+					repositorioItem.Add(mapper.Map<ItemUsuario>(relacaoInput));
 				else
+				{
+					relacao.UpdateRelacao((int)relacaoInput.Relacao);
 					repositorioItem.Update(relacao);
+				}
 			}
 		}
 

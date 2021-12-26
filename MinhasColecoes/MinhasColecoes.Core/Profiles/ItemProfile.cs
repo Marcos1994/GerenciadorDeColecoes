@@ -24,7 +24,9 @@ namespace MinhasColecoes.Aplicacao.Profiles
 					opt.Condition(s => s.Relacao != EnumRelacaoUsuarioItem.NaoPossuo);
 					opt.MapFrom(s => new[] { new RelacaoItemUsuarioInputModel { Relacao = s.Relacao, IdUsuario = s.IdUsuario } });
 				});
-			CreateMap<RelacaoItemUsuarioInputModel, ItemUsuario>();
+			CreateMap<RelacaoItemUsuarioInputModel, ItemUsuario>()
+				.ConvertUsing(s => (s.Relacao == EnumRelacaoUsuarioItem.NaoPossuo)
+					? null : new ItemUsuario(s.IdUsuario, s.IdItem, (int)s.Relacao));
 
 			CreateMap<Item, ItemViewModel>()
 				.IncludeBase<Item, ItemBasicViewModel>();

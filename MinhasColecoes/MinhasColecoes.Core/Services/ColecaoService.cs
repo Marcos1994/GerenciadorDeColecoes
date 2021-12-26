@@ -76,6 +76,14 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public void AdicionarMembro(int idUsuario, int idColecao)
 		{
+			Colecao colecao = repositorioColecao.GetById(idColecao);
+
+			if(colecao.IdDono == idUsuario)
+				throw new Exception("O usuário já é membro dessa coleção.");
+
+			if (!colecao.Publica)
+				throw new Exception("O usuário não tem permissão para participar desta coleção.");
+
 			repositorioColecao.Add(new ColecaoUsuario(idUsuario, idColecao));
 		}
 
