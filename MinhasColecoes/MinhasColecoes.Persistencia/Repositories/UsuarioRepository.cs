@@ -1,5 +1,6 @@
 ﻿using MinhasColecoes.Persistencia.Context;
 using MinhasColecoes.Persistencia.Entities;
+using MinhasColecoes.Persistencia.Exceptions;
 using MinhasColecoes.Persistencia.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,18 @@ namespace MinhasColecoes.Persistencia.Repositories
 
 		public Usuario GetById(int id)
 		{
-			return dbContext.Usuarios.First(u => u.Id == id);
+			try
+			{
+				return dbContext.Usuarios.First(u => u.Id == id);
+			}
+			catch (InvalidOperationException ex)
+			{
+				throw new ObjetoNaoEncontradoException("Usuario", ex);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 
 		public Usuario GetByLogin(string login)

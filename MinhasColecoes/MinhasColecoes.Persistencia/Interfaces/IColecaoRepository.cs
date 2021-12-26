@@ -51,6 +51,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>Coleção com informações básicas.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		Colecao GetById(int id);
 
 		/// <summary>

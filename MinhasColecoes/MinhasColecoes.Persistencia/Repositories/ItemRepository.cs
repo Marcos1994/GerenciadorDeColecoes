@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhasColecoes.Persistencia.Context;
 using MinhasColecoes.Persistencia.Entities;
+using MinhasColecoes.Persistencia.Exceptions;
 using MinhasColecoes.Persistencia.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -70,12 +71,35 @@ namespace MinhasColecoes.Persistencia.Repositories
 
 		public Item GetById(int id)
 		{
-			return dbContext.Itens.First(i => i.Id == id);
+			try
+			{
+				return dbContext.Itens.First(i => i.Id == id);
+			}
+			catch (InvalidOperationException ex)
+			{
+				throw new ObjetoNaoEncontradoException("Item", ex);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 
 		public Item GetById(int id, int idUsuario)
 		{
-			Item item = dbContext.Itens.First(i => i.Id == id);
+			Item item;
+			try
+			{
+				item = dbContext.Itens.First(i => i.Id == id);
+			}
+			catch (InvalidOperationException ex)
+			{
+				throw new ObjetoNaoEncontradoException("Item", ex);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 			if (item.IdOriginal != null)
 				item.SetItemOriginal(dbContext.Itens.First(i => i.Id == (int)item.IdOriginal));
 			dbContext.ItensUsuario.FirstOrDefault(iu => iu.IdItem == id && iu.IdUsuario == idUsuario);

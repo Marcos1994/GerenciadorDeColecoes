@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhasColecoes.Persistencia.Context;
 using MinhasColecoes.Persistencia.Entities;
+using MinhasColecoes.Persistencia.Exceptions;
 using MinhasColecoes.Persistencia.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,18 @@ namespace MinhasColecoes.Persistencia.Repositories
 
 		public Colecao GetById(int id)
 		{
-			return dbContext.Colecoes.First(c => c.Id == id);
+			try
+			{
+				return dbContext.Colecoes.First(c => c.Id == id);
+			}
+			catch (InvalidOperationException ex)
+			{
+				throw new ObjetoNaoEncontradoException("Coleção", ex);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 
 		public void Add(Colecao colecao)

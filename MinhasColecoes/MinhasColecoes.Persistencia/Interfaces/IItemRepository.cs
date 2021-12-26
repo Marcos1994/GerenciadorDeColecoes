@@ -43,6 +43,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>Item apenas com informações básicas.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		Item GetById(int id);
 
 		/// <summary>
@@ -51,6 +52,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// <param name="id"></param>
 		/// <param name="idUsuario"></param>
 		/// <returns>Item com informações de sua relação com usuário e o Item Original caso possua.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		Item GetById(int id, int idUsuario);
 
 		/// <summary>

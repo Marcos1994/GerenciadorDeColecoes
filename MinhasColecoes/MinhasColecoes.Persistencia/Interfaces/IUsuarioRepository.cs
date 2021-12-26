@@ -22,6 +22,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>Usuário com informações básicas.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		Usuario GetById(int id);
 
 		/// <summary>
