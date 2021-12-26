@@ -79,7 +79,7 @@ namespace MinhasColecoes.API.Controllers
 		{
 			try
 			{
-				service.DefinirRelacoes(new RelacaoItemUsuarioInputModel
+				service.DefinirRelacao(new RelacaoItemUsuarioInputModel
 				{
 					IdUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier)),
 					IdItem = idItem,

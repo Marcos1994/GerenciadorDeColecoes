@@ -16,6 +16,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns>Item criado.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
 		ItemViewModel Create(ItemInputModel input);
 
 		/// <summary>
@@ -24,6 +26,9 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idItem"></param>
 		/// <returns>Item original criado.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		void Oficializar(int idUsuario, int idItem);
 
 		/// <summary>
@@ -32,19 +37,24 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="update"></param>
 		/// <returns>Item atualizado.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		ItemViewModel Update(int idUsuario, ItemUpdateModel update);
 
 		/// <summary>
 		/// Cria ou atualiza a relação entre o item e o usuário.
 		/// </summary>
 		/// <param name="relacoesInput"></param>
-		void DefinirRelacoes(RelacaoItemUsuarioInputModel relacaoInput);
+		void DefinirRelacao(RelacaoItemUsuarioInputModel relacaoInput);
 
 		/// <summary>
 		/// Exclui o item.
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idItem"></param>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		void Delete(int idUsuario, int idItem);
 
 		/// <summary>
@@ -53,6 +63,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idItem"></param>
 		/// <returns>Item com a relação com o usuário e o item original, caso possua.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		ItemViewModel GetById(int idUsuario, int idItem);
 
 		/// <summary>
@@ -76,6 +87,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
 		/// <returns>Lista de itens particulares com as informações básicas de cada item.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		IEnumerable<ItemBasicViewModel> GetAllParticularesColecao(int idUsuario, int idColecao);
 
 		/// <summary>
@@ -84,6 +97,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idItemOficial"></param>
 		/// <returns>Lista de itens particulares com as informações básicas de cada item.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		IEnumerable<ItemBasicViewModel> GetAllParticularesItem(int idUsuario, int idItemOficial);
 	}
 }

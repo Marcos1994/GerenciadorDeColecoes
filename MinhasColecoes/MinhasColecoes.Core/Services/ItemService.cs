@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MinhasColecoes.Aplicacao.Enumerators;
+using MinhasColecoes.Aplicacao.Exceptions;
 using MinhasColecoes.Aplicacao.Interfaces;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.Update;
@@ -36,7 +37,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			{
 				Item itemMesmoCodigo = repositorioItem.GetByCodigo(input.IdColecao, input.Codigo);
 				if (itemMesmoCodigo != null)
-					throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+					throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
 			}
 			else
 			{
@@ -53,7 +54,7 @@ namespace MinhasColecoes.Aplicacao.Services
 
 			Colecao colecao = repositorioColecao.GetById(itemParticular.IdColecao);
 			if (colecao.IdDono != idUsuario)
-				throw new Exception("O usuário não tem permissão para oficializar o item.");
+				throw new UsuarioNaoAutorizadoException("oficializar", "item");
 
 			Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, itemParticular.Codigo);
 			Item itemOficial = (itemParticular.IdOriginal != null)
@@ -62,7 +63,7 @@ namespace MinhasColecoes.Aplicacao.Services
 
 			//Verifica se existe algum item com o novo código que não seja o item original.
 			if (itemMesmoCodigo != null && (itemOficial == null || itemMesmoCodigo.Id != itemOficial.Id))
-				throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+				throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
 
 			if (itemOficial == null) //Item novo não oficial
 			{
@@ -96,7 +97,7 @@ namespace MinhasColecoes.Aplicacao.Services
 				catch (Exception ex)
 				{
 					repositorioItem.RollbackTransaction("OficializacaoItem");
-					throw new Exception($"Não foi possível tornar o item {itemParticular.Nome} oficial.\n{ex.Message}");
+					throw new Exception($"Não foi possível oficializar o item {itemParticular.Nome}.\n{ex.Message}", ex.InnerException);
 				}
 
 				itemParticular = itemOficial;
@@ -109,14 +110,14 @@ namespace MinhasColecoes.Aplicacao.Services
 			Item item = repositorioItem.GetById(update.Id, idUsuario);
 
 			if (item.IdDonoParticular != null && item.IdDonoParticular != idUsuario)
-				throw new Exception("O usuário não tem permissão para editar o item.");
+				throw new UsuarioNaoAutorizadoException("oficializar", "item");
 
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
 			if (colecao.IdDono == idUsuario || item.IdDonoParticular == idUsuario)
 			{
 				Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, update.Codigo);
 				if (itemMesmoCodigo != null && itemMesmoCodigo.Id != update.Id)
-					throw new Exception($"Já existe um item com o código informado.\nNome do item: {itemMesmoCodigo.Nome}.");
+					throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
 
 				item.Update(update.Nome, update.Codigo, update.Descricao);
 				repositorioItem.Update(item);
@@ -151,7 +152,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			return itemView;
 		}
 
-		public void DefinirRelacoes(RelacaoItemUsuarioInputModel relacaoInput)
+		public void DefinirRelacao(RelacaoItemUsuarioInputModel relacaoInput)
 		{
 			ItemUsuario relacao = repositorioItem.GetByKey(relacaoInput.IdUsuario, relacaoInput.IdItem);
 
@@ -177,7 +178,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			Item item = repositorioItem.GetById(idItem);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
 			if (colecao.IdDono == idUsuario || item.IdDonoParticular == idUsuario)
-				throw new Exception("O usuário atual não tem permissão para excluir o item.");
+				throw new UsuarioNaoAutorizadoException("excluir", "item");
 			repositorioItem.Delete(item);
 		}
 
@@ -200,15 +201,16 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
 			if (colecao.IdDono != idUsuario)
-				throw new Exception("Apenas o dono da coleção pode ter acesso aos itens particulares dela.");
+				throw new UsuarioNaoAutorizadoException("acessar os itens particulares da coleção");
 			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAllParticularesColecao(idColecao));
 		}
+
 		public IEnumerable<ItemBasicViewModel> GetAllParticularesItem(int idUsuario, int idItemOficial)
 		{
 			Item item = repositorioItem.GetById(idItemOficial, idUsuario);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
 			if (colecao.IdDono != idUsuario)
-				throw new Exception("Apenas o dono da coleção pode ter acesso aos itens particulares do item.");
+				throw new UsuarioNaoAutorizadoException("acessar os itens particulares deste item");
 			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAllParticularesItem(idItemOficial));
 		}
 	}
