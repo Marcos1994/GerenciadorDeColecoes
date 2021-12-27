@@ -40,7 +40,7 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex);
+				return BadRequest(ex.Message);
 			}
 			return Ok();
 		}
@@ -66,7 +66,7 @@ namespace MinhasColecoes.API.Controllers
 			{
 				usuario = service.GetById(idUsuario);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idUsuario));
 			usuario.ColecoesDono.AddRange(serviceColecao.GetAllProprias(idUsuario));
@@ -83,7 +83,7 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(usuario);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 			return Ok();
 		}
@@ -98,7 +98,7 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(usuario);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 			return NoContent();
 		}

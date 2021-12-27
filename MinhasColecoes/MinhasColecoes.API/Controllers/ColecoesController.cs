@@ -53,8 +53,8 @@ namespace MinhasColecoes.API.Controllers
 				ColecaoViewModel colecao = service.GetById(idUsuario, idColecao);
 				return Ok(colecao);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
@@ -87,8 +87,8 @@ namespace MinhasColecoes.API.Controllers
 				service.Update(idUsuario, colecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
@@ -102,8 +102,8 @@ namespace MinhasColecoes.API.Controllers
 				service.AdicionarMembro(idUsuario, idColecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
@@ -117,8 +117,8 @@ namespace MinhasColecoes.API.Controllers
 				service.AdicionarSupercolecao(idUsuario, idColecao, idSupercolecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
@@ -132,7 +132,7 @@ namespace MinhasColecoes.API.Controllers
 				service.Delete(idUsuario, idColecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
@@ -146,8 +146,8 @@ namespace MinhasColecoes.API.Controllers
 				service.AdicionarSupercolecao(idUsuario, idColecao, null);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 	}
