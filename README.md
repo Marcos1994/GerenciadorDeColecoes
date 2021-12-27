@@ -20,3 +20,6 @@ Cada coleção é como um álbum de figurinhas, onde os participantes podem info
 * Criar relações com itens das coleções
 * Criar e atualizar itens
 * Oficializar itens particulares
+
+# Swagger
+https://localhost:5001/swagger/index.html
