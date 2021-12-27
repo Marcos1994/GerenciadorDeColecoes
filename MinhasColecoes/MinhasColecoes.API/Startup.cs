@@ -75,7 +75,8 @@ namespace MinhasColecoes.API
 			services.AddScoped<IItemService, ItemService>();
 			services.AddScoped<IItemRepository, ItemRepository>();
 
-			services.AddDbContext<MinhasColecoesDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MinhasColecoesCs")));
+			services.AddDbContext<MinhasColecoesDbContext>(o => o.UseInMemoryDatabase("MinhasColecoesCs"));
+			//services.AddDbContext<MinhasColecoesDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MinhasColecoesCs")));
 			services.AddScoped<MinhasColecoesDbContext>();
 
 			services.AddControllers()
