@@ -8,6 +8,7 @@ Cada coleção é como um álbum de figurinhas, onde os participantes podem info
 * Entity Framework Core
 * SQL Server
 * Swagger
+* JWT
 * AutoMapper
 * FluentValidation
 * Padrão Repository
