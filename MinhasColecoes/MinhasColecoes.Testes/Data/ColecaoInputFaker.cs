@@ -10,11 +10,11 @@ namespace MinhasColecoes.Testes.Data
 {
 	public class ColecaoInputFaker : Faker<ColecaoInputModel>
 	{
-		public ColecaoInputFaker()
+		public ColecaoInputFaker(bool subColecao = false)
 		{
 			RuleFor(p => p.IdDono, f => f.Random.Number(1, 100000));
 			RuleFor(p => p.IdColecaoMaior,
-				f => (f.Random.Bool(0.1F))
+				f => subColecao
 				? f.Random.Number(1, 100000) : null);
 			RuleFor(p => p.Nome, f => f.Name.FirstName());
 			RuleFor(p => p.Descricao, f => f.Lorem.Sentence(15));
