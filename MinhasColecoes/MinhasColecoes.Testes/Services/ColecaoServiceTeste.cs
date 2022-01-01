@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using FluentAssertions;
+using MinhasColecoes.Aplicacao.Exceptions;
 using MinhasColecoes.Aplicacao.Models.Input;
 using MinhasColecoes.Aplicacao.Models.View;
 using MinhasColecoes.Aplicacao.Profiles;
 using MinhasColecoes.Aplicacao.Services;
 using MinhasColecoes.Persistencia.Entities;
+using MinhasColecoes.Persistencia.Exceptions;
 using MinhasColecoes.Persistencia.Interfaces;
+using MinhasColecoes.Testes.Data;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
@@ -43,24 +46,59 @@ namespace MinhasColecoes.Testes.Services
 		}
 
 		[Fact]
-		public void Create()
+		public void CreateSemColecaoMaior()
 		{
-			repositorioColecao.GetAll(0).Returns(
-				new List<Colecao>
-				{
-					new Colecao(null, 1, "Colecao Teste", "", "", false)
-				});
-			ColecaoInputModel input = new ColecaoInputModel
-			{
-				IdDono = 1,
-				Descricao = "Primeira colecao de teste",
-				IdColecaoMaior = 0,
-				Nome = "Colecao Teste",
-				Publica = true
-			};
+			ColecaoInputModel input = new ColecaoInputFaker().Generate();
+			input.IdColecaoMaior = null;
+
+			repositorioColecao.GetAll(0).Returns(new List<Colecao>());
+
 			ColecaoViewModel colecaoNova = service.Create(input);
-			colecaoNova.Nome.Should().Be("Colecao Teste");
+			colecaoNova.Dono.Should().NotBeNull();
+			colecaoNova.Dono.Id.Should().Be(input.IdDono);
+			colecaoNova.Nome.Should().Be(input.Nome);
+			colecaoNova.Descricao.Should().Be(input.Descricao);
+			colecaoNova.Publica.Should().Be(input.Publica);
 			colecaoNova.ColecaoMaior.Should().BeNull();
+
+			colecaoNova.UsuariosColecao.Should().HaveCount(1);
+			colecaoNova.Colecoes.Should().BeEmpty();
+			colecaoNova.Itens.Should().BeEmpty();
+		}
+
+		[Fact]
+		public void CreateComColecaoMaior()
+		{
+			ColecaoInputModel input = new ColecaoInputFaker(true).Generate();
+
+			repositorioColecao.GetAll(0).Returns(new List<Colecao>());
+			repositorioColecao.GetById((int) input.IdColecaoMaior)
+				.Returns(new ColecaoFaker().Generate());
+
+			ColecaoViewModel colecaoNova = service.Create(input);
+			colecaoNova.Dono.Should().NotBeNull();
+			colecaoNova.Dono.Id.Should().Be(input.IdDono);
+			colecaoNova.Nome.Should().Be(input.Nome);
+			colecaoNova.Descricao.Should().Be(input.Descricao);
+			colecaoNova.Publica.Should().Be(input.Publica);
+			colecaoNova.ColecaoMaior.Should().NotBeNull();
+			colecaoNova.ColecaoMaior.Id.Should().Be((int)input.IdColecaoMaior);
+
+			colecaoNova.UsuariosColecao.Should().HaveCount(1);
+			colecaoNova.Colecoes.Should().BeEmpty();
+			colecaoNova.Itens.Should().BeEmpty();
+		}
+
+		[Fact]
+		public void CreateComNomeRepetido()
+		{
+			ColecaoInputModel input = new ColecaoInputFaker().Generate();
+
+			repositorioColecao.GetAll(input.IdDono, input.Nome)
+				.Returns(new List<Colecao>() { mapper.Map<Colecao>(input) });
+
+			Action act = () => service.Create(input);
+			act.Should().ThrowExactly<ObjetoDuplicadoException>();
 		}
 	}
 }
