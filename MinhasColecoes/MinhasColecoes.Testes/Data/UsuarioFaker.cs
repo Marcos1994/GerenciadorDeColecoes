@@ -22,14 +22,14 @@ namespace MinhasColecoes.Testes.Data
 			if (withChilds)
 			{
 				//Adicionando as coleções das quais ele é dono
-				List<Colecao> colecoes = new ColecaoFaker(id).Generate(2);
+				List<Colecao> colecoes = new ColecaoFaker(id).Generate(new Faker().Random.Number(0,3));
 				RuleFor(p => p.ColecoesDono, f => colecoes);
 
 				//Adicionando as coleções que ele participa (incluindo as q ele é dono)
 				List<ColecaoUsuario> relacoesColecaoUsuario = new List<ColecaoUsuario>();
 				for (int i = 0; i < colecoes.Count(); i++)
 					relacoesColecaoUsuario.Add(new ColecaoUsuario(id, colecoes[i].Id));
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < new Faker().Random.Number(2, 4); i++)
 					relacoesColecaoUsuario.Add(new ColecaoUsuario(id, new Faker().Random.Number(1, 100000)));
 				RuleFor(p => p.ColecoesParticipa, f => relacoesColecaoUsuario);
 			}

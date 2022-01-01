@@ -37,53 +37,53 @@ namespace MinhasColecoes.Testes.Mapper
 		[Fact]
 		public void InputParaEntity()
 		{
-			UsuarioInputModel input = new UsuarioInputFaker().Generate();
-			Usuario entity = mapper.Map<Usuario>(input);
+			UsuarioInputModel source = new UsuarioInputFaker().Generate();
+			Usuario destiny = mapper.Map<Usuario>(source);
 
-			entity.Id.Should().Be(0);
-			entity.Nome.Should().Be(input.Nome);
-			entity.Foto.Should().Be(input.Foto);
-			entity.Descricao.Should().Be(input.Descricao);
-			entity.Login.Should().Be(input.Login);
-			entity.Senha.Should().Be(input.Senha);
+			destiny.Id.Should().Be(0);
+			destiny.Nome.Should().Be(source.Nome);
+			destiny.Foto.Should().Be(source.Foto);
+			destiny.Descricao.Should().Be(source.Descricao);
+			destiny.Login.Should().Be(source.Login);
+			destiny.Senha.Should().Be(source.Senha);
 
-			entity.ColecoesDono.Count().Should().Be(0);
-			entity.ColecoesParticipa.Count().Should().Be(0);
-			entity.ItensDono.Count().Should().Be(0);
-			entity.RelacoesItens.Count().Should().Be(0);
+			destiny.ColecoesDono.Should().BeEmpty();
+			destiny.ColecoesParticipa.Should().BeEmpty();
+			destiny.ItensDono.Should().BeEmpty();
+			destiny.RelacoesItens.Should().BeEmpty();
 		}
 
 		[Fact]
 		public void EntityParaBasicView()
 		{
-			UsuarioBasicViewModel basicView = mapper.Map<UsuarioBasicViewModel>(usuario);
+			UsuarioBasicViewModel destiny = mapper.Map<UsuarioBasicViewModel>(usuario);
 
-			basicView.Id.Should().Be(usuario.Id);
-			basicView.Nome.Should().Be(usuario.Nome);
+			destiny.Id.Should().Be(usuario.Id);
+			destiny.Nome.Should().Be(usuario.Nome);
 		}
 
 		[Fact]
 		public void EntityParaView()
 		{
-			UsuarioViewModel basicView = mapper.Map<UsuarioViewModel>(usuario);
+			UsuarioViewModel destiny = mapper.Map<UsuarioViewModel>(usuario);
 
-			basicView.Id.Should().Be(usuario.Id);
-			basicView.Nome.Should().Be(usuario.Nome);
-			basicView.Descricao.Should().Be(usuario.Descricao);
-			basicView.Foto.Should().Be(usuario.Foto);
+			destiny.Id.Should().Be(usuario.Id);
+			destiny.Nome.Should().Be(usuario.Nome);
+			destiny.Descricao.Should().Be(usuario.Descricao);
+			destiny.Foto.Should().Be(usuario.Foto);
 
-			basicView.ColecoesDono.Count().Should().Be(usuario.ColecoesDono.Count());
-			basicView.ColecoesMembro.Count().Should().Be(0);
+			destiny.ColecoesDono.Count().Should().Be(usuario.ColecoesDono.Count());
+			destiny.ColecoesMembro.Should().BeEmpty();
 		}
 
 		[Fact]
 		public void EntityParaLoginView()
 		{
-			UsuarioLoginViewModel loginView = mapper.Map<UsuarioLoginViewModel>(usuario);
+			UsuarioLoginViewModel destiny = mapper.Map<UsuarioLoginViewModel>(usuario);
 
-			loginView.Id.Should().Be(usuario.Id);
-			loginView.Nome.Should().Be(usuario.Nome);
-			loginView.Login.Should().Be(usuario.Login);
+			destiny.Id.Should().Be(usuario.Id);
+			destiny.Nome.Should().Be(usuario.Nome);
+			destiny.Login.Should().Be(usuario.Login);
 		}
 	}
 }
