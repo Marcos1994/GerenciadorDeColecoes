@@ -85,7 +85,7 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.ItemOriginal.Should().BeNull();
 			destiny.Relacao.Should().Be(EnumRelacaoUsuarioItem.NaoPossuo);
 
-			//Item Particular Com relação
+			//Item Particular Com Original Com relação
 			source = new ItemFaker(1, 1, EnumRelacaoUsuarioItem.Possuo, false).Generate();
 			destiny = mapper.Map<ItemBasicViewModel>(source);
 
@@ -94,6 +94,14 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.ItemOriginal.Should().NotBeNull();
 			destiny.ItemOriginal.Id.Should().Be(source.IdOriginal);
 			destiny.Relacao.Should().Be(EnumRelacaoUsuarioItem.Possuo);
+
+			//Item Particular Sem Original Com relação
+			source = new ItemFaker(1, null).Generate();
+			destiny = mapper.Map<ItemBasicViewModel>(source);
+
+			destiny.Original.Should().Be(source.Original);
+			destiny.IdOriginal.Should().BeNull();
+			destiny.ItemOriginal.Should().BeNull();
 		}
 
 		[Fact]
@@ -112,7 +120,7 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.ItemOriginal.Should().BeNull();
 			destiny.Relacao.Should().Be(EnumRelacaoUsuarioItem.NaoPossuo);
 
-			//Item Particular Com relação
+			//Item Particular Com Original Com relação
 			source = new ItemFaker(1, 1, EnumRelacaoUsuarioItem.Possuo, false).Generate();
 			destiny = mapper.Map<ItemViewModel>(source);
 
@@ -121,6 +129,14 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.ItemOriginal.Should().NotBeNull();
 			destiny.ItemOriginal.Id.Should().Be(source.IdOriginal);
 			destiny.Relacao.Should().Be(EnumRelacaoUsuarioItem.Possuo);
+
+			//Item Particular Sem Original Com relação
+			source = new ItemFaker(1, null).Generate();
+			destiny = mapper.Map<ItemViewModel>(source);
+
+			destiny.Original.Should().Be(source.Original);
+			destiny.IdOriginal.Should().BeNull();
+			destiny.ItemOriginal.Should().BeNull();
 		}
 	}
 }
