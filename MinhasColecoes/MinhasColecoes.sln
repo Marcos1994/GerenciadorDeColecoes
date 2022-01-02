@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhasColecoes.API", "MinhasColecoes.API\MinhasColecoes.API.csproj", "{ECB18443-8508-4440-8798-B1DC27FB414F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasColecoes.API", "MinhasColecoes.API\MinhasColecoes.API.csproj", "{ECB18443-8508-4440-8798-B1DC27FB414F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhasColecoes.Aplicacao", "MinhasColecoes.Core\MinhasColecoes.Aplicacao.csproj", "{0857DEA6-6039-40C2-8158-42B70230BD61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasColecoes.Aplicacao", "MinhasColecoes.Core\MinhasColecoes.Aplicacao.csproj", "{0857DEA6-6039-40C2-8158-42B70230BD61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhasColecoes.Persistencia", "MinhasColecoes.Persistencia\MinhasColecoes.Persistencia.csproj", "{9CF8D206-1854-417C-9C69-AD1E39497DBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasColecoes.Persistencia", "MinhasColecoes.Persistencia\MinhasColecoes.Persistencia.csproj", "{9CF8D206-1854-417C-9C69-AD1E39497DBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhasColecoes.Testes", "MinhasColecoes.Testes\MinhasColecoes.Testes.csproj", "{1C578180-DF25-4617-8E5E-DE66DDC9806F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9CF8D206-1854-417C-9C69-AD1E39497DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CF8D206-1854-417C-9C69-AD1E39497DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CF8D206-1854-417C-9C69-AD1E39497DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C578180-DF25-4617-8E5E-DE66DDC9806F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C578180-DF25-4617-8E5E-DE66DDC9806F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C578180-DF25-4617-8E5E-DE66DDC9806F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C578180-DF25-4617-8E5E-DE66DDC9806F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
