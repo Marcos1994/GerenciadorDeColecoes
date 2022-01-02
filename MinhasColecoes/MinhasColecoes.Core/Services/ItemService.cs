@@ -167,7 +167,7 @@ namespace MinhasColecoes.Aplicacao.Services
 					repositorioItem.Add(mapper.Map<ItemUsuario>(relacaoInput));
 				else
 				{
-					relacao.UpdateRelacao((int)relacaoInput.Relacao);
+					relacao.Update((int)relacaoInput.Relacao, relacaoInput.Comentario);
 					repositorioItem.Update(relacao);
 				}
 			}

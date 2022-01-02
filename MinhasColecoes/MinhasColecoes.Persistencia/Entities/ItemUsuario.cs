@@ -22,10 +22,12 @@ namespace MinhasColecoes.Persistencia.Entities
 		public int IdUsuario { get; private set; }
 		public int IdItem { get; private set; }
 		public int Relacao { get; private set; }
+		public string Comentario { get; private set; }
 
-		public void UpdateRelacao(int relacao)
+		public void Update(int relacao, string comentario)
 		{
 			Relacao = relacao;
+			Comentario = comentario;
 		}
 	}
 }

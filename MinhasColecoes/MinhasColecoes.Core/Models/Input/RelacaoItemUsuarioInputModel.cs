@@ -12,5 +12,6 @@ namespace MinhasColecoes.Aplicacao.Models.Input
 		public int IdUsuario { get; set; }
 		public int IdItem { get; set; }
 		public EnumRelacaoUsuarioItem Relacao { get; set; }
+		public string Comentario { get; set; }
 	}
 }
