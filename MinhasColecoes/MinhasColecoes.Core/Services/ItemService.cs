@@ -85,7 +85,7 @@ namespace MinhasColecoes.Aplicacao.Services
 					//Transfere a relação do item particular para o item oficial.
 					relacao = repositorioItem.GetByKey((int)itemParticular.IdDonoParticular, itemParticular.Id);
 					if (relacao != null)
-						itemOficial.RelacoesUsuarios.Add(new ItemUsuario(relacao.IdUsuario, itemOficial.Id, relacao.Relacao));
+						itemOficial.RelacoesUsuarios.Add(new ItemUsuario(relacao.IdUsuario, itemOficial.Id, relacao.Relacao, relacao.Comentario));
 
 					//Atualiza o item oficial e exclui o item particular
 					itemOficial.Update(itemParticular.Nome, itemParticular.Codigo, itemParticular.Descricao);

@@ -17,14 +17,14 @@ namespace MinhasColecoes.Testes.Data
 			: this(idColecao, original)
 		{
 			RuleFor(p => p.RelacoesUsuarios, f => new List<ItemUsuario>
-				{ new ItemUsuario(idUsuarioRelacao, id, f.Random.Number(1, 5)) });
+				{ new ItemUsuario(idUsuarioRelacao, id, f.Random.Number(1, 5), f.Lorem.Sentence(5)) });
 		}
 
 		public ItemFaker(int idColecao, int idUsuarioRelacao, EnumRelacaoUsuarioItem relacao, bool? original = true)
 			: this(idColecao, original)
 		{
 			RuleFor(p => p.RelacoesUsuarios, f => new List<ItemUsuario>
-				{ new ItemUsuario(idUsuarioRelacao, id, (int) relacao) });
+				{ new ItemUsuario(idUsuarioRelacao, id, (int) relacao, f.Lorem.Sentence(5)) });
 		}
 
 		public ItemFaker(int idColecao, bool? original = true)

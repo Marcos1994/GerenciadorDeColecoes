@@ -12,11 +12,12 @@ namespace MinhasColecoes.Persistencia.Entities
 		{
 
 		}
-		public ItemUsuario(int idUsuario, int idItem, int relacao)
+		public ItemUsuario(int idUsuario, int idItem, int relacao, string comentario)
 		{
 			IdUsuario = idUsuario;
 			IdItem = idItem;
 			Relacao = relacao;
+			Comentario = comentario;
 		}
 
 		public int IdUsuario { get; private set; }
