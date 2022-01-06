@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MinhasColecoes.API.Controllers
 {
-	[Route("Colecoes/{idColecao}/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class ItensController : ControllerBase
 	{
