@@ -18,6 +18,7 @@ namespace MinhasColecoes.Aplicacao.Models.View
 		public ItemBasicViewModel ItemOriginal { get; private set; }
 		public EnumRelacaoUsuarioItem Relacao { get; private set; }
 		public string Comentario { get; private set; }
+		public string Foto { get; private set; }
 
 		public void SetItemOriginal(ItemBasicViewModel itemOriginal)
 		{

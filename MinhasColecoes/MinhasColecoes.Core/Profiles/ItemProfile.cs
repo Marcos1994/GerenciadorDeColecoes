@@ -22,7 +22,7 @@ namespace MinhasColecoes.Aplicacao.Profiles
 				.ForMember(d => d.RelacoesUsuarios, opt =>
 				{
 					opt.Condition(s => s.Relacao != EnumRelacaoUsuarioItem.NaoPossuo);
-					opt.MapFrom(s => new[] { new RelacaoItemUsuarioInputModel { Relacao = s.Relacao, IdUsuario = s.IdUsuario } });
+					opt.MapFrom(s => new[] { new RelacaoItemUsuarioInputModel { Relacao = s.Relacao, IdUsuario = s.IdUsuario, Comentario = s.Comentario } });
 				});
 			CreateMap<RelacaoItemUsuarioInputModel, ItemUsuario>()
 				.ConvertUsing(s => (s.Relacao == EnumRelacaoUsuarioItem.NaoPossuo)

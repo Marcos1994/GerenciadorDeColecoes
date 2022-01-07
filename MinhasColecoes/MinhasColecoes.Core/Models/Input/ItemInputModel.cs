@@ -16,5 +16,6 @@ namespace MinhasColecoes.Aplicacao.Models.Input
 		public string Descricao { get; set; }
 		public EnumRelacaoUsuarioItem Relacao { get; set; }
 		public string Comentario { get; set; }
+		public string Foto { get; set; }
 	}
 }

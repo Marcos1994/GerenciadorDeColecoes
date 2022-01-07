@@ -12,5 +12,6 @@ namespace MinhasColecoes.Aplicacao.Models.Update
 		public string Nome { get; set; }
 		public string Codigo { get; set; }
 		public string Descricao { get; set; }
+		public string Foto { get; set; }
 	}
 }

@@ -88,7 +88,7 @@ namespace MinhasColecoes.Aplicacao.Services
 						itemOficial.RelacoesUsuarios.Add(new ItemUsuario(relacao.IdUsuario, itemOficial.Id, relacao.Relacao, relacao.Comentario));
 
 					//Atualiza o item oficial e exclui o item particular
-					itemOficial.Update(itemParticular.Nome, itemParticular.Codigo, itemParticular.Descricao);
+					itemOficial.Update(itemParticular.Nome, itemParticular.Codigo, itemParticular.Descricao, itemParticular.Foto);
 					repositorioItem.Update(itemOficial);
 					repositorioItem.Delete(itemParticular);
 
@@ -119,7 +119,7 @@ namespace MinhasColecoes.Aplicacao.Services
 				if (itemMesmoCodigo != null && itemMesmoCodigo.Id != update.Id)
 					throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
 
-				item.Update(update.Nome, update.Codigo, update.Descricao);
+				item.Update(update.Nome, update.Codigo, update.Descricao, update.Foto);
 				repositorioItem.Update(item);
 				itemView = mapper.Map<ItemViewModel>(item);
 			}

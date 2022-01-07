@@ -37,8 +37,9 @@ namespace MinhasColecoes.Testes.Data
 			RuleFor(p => p.Descricao, f => f.Lorem.Sentence(10));
 			RuleFor(p => p.Codigo, f => (f.Random.Bool(0.3F)
 				? "" : f.Random.Number(1, 100000).ToString()));
+			RuleFor(p => p.Foto, f => f.Lorem.Sentence(3));
 
-			if(original != true)
+			if (original != true)
 			{
 				RuleFor(p => p.IdDonoParticular, f => f.Random.Number(1, 100000));
 				if(original == false)

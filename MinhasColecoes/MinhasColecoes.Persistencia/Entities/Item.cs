@@ -13,7 +13,7 @@ namespace MinhasColecoes.Persistencia.Entities
 		{
 
 		}
-		public Item(int idColecao, bool original, int? idOriginal, Item itemOriginal, int? idDonoParticular, string nome, string codigo, string descricao)
+		public Item(int idColecao, bool original, int? idOriginal, Item itemOriginal, int? idDonoParticular, string nome, string codigo, string descricao, string foto)
 		{
 			IdColecao = idColecao;
 			Original = original;
@@ -23,6 +23,7 @@ namespace MinhasColecoes.Persistencia.Entities
 			Nome = nome;
 			Codigo = codigo;
 			Descricao = descricao;
+			Foto = foto;
 		}
 
 		public int Id { get; private set; }
@@ -34,13 +35,15 @@ namespace MinhasColecoes.Persistencia.Entities
 		public string Nome { get; private set; }
 		public string Codigo { get; private set; }
 		public string Descricao { get; private set; }
+		public string Foto { get; private set; }
 		public List<ItemUsuario> RelacoesUsuarios { get; private set; } = new List<ItemUsuario>();
 
-		public void Update(string nome, string codigo, string descricao)
+		public void Update(string nome, string codigo, string descricao, string foto)
 		{
 			Nome = nome;
 			Codigo = codigo;
 			Descricao = descricao;
+			Foto = foto;
 		}
 
 		public void SetItemOriginal(Item itemOriginal)
