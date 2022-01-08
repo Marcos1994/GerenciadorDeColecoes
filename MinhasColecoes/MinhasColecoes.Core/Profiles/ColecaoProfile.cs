@@ -26,6 +26,8 @@ namespace MinhasColecoes.Aplicacao.Profiles
 				(ent.IdColecaoMaior > 0) ? new ColecaoBasicViewModel((int)ent.IdColecaoMaior) : null));
 			CreateMap<ColecaoUsuario, UsuarioBasicViewModel>()
 				.ForMember(d => d.Id, opt => opt.MapFrom(s => s.IdUsuario));
+
+			CreateMap<Colecao, ColecaoGenealogiaViewModel>();
 		}
 	}
 }

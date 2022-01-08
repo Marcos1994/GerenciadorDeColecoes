@@ -111,6 +111,14 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idUsuario, int idColecao);
 
 		/// <summary>
+		/// Retorna todas as supercoleções aninhadas desta coleção desde a raiz até ela.
+		/// </summary>
+		/// <param name="idColecao"></param>
+		/// <returns>Coleção raiz com as subcoleções aninhadas até a coleção desejada.</returns>
+		/// <exception cref="ObjetoNaoEncontradoException"></exception>
+		ColecaoGenealogiaViewModel GetAllSupercolecoes(int idColecao);
+
+		/// <summary>
 		/// Retorna todos os membros de uma coleção
 		/// </summary>
 		/// <param name="idColecao"></param>

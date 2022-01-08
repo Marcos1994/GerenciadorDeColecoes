@@ -89,6 +89,11 @@ namespace MinhasColecoes.Aplicacao.Services
 					throw new ObjetoDuplicadoException("Subcoleção", "Nome");
 			}
 
+			//Verifico se não haverá referência ciclica entre as coleções
+			if (idColecao != null
+				&& VerificarGenealogia(GetAllSupercolecoes((int)idColecao), idSubcolecao))
+				throw new FalhaDeValidacaoException("A supercoleção a ser definida é descendente desta coleção.");
+
 			try
 			{
 				subcolecao.SetColecaoMaior(idColecao);
@@ -181,9 +186,43 @@ namespace MinhasColecoes.Aplicacao.Services
 				(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao));
 		}
 
+		public ColecaoGenealogiaViewModel GetAllSupercolecoes(int idColecao)
+		{
+			//Pego a coleção
+			ColecaoGenealogiaViewModel colecao = mapper.Map<ColecaoGenealogiaViewModel>(repositorioColecao.GetById(idColecao));
+
+			//Se ela for a coleção raiz eu retorno
+			if (colecao.IdColecaoMaior == null)
+				return colecao;
+
+			//Se não, procuro pelo pai dela, até encontrar a raiz, defino como pai e depois retorno
+			colecao.SetPai(GetAllSupercolecoes((int) colecao.IdColecaoMaior));
+			return colecao;
+		}
+
 		public IEnumerable<UsuarioBasicViewModel> GetAllMembros(int idColecao)
 		{
 			return mapper.Map<List<UsuarioBasicViewModel>>(repositorioColecao.GetMembros(idColecao));
+		}
+	
+		/// <summary>
+		/// Verifica se uma coleção está presente em uma genealogia
+		/// </summary>
+		/// <param name="genealogia"></param>
+		/// <param name="idColecao"></param>
+		/// <returns></returns>
+		public bool VerificarGenealogia(ColecaoGenealogiaViewModel genealogia, int idColecao)
+		{
+			//A coleção está na genealogia?
+			if (genealogia.Id == idColecao)
+				return true;
+
+			//Ainda tem pai pra verificar?
+			if(genealogia.IdColecaoMaior == null)
+				return false;
+
+			//Verifica se o ID dela bate com o do pai
+			return VerificarGenealogia(genealogia.ColecaoPai, idColecao);
 		}
 	}
 }
