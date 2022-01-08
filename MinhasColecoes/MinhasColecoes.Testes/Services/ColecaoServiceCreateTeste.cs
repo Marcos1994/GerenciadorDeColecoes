@@ -45,8 +45,12 @@ namespace MinhasColecoes.Testes.Services
 		public void SucessoCreate()
 		{
 			ColecaoInputModel input = new ColecaoInputFaker().Generate();
+			Colecao colecaoComNomeParecido = new ColecaoFaker().Generate();
+			colecaoComNomeParecido.Update(input.Nome + " parecido", input.Descricao, input.Foto, true);
+			input.IdColecaoMaior = colecaoComNomeParecido.IdColecaoMaior;
 
-			repositorioColecao.GetAll(input.IdDono, input.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAll(input.IdDono, input.Nome)
+				.Returns(new List<Colecao>() { colecaoComNomeParecido });
 
 			ColecaoViewModel colecaoNova = service.Create(input);
 			colecaoNova.IdDono.Should().Be(input.IdDono);

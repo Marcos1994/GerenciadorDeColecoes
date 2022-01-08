@@ -67,8 +67,12 @@ namespace MinhasColecoes.Testes.Services
 			Colecao subcolecao = new ColecaoFaker().Generate();
 			int idUsuario = subcolecao.IdDono;
 
+			Colecao colecaoNomeParecido = new ColecaoFaker(super.Id).Generate();
+			colecaoNomeParecido.Update(subcolecao.Nome + " parecido", "", "", true);
+
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+				.Returns(new List<Colecao>() { colecaoNomeParecido });
 			repositorioColecao.GetById(super.Id).Returns(super);
 
 			service.AdicionarSupercolecao(idUsuario, subcolecao.Id, super.Id);

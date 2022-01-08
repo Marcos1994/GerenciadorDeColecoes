@@ -44,11 +44,14 @@ namespace MinhasColecoes.Testes.Services
 		public void SucessoUpdate()
 		{
 			Colecao colecao = new ColecaoFaker().Generate();
+			Colecao colecaoComNomeParecido = new ColecaoFaker().Generate();
+			colecaoComNomeParecido.Update(colecao.Nome + " parecido", colecao.Descricao, colecao.Foto, true);
 			ColecaoUpdateModel update = new ColecaoUpdateFaker(colecao.Id).Generate();
 			int idUsuario = colecao.IdDono;
 
 			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAll(idUsuario, update.Nome)
+				.Returns(new List<Colecao>() { colecaoComNomeParecido });
 			//repositorioColecao.When(r => r.Update(colecao))
 			//	.Do(c => colecao.Update(update.Nome, update.Descricao, update.Foto, update.Publica));
 

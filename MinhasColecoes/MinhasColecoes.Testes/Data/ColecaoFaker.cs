@@ -24,9 +24,7 @@ namespace MinhasColecoes.Testes.Data
 		{
 			int id = new Faker().Random.Number(1, 100000);
 			RuleFor(p => p.Id, f => id);
-			RuleFor(p => p.IdColecaoMaior,
-				f => (f.Random.Bool(0.1F))
-				? f.Random.Number(1, 100000) : null);
+			RuleFor(p => p.IdColecaoMaior, f => null);
 			RuleFor(p => p.IdDono, f => idDono);
 			RuleFor(p => p.Nome, f => f.Name.FirstName());
 			RuleFor(p => p.Descricao, f => f.Lorem.Sentence(15));
