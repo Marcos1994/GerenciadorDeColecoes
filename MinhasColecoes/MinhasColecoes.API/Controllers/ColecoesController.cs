@@ -34,6 +34,19 @@ namespace MinhasColecoes.API.Controllers
 			return Ok(colecoes);
 		}
 
+		[HttpGet]
+		[Route("{idColecao}/Genealogia")]
+		public IActionResult GetGenealogia(int idColecao)
+		{
+			try
+			{
+				ColecaoGenealogiaViewModel colecao = service.GetAllSupercolecoes(idColecao);
+				return Ok(colecao);
+			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
+		}
+
 		[Authorize]
 		[HttpGet]
 		[Route("MinhasColecoes")]
