@@ -30,7 +30,8 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public ColecaoViewModel Create(ColecaoInputModel input)
 		{
-			bool nomeRepetido = repositorioColecao.GetAll(input.IdDono, input.Nome).Any();
+			bool nomeRepetido = repositorioColecao.GetAll(input.IdDono, input.Nome)
+				.Any(c => c.IdColecaoMaior == input.IdColecaoMaior);
 			if (nomeRepetido) //São consideradas apenas as coleções que são visiveis para o usuário.
 				throw new ObjetoDuplicadoException("Coleção", "Nome");
 
@@ -45,7 +46,8 @@ namespace MinhasColecoes.Aplicacao.Services
 			if (colecao.IdDono != idUsuario)
 				throw new UsuarioNaoAutorizadoException("atualizar", "Coleção");
 
-			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, update.Nome).Any(c => c.Id != update.Id);
+			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, update.Nome)
+				.Any(c => c.Id != update.Id && c.IdColecaoMaior == colecao.IdColecaoMaior);
 			if (nomeRepetido)
 			{
 				if (!colecao.Publica && update.Publica)
@@ -76,6 +78,16 @@ namespace MinhasColecoes.Aplicacao.Services
 
 			if (subcolecao.IdDono != idUsuario)
 				throw new UsuarioNaoAutorizadoException("adicionar esta coleção como subcoleção de outra");
+
+			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+				.Any(c => c.Id != subcolecao.Id && c.IdColecaoMaior == idColecao);
+			if (nomeRepetido)
+			{
+				if (idColecao == null)
+					throw new FalhaDeValidacaoException("Já existe uma coleção pública com esse nome.");
+				else
+					throw new ObjetoDuplicadoException("Subcoleção", "Nome");
+			}
 
 			try
 			{

@@ -46,6 +46,8 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idColecao"></param>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
+		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void AdicionarSupercolecao(int idUsuario, int idSubcolecao, int? idColecao);
 
 		/// <summary>
