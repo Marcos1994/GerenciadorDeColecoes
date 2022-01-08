@@ -54,8 +54,7 @@ namespace MinhasColecoes.Testes.Services
 			repositorioColecao.GetAll(0).Returns(new List<Colecao>());
 
 			ColecaoViewModel colecaoNova = service.Create(input);
-			colecaoNova.Dono.Should().NotBeNull();
-			colecaoNova.Dono.Id.Should().Be(input.IdDono);
+			colecaoNova.IdDono.Should().Be(input.IdDono);
 			colecaoNova.Nome.Should().Be(input.Nome);
 			colecaoNova.Descricao.Should().Be(input.Descricao);
 			colecaoNova.Publica.Should().Be(input.Publica);
@@ -76,13 +75,11 @@ namespace MinhasColecoes.Testes.Services
 				.Returns(new ColecaoFaker().Generate());
 
 			ColecaoViewModel colecaoNova = service.Create(input);
-			colecaoNova.Dono.Should().NotBeNull();
-			colecaoNova.Dono.Id.Should().Be(input.IdDono);
+			colecaoNova.IdDono.Should().Be(input.IdDono);
 			colecaoNova.Nome.Should().Be(input.Nome);
 			colecaoNova.Descricao.Should().Be(input.Descricao);
 			colecaoNova.Publica.Should().Be(input.Publica);
-			colecaoNova.ColecaoMaior.Should().NotBeNull();
-			colecaoNova.ColecaoMaior.Id.Should().Be((int)input.IdColecaoMaior);
+			colecaoNova.IdColecaoMaior.Should().Be((int)input.IdColecaoMaior);
 
 			colecaoNova.UsuariosColecao.Should().HaveCount(1);
 			colecaoNova.Colecoes.Should().BeEmpty();

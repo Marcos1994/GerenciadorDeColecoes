@@ -23,5 +23,7 @@ namespace MinhasColecoes.Aplicacao.Models.View
 		public string Descricao { get; private set; }
 		public string Foto { get; private set; }
 		public bool Publica { get; private set; }
+		public int IdDono { get; private set; }
+		public int? IdColecaoMaior { get; private set; }
 	}
 }

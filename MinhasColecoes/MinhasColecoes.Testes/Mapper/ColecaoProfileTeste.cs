@@ -75,8 +75,7 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.Descricao.Should().Be(colecao.Descricao);
 			destiny.Publica.Should().Be(colecao.Publica);
 
-			destiny.Dono.Should().NotBeNull();
-			destiny.Dono.Id.Should().Be(colecao.IdDono);
+			destiny.IdDono.Should().Be(colecao.IdDono);
 			destiny.ColecaoMaior.Should()
 				.Match<ColecaoBasicViewModel>(c => 
 				(c == null && colecao.IdColecaoMaior == null)
@@ -84,6 +83,18 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.UsuariosColecao.Should().HaveCount(colecao.UsuariosColecao.Count);
 			destiny.Colecoes.Should().HaveCount(colecao.Colecoes.Count());
 			destiny.Itens.Should().HaveCount(colecao.Itens.Count());
+		}
+
+		[Fact]
+		public void EntityParaGenealogiaView()
+		{
+			ColecaoGenealogiaViewModel destiny = mapper.Map<ColecaoGenealogiaViewModel>(colecao);
+
+			destiny.Id.Should().Be(colecao.Id);
+			destiny.Nome.Should().Be(colecao.Nome);
+			destiny.Publica.Should().Be(colecao.Publica);
+			destiny.IdDono.Should().Be(colecao.IdDono);
+			destiny.IdColecaoMaior.Should().Be(colecao.IdColecaoMaior);
 		}
 	}
 }
