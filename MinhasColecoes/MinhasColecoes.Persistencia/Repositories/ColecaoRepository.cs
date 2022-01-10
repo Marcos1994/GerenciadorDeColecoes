@@ -54,7 +54,7 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return from cu in dbContext.ColecoesUsuario
 				   where cu.IdColecao == idColecao
 				   join u in dbContext.Usuarios
-				   on cu.IdColecao equals u.Id
+				   on cu.IdUsuario equals u.Id
 				   select u;
 		}
 
