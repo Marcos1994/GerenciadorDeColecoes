@@ -30,7 +30,15 @@ namespace MinhasColecoes.API.Controllers
 		public IActionResult GetAll(string nome = "")
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			List<ColecaoBasicViewModel> colecoes = service.GetAll(idUsuario, nome).ToList();
+			List<ColecaoBasicViewModel> colecoes = service.GetAllSubcolecoes(idUsuario, null, nome).ToList();
+			return Ok(colecoes);
+		}
+
+		[HttpGet("Subcolecoes/{idColecao}")]
+		public IActionResult GetAllSubcolecoes(int idColecao, string nome = "")
+		{
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			List<ColecaoBasicViewModel> colecoes = service.GetAllSubcolecoes(idUsuario, idColecao, nome).ToList();
 			return Ok(colecoes);
 		}
 

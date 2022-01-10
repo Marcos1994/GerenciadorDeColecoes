@@ -50,33 +50,8 @@ namespace MinhasColecoes.Testes.Services
 			int idUsuario = colecao.IdDono;
 
 			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, colecao.IdColecaoMaior, update.Nome)
 				.Returns(new List<Colecao>() { colecaoComNomeParecido });
-			//repositorioColecao.When(r => r.Update(colecao))
-			//	.Do(c => colecao.Update(update.Nome, update.Descricao, update.Foto, update.Publica));
-
-			service.Update(idUsuario, update);
-
-			colecao.Id.Should().Be(colecao.Id);
-			colecao.IdDono.Should().Be(colecao.IdDono);
-			colecao.IdColecaoMaior.Should().Be(colecao.IdColecaoMaior);
-
-			colecao.Nome.Should().Be(update.Nome);
-			colecao.Descricao.Should().Be(update.Descricao);
-			colecao.Foto.Should().Be(update.Foto);
-			colecao.Publica.Should().Be(update.Publica);
-		}
-
-		[Fact]
-		public void SucessoUpdateComNomeRepetidoDeOutroPai()
-		{
-			Colecao colecao = new ColecaoFaker(2).Generate();
-			ColecaoUpdateModel update = new ColecaoUpdateFaker(colecao.Id).Generate();
-			int idUsuario = colecao.IdDono;
-
-			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome)
-				.Returns(new List<Colecao>() { new ColecaoFaker(1).Generate() });
 			//repositorioColecao.When(r => r.Update(colecao))
 			//	.Do(c => colecao.Update(update.Nome, update.Descricao, update.Foto, update.Publica));
 
@@ -100,7 +75,7 @@ namespace MinhasColecoes.Testes.Services
 			int idUsuario = 0;
 
 			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAllSubcolecoes(idUsuario, colecao.IdColecaoMaior, update.Nome).Returns(new List<Colecao>());
 
 			Action act = () => service.Update(idUsuario, update);
 			act.Should().ThrowExactly<UsuarioNaoAutorizadoException>();
@@ -126,7 +101,7 @@ namespace MinhasColecoes.Testes.Services
 			update.Publica = true;
 
 			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, colecao.IdColecaoMaior, update.Nome)
 				.Returns(new List<Colecao>() { colecaoMesmoNome });
 
 			Action act = () => service.Update(idUsuario, update);
@@ -153,7 +128,7 @@ namespace MinhasColecoes.Testes.Services
 			update.Publica = true;
 
 			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, colecao.IdColecaoMaior, update.Nome)
 				.Returns(new List<Colecao>() { colecaoMesmoNome });
 
 			Action act = () => service.Update(idUsuario, update);
@@ -176,7 +151,7 @@ namespace MinhasColecoes.Testes.Services
 			update.Publica = false;
 
 			repositorioColecao.GetById(update.Id).Returns(colecao);
-			repositorioColecao.GetAll(idUsuario, update.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, colecao.IdColecaoMaior, update.Nome)
 				.Returns(new List<Colecao>());
 			repositorioColecao.GetMembros(update.Id)
 				.Returns(new UsuarioFaker().Generate(3));

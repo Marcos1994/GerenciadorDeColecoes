@@ -23,7 +23,7 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
 		/// <returns>Lista de coleções com as informações básicas.</returns>
-		IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int idColecao);
+		IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int? idColecao, string nome = "");
 
 		/// <summary>
 		/// Retorna todas as coleções que tem o usuário como dono.

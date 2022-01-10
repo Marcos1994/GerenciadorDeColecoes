@@ -108,7 +108,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
 		/// <returns>Lista de coleções com suas informações básicas</returns>
-		IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idUsuario, int idColecao);
+		IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idUsuario, int? idColecao, string nome = "");
 
 		/// <summary>
 		/// Retorna todas as supercoleções aninhadas desta coleção desde a raiz até ela.

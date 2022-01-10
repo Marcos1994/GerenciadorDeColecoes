@@ -30,9 +30,8 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public ColecaoViewModel Create(ColecaoInputModel input)
 		{
-			bool nomeRepetido = repositorioColecao.GetAll(input.IdDono, input.Nome)
-				.Any(c => c.IdColecaoMaior == input.IdColecaoMaior
-				&& c.Nome.Equals(input.Nome));
+			bool nomeRepetido = repositorioColecao.GetAllSubcolecoes(input.IdDono, input.IdColecaoMaior, input.Nome)
+				.Any(c => c.Nome.Equals(input.Nome));
 			if (nomeRepetido) //São consideradas apenas as coleções que são visiveis para o usuário.
 				throw new ObjetoDuplicadoException("Coleção", "Nome");
 
@@ -47,9 +46,8 @@ namespace MinhasColecoes.Aplicacao.Services
 			if (colecao.IdDono != idUsuario)
 				throw new UsuarioNaoAutorizadoException("atualizar", "Coleção");
 
-			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, update.Nome)
+			bool nomeRepetido = repositorioColecao.GetAllSubcolecoes(idUsuario, colecao.IdColecaoMaior, update.Nome)
 				.Any(c => c.Id != update.Id
-				&& c.IdColecaoMaior == colecao.IdColecaoMaior
 				&& c.Nome.Equals(update.Nome));
 			if (nomeRepetido)
 			{
@@ -82,9 +80,8 @@ namespace MinhasColecoes.Aplicacao.Services
 			if (subcolecao.IdDono != idUsuario)
 				throw new UsuarioNaoAutorizadoException("adicionar esta coleção como subcoleção de outra");
 
-			bool nomeRepetido = repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+			bool nomeRepetido = repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao, subcolecao.Nome)
 				.Any(c => c.Id != subcolecao.Id
-				&& c.IdColecaoMaior == idColecao
 				&& c.Nome.Equals(subcolecao.Nome));
 			if (nomeRepetido)
 			{
@@ -169,26 +166,27 @@ namespace MinhasColecoes.Aplicacao.Services
 
 		public IEnumerable<ColecaoBasicViewModel> GetAll(int idUsuario, string nome = "")
 		{
-			List<Colecao> colecoes = repositorioColecao.GetAll(idUsuario, nome).ToList();
-			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>(colecoes);
+			return SetQuantidadeMembosESubcolecoes(idUsuario,
+				repositorioColecao.GetAll(idUsuario, nome));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllProprias(int idUsuario, string nome = "")
 		{
-			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllPessoais(idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
+			return SetQuantidadeMembosESubcolecoes(idUsuario,
+				repositorioColecao.GetAllPessoais(idUsuario)
+				.Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
 		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(int idUsuario, string nome = "")
 		{
-			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllMembro(idUsuario).Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
+			return SetQuantidadeMembosESubcolecoes(idUsuario,
+				repositorioColecao.GetAllMembro(idUsuario)
+				.Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
-		public IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idUsuario, int idColecao)
+		public IEnumerable<ColecaoBasicViewModel> GetAllSubcolecoes(int idUsuario, int? idColecao, string nome = "")
 		{
-			return mapper.Map<IEnumerable<ColecaoBasicViewModel>>
-				(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao));
+			return SetQuantidadeMembosESubcolecoes(idUsuario, repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao, nome));
 		}
 
 		public ColecaoGenealogiaViewModel GetAllSupercolecoes(int idColecao)
@@ -228,6 +226,17 @@ namespace MinhasColecoes.Aplicacao.Services
 
 			//Verifica se o ID dela bate com o do pai
 			return VerificarGenealogia(genealogia.ColecaoPai, idColecao);
+		}
+
+		private List<ColecaoBasicViewModel> SetQuantidadeMembosESubcolecoes(int idUsuario, IEnumerable<Colecao> colecoes)
+		{
+			List<ColecaoBasicViewModel> colecoesView = mapper.Map<List<ColecaoBasicViewModel>>(colecoes);
+			for (int i = 0; i < colecoesView.Count; i++)
+			{
+				colecoesView[i].SetQuantidadeMembros(repositorioColecao.GetMembros(colecoesView[i].Id).Count());
+				colecoesView[i].SetQuantidadeSubcolecoes(repositorioColecao.GetAllSubcolecoes(idUsuario, colecoesView[i].Id).Count());
+			}
+			return colecoesView;
 		}
 	}
 }

@@ -71,7 +71,7 @@ namespace MinhasColecoes.Testes.Services
 			colecaoNomeParecido.Update(subcolecao.Nome + " parecido", "", "", true);
 
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, super.Id, subcolecao.Nome)
 				.Returns(new List<Colecao>() { colecaoNomeParecido });
 			repositorioColecao.GetById(super.Id).Returns(super);
 
@@ -89,7 +89,8 @@ namespace MinhasColecoes.Testes.Services
 			int idUsuario = subcolecao.IdDono;
 
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAllSubcolecoes(idUsuario, null, subcolecao.Nome)
+				.Returns(new List<Colecao>());
 
 			service.AdicionarSupercolecao(idUsuario, subcolecao.Id, null);
 
@@ -104,7 +105,8 @@ namespace MinhasColecoes.Testes.Services
 			int idUsuario = 0;
 
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAllSubcolecoes(idUsuario, null, subcolecao.Nome)
+				.Returns(new List<Colecao>());
 
 			Action act = () => service.AdicionarSupercolecao(idUsuario, subcolecao.Id, null);
 			act.Should().ThrowExactly<UsuarioNaoAutorizadoException>();
@@ -123,7 +125,7 @@ namespace MinhasColecoes.Testes.Services
 			mesmoNome.Update(subcolecao.Nome, mesmoNome.Descricao, mesmoNome.Foto, false);
 
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, super.Id, subcolecao.Nome)
 				.Returns(new List<Colecao>() { mesmoNome });
 
 			Action act = () => service.AdicionarSupercolecao(idUsuario, subcolecao.Id, super.Id);
@@ -143,7 +145,7 @@ namespace MinhasColecoes.Testes.Services
 			mesmoNome.Update(subcolecao.Nome, mesmoNome.Descricao, mesmoNome.Foto, true);
 
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, super.Id, subcolecao.Nome)
 				.Returns(new List<Colecao>() { mesmoNome });
 
 			Action act = () => service.AdicionarSupercolecao(idUsuario, subcolecao.Id, super.Id);
@@ -163,7 +165,7 @@ namespace MinhasColecoes.Testes.Services
 			mesmoNome.Update(subcolecao.Nome, mesmoNome.Descricao, mesmoNome.Foto, true);
 
 			repositorioColecao.GetById(subcolecao.Id).Returns(subcolecao);
-			repositorioColecao.GetAll(idUsuario, subcolecao.Nome)
+			repositorioColecao.GetAllSubcolecoes(idUsuario, null, subcolecao.Nome)
 				.Returns(new List<Colecao>() { mesmoNome });
 
 			Action act = () => service.AdicionarSupercolecao(idUsuario, subcolecao.Id, null);
@@ -182,7 +184,7 @@ namespace MinhasColecoes.Testes.Services
 			int idUsuario = colecaoRaiz.IdDono;
 
 			repositorioColecao.GetById(colecaoRaiz.Id).Returns(colecaoRaiz);
-			repositorioColecao.GetAll(idUsuario, colecaoRaiz.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAllSubcolecoes(idUsuario, colecaoNeta.Id, colecaoRaiz.Nome).Returns(new List<Colecao>());
 			repositorioColecao.GetById(colecaoNeta.Id).Returns(colecaoNeta);
 
 			repositorioColecao.GetById(colecaoRaiz.Id).Returns(colecaoRaiz);

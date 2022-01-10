@@ -30,9 +30,9 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return dbContext.Colecoes.Where(c => (c.Publica == true || c.IdDono == idUsuario) && c.Nome.Contains(nome));
 		}
 
-		public IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int idColecao)
+		public IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int? idColecao, string nome = "")
 		{
-			return dbContext.Colecoes.Where(c => c.IdColecaoMaior == idColecao && (c.Publica == true || c.IdDono == idUsuario));
+			return dbContext.Colecoes.Where(c => c.IdColecaoMaior == idColecao && (c.Publica == true || c.IdDono == idUsuario) && c.Nome.Contains(nome));
 		}
 
 		public IEnumerable<Colecao> GetAllPessoais(int idDono)

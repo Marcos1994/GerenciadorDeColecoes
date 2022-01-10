@@ -49,7 +49,7 @@ namespace MinhasColecoes.Testes.Services
 			colecaoComNomeParecido.Update(input.Nome + " parecido", input.Descricao, input.Foto, true);
 			input.IdColecaoMaior = colecaoComNomeParecido.IdColecaoMaior;
 
-			repositorioColecao.GetAll(input.IdDono, input.Nome)
+			repositorioColecao.GetAllSubcolecoes(input.IdDono, input.IdColecaoMaior, input.Nome)
 				.Returns(new List<Colecao>() { colecaoComNomeParecido });
 
 			ColecaoViewModel colecaoNova = service.Create(input);
@@ -68,7 +68,8 @@ namespace MinhasColecoes.Testes.Services
 			ColecaoInputModel input = new ColecaoInputFaker().Generate();
 			input.IdColecaoMaior = null;
 
-			repositorioColecao.GetAll(input.IdDono, input.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAllSubcolecoes(input.IdDono, input.IdColecaoMaior, input.Nome)
+				.Returns(new List<Colecao>());
 
 			ColecaoViewModel colecaoNova = service.Create(input);
 			colecaoNova.IdColecaoMaior.Should().BeNull();
@@ -80,7 +81,8 @@ namespace MinhasColecoes.Testes.Services
 		{
 			ColecaoInputModel input = new ColecaoInputFaker(true).Generate();
 
-			repositorioColecao.GetAll(input.IdDono, input.Nome).Returns(new List<Colecao>());
+			repositorioColecao.GetAllSubcolecoes(input.IdDono, input.IdColecaoMaior, input.Nome)
+				.Returns(new List<Colecao>());
 			repositorioColecao.GetById((int) input.IdColecaoMaior)
 				.Returns(new ColecaoFaker().Generate());
 
@@ -97,28 +99,11 @@ namespace MinhasColecoes.Testes.Services
 			chara.Nome = input.Nome;
 			chara.IdColecaoMaior = input.IdColecaoMaior;
 
-			repositorioColecao.GetAll(input.IdDono, input.Nome)
+			repositorioColecao.GetAllSubcolecoes(input.IdDono, input.IdColecaoMaior, input.Nome)
 				.Returns(new List<Colecao>() { mapper.Map<Colecao>(chara) });
 
 			Action act = () => service.Create(input);
 			act.Should().ThrowExactly<ObjetoDuplicadoException>();
-		}
-
-		[Fact]
-		public void SucessoCreateComNomeRepetidoDePaisDiferentes()
-		{
-			ColecaoInputModel input = new ColecaoInputFaker(true).Generate();
-			ColecaoInputModel chara = new ColecaoInputFaker(true).Generate();
-			chara.Nome = input.Nome;
-
-			repositorioColecao.GetAll(input.IdDono, input.Nome)
-				.Returns(new List<Colecao>() { mapper.Map<Colecao>(chara) });
-
-			ColecaoViewModel colecaoNova = service.Create(input);
-			colecaoNova.Should().NotBeNull();
-			colecaoNova.Nome.Should().Be(input.Nome);
-			colecaoNova.IdDono.Should().Be(input.IdDono);
-			colecaoNova.IdColecaoMaior.Should().Be(input.IdColecaoMaior);
 		}
 	}
 }
