@@ -159,7 +159,7 @@ namespace MinhasColecoes.Aplicacao.Services
 			if (!colecao.Publica && colecao.IdDono != idUsuario)
 				throw new UsuarioNaoAutorizadoException("acessar", "coleção");
 			ColecaoViewModel colecaoView = mapper.Map<ColecaoViewModel>(colecao);
-			colecaoView.Colecoes.AddRange(mapper.Map<List<ColecaoBasicViewModel>>(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao)));
+			colecaoView.Colecoes.AddRange(SetQuantidadeMembosESubcolecoes(idUsuario, repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao)));
 			colecaoView.Itens.AddRange(mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario)));
 			colecaoView.UsuariosColecao.AddRange(mapper.Map<List<UsuarioBasicViewModel>>(repositorioColecao.GetMembros(colecao.Id)));
 
