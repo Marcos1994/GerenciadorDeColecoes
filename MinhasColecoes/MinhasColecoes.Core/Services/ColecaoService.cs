@@ -161,6 +161,12 @@ namespace MinhasColecoes.Aplicacao.Services
 			ColecaoViewModel colecaoView = mapper.Map<ColecaoViewModel>(colecao);
 			colecaoView.Colecoes.AddRange(mapper.Map<List<ColecaoBasicViewModel>>(repositorioColecao.GetAllSubcolecoes(idUsuario, idColecao)));
 			colecaoView.Itens.AddRange(mapper.Map<List<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario)));
+			colecaoView.UsuariosColecao.AddRange(mapper.Map<List<UsuarioBasicViewModel>>(repositorioColecao.GetMembros(colecao.Id)));
+
+			colecaoView.SetUsuarioParticipa(colecaoView.UsuariosColecao.Any(m => m.Id == idUsuario));
+			colecaoView.SetQuantidadeMembros(colecaoView.UsuariosColecao.Count());
+			colecaoView.SetQuantidadeSubcolecoes(colecaoView.Colecoes.Count());
+
 			return colecaoView;
 		}
 
@@ -231,9 +237,12 @@ namespace MinhasColecoes.Aplicacao.Services
 		private List<ColecaoBasicViewModel> SetQuantidadeMembosESubcolecoes(int idUsuario, IEnumerable<Colecao> colecoes)
 		{
 			List<ColecaoBasicViewModel> colecoesView = mapper.Map<List<ColecaoBasicViewModel>>(colecoes);
+			List<Usuario> membros;
 			for (int i = 0; i < colecoesView.Count; i++)
 			{
-				colecoesView[i].SetQuantidadeMembros(repositorioColecao.GetMembros(colecoesView[i].Id).Count());
+				membros = repositorioColecao.GetMembros(colecoesView[i].Id).ToList();
+				colecoesView[i].SetQuantidadeMembros(membros.Count());
+				colecoesView[i].SetUsuarioParticipa(membros.Any(m => m.Id == idUsuario));
 				colecoesView[i].SetQuantidadeSubcolecoes(repositorioColecao.GetAllSubcolecoes(idUsuario, colecoesView[i].Id).Count());
 			}
 			return colecoesView;
