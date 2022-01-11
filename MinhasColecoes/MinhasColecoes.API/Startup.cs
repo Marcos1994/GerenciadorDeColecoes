@@ -132,6 +132,13 @@ namespace MinhasColecoes.API
 			app.UseAuthentication();
 			app.UseAuthorization();
 
+			app.UseCors(cors => cors
+				.AllowAnyMethod()
+				.AllowAnyHeader()
+				.SetIsOriginAllowed(origin => true)
+				.AllowCredentials()
+			);
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
