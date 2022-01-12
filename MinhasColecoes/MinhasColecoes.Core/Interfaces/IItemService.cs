@@ -25,7 +25,6 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idItem"></param>
-		/// <returns>Item original criado.</returns>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		/// <exception cref="ObjetoDuplicadoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>

@@ -73,7 +73,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
-		/// <returns>Coleção com os itens e subcoleções com suas respectivas relações com o usuário.</returns>
+		/// <returns>Coleção com informações basicas.</returns>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		ColecaoViewModel GetById(int idUsuario, int idColecao);

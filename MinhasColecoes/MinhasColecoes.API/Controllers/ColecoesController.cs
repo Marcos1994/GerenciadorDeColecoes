@@ -34,11 +34,18 @@ namespace MinhasColecoes.API.Controllers
 			return Ok(colecoes);
 		}
 
-		[HttpGet("Subcolecoes/{idColecao}")]
+		[HttpGet("{idColecao}/Subcolecoes")]
 		public IActionResult GetAllSubcolecoes(int idColecao, string nome = "")
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			List<ColecaoBasicViewModel> colecoes = service.GetAllSubcolecoes(idUsuario, idColecao, nome).ToList();
+			return Ok(colecoes);
+		}
+
+		[HttpGet("{idColecao}/Membros")]
+		public IActionResult GetAllMembros(int idColecao)
+		{
+			List<UsuarioBasicViewModel> colecoes = service.GetAllMembros(idColecao).ToList();
 			return Ok(colecoes);
 		}
 
