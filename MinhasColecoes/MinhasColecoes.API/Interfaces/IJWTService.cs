@@ -9,5 +9,6 @@ namespace MinhasColecoes.API.Interfaces
 	public interface IJWTService
 	{
 		string GerarToken(UsuarioLoginViewModel usuario);
+		bool VerificarValidadeToken(string token);
 	}
 }

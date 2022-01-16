@@ -41,5 +41,31 @@ namespace MinhasColecoes.API.Services
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return tokenHandler.WriteToken(token);
 		}
+
+		public bool VerificarValidadeToken(string token)
+		{
+			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+			byte[] chave = Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Secret").Value);
+			try
+			{
+				tokenHandler.ValidateToken(token, new TokenValidationParameters
+				{
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(chave),
+					ValidateIssuer = false,
+					ValidateAudience = false,
+					ValidateLifetime = true,
+					ClockSkew = TimeSpan.Zero
+				}, out SecurityToken validatedToken);
+
+				JwtSecurityToken jwtToken = (JwtSecurityToken)validatedToken;
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
 	}
 }

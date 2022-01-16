@@ -56,6 +56,15 @@ namespace MinhasColecoes.API.Controllers
 			return Ok(usuarioLogado);
 		}
 
+		[HttpGet]
+		[Route("VerificarToken")]
+		public IActionResult Post(string token)
+		{
+			return (jwt.VerificarValidadeToken(token))
+				? Ok()
+				: Unauthorized();
+		}
+
 		[Authorize]
 		[HttpGet]
 		public IActionResult Get()
