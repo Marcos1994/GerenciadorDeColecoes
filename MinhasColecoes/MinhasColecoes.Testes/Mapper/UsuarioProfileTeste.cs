@@ -72,7 +72,6 @@ namespace MinhasColecoes.Testes.Mapper
 			destiny.Descricao.Should().Be(usuario.Descricao);
 			destiny.Foto.Should().Be(usuario.Foto);
 
-			destiny.ColecoesDono.Count().Should().Be(usuario.ColecoesDono.Count());
 			destiny.ColecoesMembro.Should().BeEmpty();
 		}
 

@@ -22,7 +22,6 @@ namespace MinhasColecoes.Aplicacao.Models.View
 
 		public string Descricao { get; private set; }
 		public string Foto { get; private set; }
-		public List<ColecaoBasicViewModel> ColecoesDono { get; private set; } = new List<ColecaoBasicViewModel>();
 		public List<ColecaoBasicViewModel> ColecoesMembro { get; private set; } = new List<ColecaoBasicViewModel>();
 	}
 }
