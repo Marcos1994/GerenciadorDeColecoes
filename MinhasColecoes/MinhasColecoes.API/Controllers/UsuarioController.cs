@@ -76,7 +76,6 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
-			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idAutenticado, id));
 			return Ok(usuario);
 		}
 
