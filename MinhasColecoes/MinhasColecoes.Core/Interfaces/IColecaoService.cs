@@ -95,12 +95,13 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		IEnumerable<ColecaoBasicViewModel> GetAllProprias(int idUsuario, string nome = "");
 
 		/// <summary>
-		/// Retorna todas as coleções que o usuário participa e que nome contenha o parâmetro passado.
+		/// Retorna todas as coleções que o usuário participa e que nome contenha o parâmetro passado. Se o usuário for o mesmo usuário autenticado, as consulta incluirá as coleções privadas.
 		/// </summary>
+		/// <param name="idAutenticado"></param>
 		/// <param name="idUsuario"></param>
 		/// <param name="nome"></param>
 		/// <returns>Lista de coleções com suas informações básicas</returns>
-		IEnumerable<ColecaoBasicViewModel> GetAllParticipa(int idUsuario, string nome = "");
+		IEnumerable<ColecaoBasicViewModel> GetAllParticipa(int idAutenticado, int idUsuario, string nome = "");
 
 		/// <summary>
 		/// Retorna todas as subcoleções de uma coleção visíveis para o usuário.

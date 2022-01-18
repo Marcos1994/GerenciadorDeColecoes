@@ -40,12 +40,13 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return dbContext.Colecoes.Where(c => c.IdDono == idDono);
 		}
 
-		public IEnumerable<Colecao> GetAllMembro(int idMembro)
+		public IEnumerable<Colecao> GetAllMembro(int idMembro, bool incluirPrivadas = true)
 		{
 			return from cu in dbContext.ColecoesUsuario
 				   where cu.IdUsuario == idMembro
 				   join c in dbContext.Colecoes
 				   on cu.IdColecao equals c.Id
+				   where incluirPrivadas || c.Publica
 				   select c;
 		}
 

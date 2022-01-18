@@ -177,10 +177,11 @@ namespace MinhasColecoes.Aplicacao.Services
 				.Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
-		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(int idUsuario, string nome = "")
+		public IEnumerable<ColecaoBasicViewModel> GetAllParticipa(int idAutenticado, int idUsuario, string nome = "")
 		{
+			bool incluirPrivadas = idAutenticado == idUsuario;
 			return SetQuantidadeMembosESubcolecoes(idUsuario,
-				repositorioColecao.GetAllMembro(idUsuario)
+				repositorioColecao.GetAllMembro(idUsuario, incluirPrivadas)
 				.Where(c => c.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 

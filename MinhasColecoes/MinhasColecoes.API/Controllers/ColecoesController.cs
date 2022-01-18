@@ -62,16 +62,6 @@ namespace MinhasColecoes.API.Controllers
 			catch (Exception ex) { return BadRequest(ex.Message); }
 		}
 
-		[Authorize]
-		[HttpGet]
-		[Route("MinhasColecoes")]
-		public IActionResult GetParticipo(string nome = "")
-		{
-			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			List<ColecaoBasicViewModel> colecoes = service.GetAllParticipa(idUsuario, nome).ToList();
-			return Ok(colecoes);
-		}
-
 		[HttpGet("{idColecao}")]
 		public IActionResult GetById(int idColecao)
 		{

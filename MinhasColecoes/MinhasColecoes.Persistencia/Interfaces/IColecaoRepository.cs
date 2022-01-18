@@ -33,11 +33,12 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		IEnumerable<Colecao> GetAllPessoais(int idDono);
 
 		/// <summary>
-		/// Retorna todas as coleções das quais o usuário é membro.
+		/// Retorna todas as coleções das quais o usuário é membro, incluindo ou não as coleções privadas.
 		/// </summary>
 		/// <param name="idMembro"></param>
+		/// <param name="incluirPrivadas"></param>
 		/// <returns>Lista de coleções com as informações básicas.</returns>
-		IEnumerable<Colecao> GetAllMembro(int idMembro);
+		IEnumerable<Colecao> GetAllMembro(int idMembro, bool incluirPrivadas = true);
 
 		/// <summary>
 		/// Retorna todos os membros de uma coleção.

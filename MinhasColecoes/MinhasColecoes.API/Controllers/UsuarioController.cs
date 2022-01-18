@@ -77,7 +77,7 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
-			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idUsuario));
+			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idUsuario, idUsuario));
 			usuario.ColecoesDono.AddRange(serviceColecao.GetAllProprias(idUsuario));
 			return Ok(usuario);
 		}
@@ -112,13 +112,12 @@ namespace MinhasColecoes.API.Controllers
 			return NoContent();
 		}
 
-		[Authorize]
 		[HttpGet]
-		[Route("MinhasColecoes")]
-		public IActionResult GetParticipo(string nome = "")
+		[Route("{id}/MinhasColecoes")]
+		public IActionResult GetParticipo(int id, string nome = "")
 		{
-			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			List<ColecaoBasicViewModel> colecoes = serviceColecao.GetAllParticipa(idUsuario, nome).ToList();
+			int idAutenticado = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			List<ColecaoBasicViewModel> colecoes = serviceColecao.GetAllParticipa(idAutenticado, id, nome).ToList();
 			return Ok(colecoes);
 		}
 	}
