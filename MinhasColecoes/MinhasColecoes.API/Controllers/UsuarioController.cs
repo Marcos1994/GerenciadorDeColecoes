@@ -65,20 +65,18 @@ namespace MinhasColecoes.API.Controllers
 				: Unauthorized();
 		}
 
-		[Authorize]
-		[HttpGet]
-		public IActionResult Get()
+		[HttpGet("{id}")]
+		public IActionResult GetById(int id)
 		{
-			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			int idAutenticado = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			UsuarioViewModel usuario;
 			try
 			{
-				usuario = service.GetById(idUsuario);
+				usuario = service.GetById(id);
 			}
 			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
 			catch (Exception ex) { return BadRequest(ex.Message); }
-			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idUsuario, idUsuario));
-			usuario.ColecoesDono.AddRange(serviceColecao.GetAllProprias(idUsuario));
+			usuario.ColecoesMembro.AddRange(serviceColecao.GetAllParticipa(idAutenticado, id));
 			return Ok(usuario);
 		}
 
