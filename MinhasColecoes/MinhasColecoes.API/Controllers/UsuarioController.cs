@@ -49,7 +49,9 @@ namespace MinhasColecoes.API.Controllers
 		[Route("Login")]
 		public IActionResult Post(UsuarioLoginInputModel usuario)
 		{
-			UsuarioLoginViewModel usuarioLogado = service.ValidarUsuario(usuario);
+			UsuarioLoginViewModel usuarioLogado;
+			try { usuarioLogado = service.ValidarUsuario(usuario); }
+			catch { return NotFound(); }
 			if (usuarioLogado == null)
 				return BadRequest();
 			usuarioLogado.SetToken(jwt.GerarToken(usuarioLogado));

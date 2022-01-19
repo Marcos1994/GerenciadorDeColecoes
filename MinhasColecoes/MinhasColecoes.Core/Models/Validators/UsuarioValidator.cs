@@ -48,7 +48,8 @@ namespace MinhasColecoes.Aplicacao.Models.Validators
 		public UsuarioLoginInputValidator()
 		{
 			RuleFor(u => u.Login)
-				.NotEmpty().WithMessage("O login não deve ser vazio.");
+				.NotEmpty().WithMessage("O login não deve ser vazio.")
+				.Matches(@"^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-za-za-z]{2,3})+$").WithMessage("O Login deve ser um endereço de e-mail válido.");
 
 			RuleFor(u => u.Senha)
 				.NotEmpty().WithMessage("A senha deve ser vazia.");

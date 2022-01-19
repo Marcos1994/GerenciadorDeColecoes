@@ -22,7 +22,9 @@ namespace MinhasColecoes.Persistencia.Repositories
 		public Usuario Get(string login, string senha)
 		{
 			Usuario usuario = this.GetByLogin(login);
-			return (usuario != null && usuario.Senha == senha)
+			if (usuario == null)
+				throw new ObjetoNaoEncontradoException("Usuario", null);
+			return (usuario.Senha == senha)
 				? usuario
 				: null;
 		}
