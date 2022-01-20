@@ -26,6 +26,14 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		IEnumerable<Colecao> GetAllSubcolecoes(int idUsuario, int? idColecao, string nome = "");
 
 		/// <summary>
+		/// Retorna todas as relações que o usuário possui com os itens da coleção.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="idColecao"></param>
+		/// <returns>Relações de Itens e Usuário.</returns>
+		IEnumerable<ItemUsuario> GetAllRelacoesItens(int idUsuario, int idColecao);
+
+		/// <summary>
 		/// Retorna todas as coleções que tem o usuário como dono.
 		/// </summary>
 		/// <param name="idDono"></param>
@@ -54,6 +62,14 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		/// <returns>Coleção com informações básicas.</returns>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		Colecao GetById(int id);
+
+		/// <summary>
+		/// Retorna, caso exista, a relação entre um usuário e uma coleção.
+		/// </summary>
+		/// <param name="idUsuario"></param>
+		/// <param name="idColecao"></param>
+		/// <returns>Relação entre usuário e coleção.</returns>
+		ColecaoUsuario GetRelacao(int idUsuario, int idColecao);
 
 		/// <summary>
 		/// Cadastra uma coleção.

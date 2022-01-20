@@ -45,6 +45,12 @@ namespace MinhasColecoes.Aplicacao.Services
 			}
 
 			repositorioItem.Add(item);
+			if(item.RelacoesUsuarios.Count > 0)
+			{
+				ColecaoUsuario relacao = repositorioColecao.GetRelacao(input.IdUsuario, input.IdColecao);
+				if(relacao == null)
+					repositorioColecao.Add(new ColecaoUsuario(input.IdUsuario, input.IdColecao));
+			}
 			return mapper.Map<ItemViewModel>(item);
 		}
 
@@ -155,11 +161,24 @@ namespace MinhasColecoes.Aplicacao.Services
 		public void DefinirRelacao(RelacaoItemUsuarioInputModel relacaoInput)
 		{
 			ItemUsuario relacao = repositorioItem.GetByKey(relacaoInput.IdUsuario, relacaoInput.IdItem);
+			Item item = repositorioItem.GetById(relacaoInput.IdItem, relacaoInput.IdUsuario);
 
 			if (relacaoInput.Relacao == EnumRelacaoUsuarioItem.NaoPossuo)
 			{
 				if (relacao != null)
+				{
+					Colecao colecao = repositorioColecao.GetById(item.IdColecao);
+
 					repositorioItem.Delete(relacao);
+
+					if (colecao.IdDono != relacao.IdUsuario)
+					{
+						ColecaoUsuario colecaoUsuario = repositorioColecao.GetRelacao(relacao.IdUsuario, colecao.Id);
+						if (colecaoUsuario != null &&
+							repositorioColecao.GetAllRelacoesItens(colecaoUsuario.IdUsuario, colecaoUsuario.IdColecao).Count() == 0)
+							repositorioColecao.Delete(colecaoUsuario);
+					}
+				}
 			}
 			else
 			{
@@ -170,6 +189,13 @@ namespace MinhasColecoes.Aplicacao.Services
 					relacao.Update((int)relacaoInput.Relacao, relacaoInput.Comentario);
 					repositorioItem.Update(relacao);
 				}
+
+				if (item.RelacoesUsuarios.Count > 0)
+				{
+					ColecaoUsuario colecaoUsuario = repositorioColecao.GetRelacao(relacaoInput.IdUsuario, item.IdColecao);
+					if (colecaoUsuario == null)
+						repositorioColecao.Add(new ColecaoUsuario(relacaoInput.IdUsuario, item.IdColecao));
+				}
 			}
 		}
 
@@ -177,9 +203,22 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Item item = repositorioItem.GetById(idItem);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
-			if (colecao.IdDono == idUsuario || item.IdDonoParticular == idUsuario)
+			if (colecao.IdDono != idUsuario || item.IdDonoParticular != idUsuario)
 				throw new UsuarioNaoAutorizadoException("excluir", "item");
+
+			List<ItemUsuario> relacoes = repositorioItem.GetAllRelacoes(idItem).ToList();
+			if (relacoes.Count > 1 || relacoes.Any(iu => iu.IdUsuario != idUsuario))
+				throw new FalhaDeValidacaoException("Não é possível excluir um item que possua relação com algum usuário.");
+
 			repositorioItem.Delete(item);
+
+			if (colecao.IdDono != idUsuario)
+			{
+				ColecaoUsuario colecaoUsuario = repositorioColecao.GetRelacao(idUsuario, colecao.Id);
+				if (colecaoUsuario != null &&
+					repositorioColecao.GetAllRelacoesItens(colecaoUsuario.IdUsuario, colecaoUsuario.IdColecao).Count() == 0)
+					repositorioColecao.Delete(colecaoUsuario);
+			}
 		}
 
 		public ItemViewModel GetById(int idUsuario, int idItem)

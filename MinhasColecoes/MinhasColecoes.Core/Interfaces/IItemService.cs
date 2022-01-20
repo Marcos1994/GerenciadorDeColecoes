@@ -54,6 +54,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idItem"></param>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void Delete(int idUsuario, int idItem);
 
 		/// <summary>

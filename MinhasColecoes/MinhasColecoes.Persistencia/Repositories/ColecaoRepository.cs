@@ -35,6 +35,16 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return dbContext.Colecoes.Where(c => c.IdColecaoMaior == idColecao && (c.Publica == true || c.IdDono == idUsuario) && c.Nome.Contains(nome));
 		}
 
+		public IEnumerable<ItemUsuario> GetAllRelacoesItens(int idUsuario, int idColecao)
+		{
+			return from i in dbContext.Itens
+				   where i.IdColecao == idColecao
+				   join iu in dbContext.ItensUsuario
+				   on i.Id equals iu.IdItem
+				   where iu.IdUsuario == idUsuario
+				   select iu;
+		}
+
 		public IEnumerable<Colecao> GetAllPessoais(int idDono)
 		{
 			return dbContext.Colecoes.Where(c => c.IdDono == idDono);
@@ -73,6 +83,12 @@ namespace MinhasColecoes.Persistencia.Repositories
 			{
 				throw;
 			}
+		}
+
+		public ColecaoUsuario GetRelacao(int idUsuario, int idColecao)
+		{
+			return dbContext.ColecoesUsuario.FirstOrDefault(
+				cu => cu.IdUsuario == idUsuario && cu.IdColecao == idColecao);
 		}
 
 		public void Add(Colecao colecao)

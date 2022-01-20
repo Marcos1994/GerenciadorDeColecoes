@@ -30,6 +30,11 @@ namespace MinhasColecoes.Persistencia.Repositories
 			return dbContext.Itens.Where(i => i.IdColecao == idColecao && i.Original == true);
 		}
 
+		public IEnumerable<ItemUsuario> GetAllRelacoes(int idItem)
+		{
+			return dbContext.ItensUsuario.Where(iu => iu.IdItem == idItem);
+		}
+
 		public IEnumerable<Item> GetAllPessoais(int idColecao, int idUsuario)
 		{
 			List<Item> itens = dbContext.Itens.Where(i => i.IdColecao == idColecao && (i.Original == true || i.IdDonoParticular == idUsuario)).ToList();

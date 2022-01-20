@@ -17,6 +17,13 @@ namespace MinhasColecoes.Persistencia.Interfaces
 		IEnumerable<Item> GetAll(int idColecao);
 
 		/// <summary>
+		/// Retorna todas as relações de usuários com o item.
+		/// </summary>
+		/// <param name="idItem"></param>
+		/// <returns>Coleção de relações que os uruarios tem com o item.</returns>
+		IEnumerable<ItemUsuario> GetAllRelacoes(int idItem);
+
+		/// <summary>
 		/// Retorna todos os itens de uma determinada coleção considerando as modificações do usuário específico.
 		/// </summary>
 		/// <param name="idColecao"></param>

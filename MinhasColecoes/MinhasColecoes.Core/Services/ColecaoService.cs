@@ -121,36 +121,16 @@ namespace MinhasColecoes.Aplicacao.Services
 		public void Delete(int idUsuario, int idColecao)
 		{
 			Colecao colecao = repositorioColecao.GetById(idColecao);
-			if (colecao.IdDono == idUsuario)
+			if (colecao.IdDono != idUsuario)
+				throw new UsuarioNaoAutorizadoException("Excluir coleção");
+
+			if (colecao.Publica)
 			{
-				if (colecao.Publica)
-				{
-					bool possuiOutrosMembros = repositorioColecao.GetMembros(idColecao).Count() > 1;
-					if (possuiOutrosMembros)
-						throw new FalhaDeValidacaoException("Não é possível excluir uma coleção que já possui algum outro membro.");
-				}
-				repositorioColecao.Delete(colecao);
+				bool possuiOutrosMembros = repositorioColecao.GetMembros(idColecao).Count() > 1;
+				if (possuiOutrosMembros)
+					throw new FalhaDeValidacaoException("Não é possível excluir uma coleção que já possui algum outro membro.");
 			}
-			else
-			{
-				ColecaoUsuario relacao = new ColecaoUsuario(idUsuario, idColecao);
-				try
-				{
-					repositorioColecao.StartTransaction("DesvincularUsuarioColecao");
-
-					repositorioColecao.Delete(relacao);
-					repositorioItem.DeleteItensParticulares(relacao);
-					repositorioItem.DeleteRelacoes(relacao);
-
-					repositorioColecao.FinishTransaction();
-				}
-				catch (Exception ex)
-				{
-					repositorioColecao.RollbackTransaction("DesvincularUsuarioColecao");
-					throw ex;
-				}
-
-			}
+			repositorioColecao.Delete(colecao);
 		}
 
 		public ColecaoViewModel GetById(int idUsuario, int idColecao)
