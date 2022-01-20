@@ -151,5 +151,21 @@ namespace MinhasColecoes.API.Controllers
 			catch (Exception ex) { return BadRequest(ex.Message); }
 			return NoContent();
 		}
+	
+		[Authorize]
+		[HttpDelete("{id}")]
+		public IActionResult Delete(int idItem)
+		{
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			try
+			{
+				service.Delete(idUsuario, idItem);
+			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
+			catch (FalhaDeValidacaoException ex) { return BadRequest(ex.Message); }
+			catch (Exception ex) { return BadRequest(ex.Message); }
+			return NoContent();
+		}
 	}
 }
