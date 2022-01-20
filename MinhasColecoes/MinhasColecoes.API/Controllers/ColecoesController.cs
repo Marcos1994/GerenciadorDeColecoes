@@ -111,21 +111,6 @@ namespace MinhasColecoes.API.Controllers
 		}
 
 		[Authorize]
-		[HttpPut("{idColecao}/Participar")]
-		public IActionResult Particupar(int idColecao)
-		{
-			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			try
-			{
-				service.AdicionarMembro(idUsuario, idColecao);
-				return NoContent();
-			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
-		}
-
-		[Authorize]
 		[HttpPut("{idColecao}/Supercolecao")]
 		public IActionResult PutSupercolecao(int idColecao, int idSupercolecao)
 		{
