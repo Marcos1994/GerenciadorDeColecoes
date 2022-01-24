@@ -23,4 +23,8 @@
     <ProjectReference Include="..\MinhasColecoes.Persistencia\MinhasColecoes.Persistencia.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

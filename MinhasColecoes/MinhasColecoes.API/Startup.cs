@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -124,6 +125,10 @@ namespace MinhasColecoes.API
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MinhasColecoes.API v1"));
 			}
+			else
+			{
+				app.UseHsts();
+			}
 
 			app.UseHttpsRedirection();
 
@@ -131,6 +136,8 @@ namespace MinhasColecoes.API
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.UseStaticFiles();
 
 			app.UseCors(cors => cors
 				.AllowAnyMethod()
@@ -142,6 +149,11 @@ namespace MinhasColecoes.API
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+			});
+
+			app.Run(async(context) =>
+			{
+				await context.Response.WriteAsync("Deu ruim...");
 			});
 		}
 	}
