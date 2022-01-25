@@ -63,6 +63,14 @@ namespace MinhasColecoes.API
 				};
 			});
 
+			//services.AddCors(o =>
+			//{
+			//	o.AddPolicy("CorsPolicy", b =>
+			//	b.AllowAnyOrigin()
+			//	.AllowAnyMethod()
+			//	.AllowAnyHeader());
+			//});
+
 			services.AddAutoMapper(typeof(UsuarioProfile));
 			services.AddAutoMapper(typeof(ColecaoProfile));
 			services.AddAutoMapper(typeof(ItemProfile));

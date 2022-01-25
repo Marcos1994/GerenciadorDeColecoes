@@ -23,22 +23,24 @@ namespace MinhasColecoes.API.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public IActionResult Post(IFormFile file)
+		public IActionResult Post([FromForm(Name = "image")]IFormFile file)
 		{
-			if (file.Length == 0)
-				return NoContent();
-			string diretorio = webHostEnv.WebRootPath;
-			if (!Directory.Exists(webHostEnv.WebRootPath + "\\Upload\\"))
-				Directory.CreateDirectory(webHostEnv.WebRootPath + "\\Upload\\");
+			if (file == null || file.Length == 0)
+				return BadRequest();
+
+			string diretorio = "\\Upload\\";
+
+			if (!Directory.Exists(webHostEnv.WebRootPath + diretorio))
+				Directory.CreateDirectory(webHostEnv.WebRootPath + diretorio);
 
 			try
 			{
-				using (FileStream fileStream = System.IO.File.Create(webHostEnv.WebRootPath + "\\Upload\\" + file.FileName))
+				using (FileStream fileStream = System.IO.File.Create(webHostEnv.WebRootPath + diretorio + file.FileName))
 				{
 					file.CopyTo(fileStream);
 					fileStream.Flush();
 				}
-				return Ok(diretorio+"\\Upload\\"+ file.FileName);
+				return Ok(diretorio + file.FileName);
 			}
 			catch (Exception ex)
 			{
