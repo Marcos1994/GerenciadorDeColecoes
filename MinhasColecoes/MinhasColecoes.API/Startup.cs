@@ -63,6 +63,8 @@ namespace MinhasColecoes.API
 				};
 			});
 
+			services.AddSingleton<SaveFileService>();
+
 			services.AddCors(o =>
 			{
 				o.AddPolicy("CorsPolicy", b =>
