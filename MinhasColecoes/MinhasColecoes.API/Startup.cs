@@ -63,13 +63,15 @@ namespace MinhasColecoes.API
 				};
 			});
 
-			//services.AddCors(o =>
-			//{
-			//	o.AddPolicy("CorsPolicy", b =>
-			//	b.AllowAnyOrigin()
-			//	.AllowAnyMethod()
-			//	.AllowAnyHeader());
-			//});
+			services.AddCors(o =>
+			{
+				o.AddPolicy("CorsPolicy", b =>
+				//b.AllowAnyOrigin()
+				b.WithOrigins("https://localhost:44384", "http://localhost:8080")
+				.SetIsOriginAllowedToAllowWildcardSubdomains()
+				.AllowAnyMethod()
+				.AllowAnyHeader());
+			});
 
 			services.AddAutoMapper(typeof(UsuarioProfile));
 			services.AddAutoMapper(typeof(ColecaoProfile));
@@ -147,12 +149,7 @@ namespace MinhasColecoes.API
 
 			app.UseStaticFiles();
 
-			app.UseCors(cors => cors
-				.AllowAnyMethod()
-				.AllowAnyHeader()
-				.SetIsOriginAllowed(origin => true)
-				.AllowCredentials()
-			);
+			app.UseCors("CorsPolicy");
 
 			app.UseEndpoints(endpoints =>
 			{
