@@ -17,7 +17,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="input"></param>
 		/// <returns>Coleção criada.</returns>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		ColecaoViewModel Create(ColecaoInputModel input);
 
 		/// <summary>
@@ -27,7 +27,6 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="update"></param>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
 		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void Update(int idUsuario, ColecaoUpdateModel update);
 
@@ -46,7 +45,6 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idColecao"></param>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
 		/// <exception cref="FalhaDeValidacaoException"></exception>
 		void AdicionarSupercolecao(int idUsuario, int idSubcolecao, int? idColecao);
 

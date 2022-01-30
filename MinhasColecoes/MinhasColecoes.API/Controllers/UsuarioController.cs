@@ -40,7 +40,7 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return BadRequest(new ErrorModel(ex.Message));
 			}
 			return Ok();
 		}
@@ -74,8 +74,8 @@ namespace MinhasColecoes.API.Controllers
 			{
 				usuario = service.GetById(id);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 			return Ok(usuario);
 		}
 
@@ -89,8 +89,8 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(usuario);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 			return Ok();
 		}
 
@@ -104,8 +104,8 @@ namespace MinhasColecoes.API.Controllers
 			{
 				service.Update(usuario);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 			return NoContent();
 		}
 

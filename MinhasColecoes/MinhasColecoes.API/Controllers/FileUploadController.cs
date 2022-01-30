@@ -36,7 +36,7 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return BadRequest(new ErrorModel(ex.Message));
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return BadRequest(new ErrorModel(ex.Message));
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace MinhasColecoes.API.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex.Message);
+				return BadRequest(new ErrorModel(ex.Message));
 			}
 		}
 	}

@@ -58,8 +58,8 @@ namespace MinhasColecoes.API.Controllers
 				ColecaoGenealogiaViewModel colecao = service.GetAllSupercolecoes(idColecao);
 				return Ok(colecao);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
 		[HttpGet("{idColecao}")]
@@ -71,9 +71,9 @@ namespace MinhasColecoes.API.Controllers
 				ColecaoViewModel colecao = service.GetById(idUsuario, idColecao);
 				return Ok(colecao);
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
 		[Authorize]
@@ -88,10 +88,8 @@ namespace MinhasColecoes.API.Controllers
 				ColecaoViewModel colecaoView = service.Create(colecao);
 				return CreatedAtAction(nameof(GetById), new { idColecao = colecaoView.Id }, colecaoView);
 			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			catch (FalhaDeValidacaoException ex) { return BadRequest(new ErrorModel(ex.Message, ex.Errors)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
 		[Authorize]
@@ -105,9 +103,10 @@ namespace MinhasColecoes.API.Controllers
 				service.Update(idUsuario, colecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (FalhaDeValidacaoException ex) { return BadRequest(new ErrorModel(ex.Message, ex.Errors)); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
 		[Authorize]
@@ -120,9 +119,10 @@ namespace MinhasColecoes.API.Controllers
 				service.AdicionarSupercolecao(idUsuario, idColecao, idSupercolecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (FalhaDeValidacaoException ex) { return BadRequest(new ErrorModel(ex.Message, ex.Errors)); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
 		[Authorize]
@@ -135,8 +135,8 @@ namespace MinhasColecoes.API.Controllers
 				service.Delete(idUsuario, idColecao);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
 		[Authorize]
@@ -149,9 +149,9 @@ namespace MinhasColecoes.API.Controllers
 				service.AdicionarSupercolecao(idUsuario, idColecao, null);
 				return NoContent();
 			}
-			catch (ObjetoNaoEncontradoException ex) { return NotFound(ex.Message); }
-			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(ex.Message); }
-			catch (Exception ex) { return BadRequest(ex.Message); }
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (UsuarioNaoAutorizadoException ex) { return Unauthorized(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 	}
 }

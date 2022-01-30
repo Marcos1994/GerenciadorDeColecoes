@@ -37,7 +37,9 @@ namespace MinhasColecoes.Aplicacao.Services
 			{
 				Item itemMesmoCodigo = repositorioItem.GetByCodigo(input.IdColecao, input.Codigo);
 				if (itemMesmoCodigo != null)
-					throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
+					//throw new FalhaDeValidacaoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
+					throw new FalhaDeValidacaoException(
+						"Código", $"O código já pertence ao item {itemMesmoCodigo.Nome}");
 			}
 			else
 			{
@@ -69,7 +71,8 @@ namespace MinhasColecoes.Aplicacao.Services
 
 			//Verifica se existe algum item com o novo código que não seja o item original.
 			if (itemMesmoCodigo != null && (itemOficial == null || itemMesmoCodigo.Id != itemOficial.Id))
-				throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
+				throw new FalhaDeValidacaoException(
+					"Código", $"Já existe um item oficial com este código: {itemMesmoCodigo.Nome}");
 
 			if (itemOficial == null) //Item novo não oficial
 			{
@@ -123,7 +126,8 @@ namespace MinhasColecoes.Aplicacao.Services
 			{
 				Item itemMesmoCodigo = repositorioItem.GetByCodigo(colecao.Id, update.Codigo);
 				if (itemMesmoCodigo != null && itemMesmoCodigo.Id != update.Id)
-					throw new ObjetoDuplicadoException("Item", "Código", $"Nome do item: {itemMesmoCodigo.Nome}.");
+					throw new FalhaDeValidacaoException(
+						"Código", $"O código já pertence ao item {itemMesmoCodigo.Nome}");
 
 				item.Update(update.Nome, update.Codigo, update.Descricao, update.Foto);
 				repositorioItem.Update(item);

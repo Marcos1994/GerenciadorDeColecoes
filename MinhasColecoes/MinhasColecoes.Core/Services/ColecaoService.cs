@@ -33,7 +33,8 @@ namespace MinhasColecoes.Aplicacao.Services
 			bool nomeRepetido = repositorioColecao.GetAllSubcolecoes(input.IdDono, input.IdColecaoMaior, input.Nome)
 				.Any(c => c.Nome.Equals(input.Nome));
 			if (nomeRepetido) //São consideradas apenas as coleções que são visiveis para o usuário.
-				throw new ObjetoDuplicadoException("Coleção", "Nome");
+				throw new FalhaDeValidacaoException(
+					"Nome", "Já existe uma coleção com este nome.");
 
 			Colecao colecao = mapper.Map<Colecao>(input);
 			repositorioColecao.Add(colecao);
@@ -52,9 +53,11 @@ namespace MinhasColecoes.Aplicacao.Services
 			if (nomeRepetido)
 			{
 				if (!colecao.Publica && update.Publica)
-					throw new FalhaDeValidacaoException("Já existe uma coleção pública com esse nome.");
+					throw new FalhaDeValidacaoException(
+						"Nome", "Já existe uma coleção pública com este nome.");
 				else
-					throw new ObjetoDuplicadoException("Coleção", "Nome");
+					throw new FalhaDeValidacaoException(
+						"Nome", "Já existe uma coleção com este nome.");
 			}
 
 			if (!update.Publica && colecao.Publica)
@@ -88,7 +91,8 @@ namespace MinhasColecoes.Aplicacao.Services
 				if (idColecao == null)
 					throw new FalhaDeValidacaoException("Já existe uma coleção pública com esse nome.");
 				else
-					throw new ObjetoDuplicadoException("Subcoleção", "Nome");
+					throw new FalhaDeValidacaoException(
+						"Nome", "Já existe uma subcoleção com este nome.");
 			}
 
 			//Verifico se não haverá referência ciclica entre as coleções

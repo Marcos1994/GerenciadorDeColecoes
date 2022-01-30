@@ -39,7 +39,8 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			bool loginExistente = repositorioUsuario.GetByLogin(input.Login) != null;
 			if (loginExistente)
-				throw new ObjetoDuplicadoException("usuário", "login");
+				throw new FalhaDeValidacaoException(
+					"Login", "Já existe um registro com este login.");
 			Usuario usuario = mapper.Map<Usuario>(input);
 			repositorioUsuario.Create(usuario);
 			return mapper.Map<UsuarioViewModel>(usuario);

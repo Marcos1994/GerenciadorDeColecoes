@@ -17,7 +17,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="input"></param>
 		/// <returns>Item criado.</returns>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		ItemViewModel Create(ItemInputModel input);
 
 		/// <summary>
@@ -26,7 +26,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="idUsuario"></param>
 		/// <param name="idItem"></param>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		void Oficializar(int idUsuario, int idItem);
 
@@ -37,7 +37,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// <param name="update"></param>
 		/// <returns>Item atualizado.</returns>
 		/// <exception cref="ObjetoNaoEncontradoException"></exception>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		/// <exception cref="UsuarioNaoAutorizadoException"></exception>
 		ItemViewModel Update(int idUsuario, ItemUpdateModel update);
 

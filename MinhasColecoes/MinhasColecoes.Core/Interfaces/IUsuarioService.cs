@@ -31,7 +31,7 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns>Usuário cadastrado.</returns>
-		/// <exception cref="ObjetoDuplicadoException"></exception>
+		/// <exception cref="FalhaDeValidacaoException"></exception>
 		UsuarioViewModel Create(UsuarioInputModel input);
 
 		/// <summary>
