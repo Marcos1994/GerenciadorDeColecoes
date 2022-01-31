@@ -56,6 +56,18 @@ namespace MinhasColecoes.API.Controllers
 			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
 		}
 
+		[HttpGet("{idColecao}/PorNome")]
+		public IActionResult GetById(int idColecao, string nome = "")
+		{
+			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			try
+			{
+				return Ok(service.GetAll(idUsuario, idColecao, nome));
+			}
+			catch (ObjetoNaoEncontradoException ex) { return NotFound(new ErrorModel(ex.Message)); }
+			catch (Exception ex) { return BadRequest(new ErrorModel(ex.Message)); }
+		}
+
 		[Authorize]
 		[HttpPut("{idItem}")]
 		public IActionResult Put(int idItem, ItemUpdateModel item)

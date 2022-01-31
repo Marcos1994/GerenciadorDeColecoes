@@ -230,9 +230,13 @@ namespace MinhasColecoes.Aplicacao.Services
 			return mapper.Map<ItemViewModel>(repositorioItem.GetById(idItem, idUsuario));
 		}
 
-		public IEnumerable<ItemBasicViewModel> GetAll(int idUsuario, int idColecao)
+		public IEnumerable<ItemBasicViewModel> GetAll(int idUsuario, int idColecao, string nome = "")
 		{
-			return mapper.Map<IEnumerable<ItemBasicViewModel>>(repositorioItem.GetAllPessoais(idColecao, idUsuario));
+			IEnumerable<Item> itens = repositorioItem.GetAllPessoais(idColecao, idUsuario);
+			return mapper.Map<IEnumerable<ItemBasicViewModel>>(
+				string.IsNullOrEmpty(nome)
+				? itens
+				: itens.Where(i => i.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)));
 		}
 
 		public IEnumerable<ItemBasicViewModel> GetAllOriginais(int idColecao)

@@ -71,8 +71,9 @@ namespace MinhasColecoes.Aplicacao.Interfaces
 		/// </summary>
 		/// <param name="idUsuario"></param>
 		/// <param name="idColecao"></param>
+		/// <param name="nome"></param>
 		/// <returns>Lista de itens com os respectivos itens originais, caso tenham, e as relações com o usuário.</returns>
-		IEnumerable<ItemBasicViewModel> GetAll(int idUsuario, int idColecao);
+		IEnumerable<ItemBasicViewModel> GetAll(int idUsuario, int idColecao, string nome = "");
 
 		/// <summary>
 		/// Retorna todos os itens originais de uma coleção.
