@@ -169,7 +169,7 @@ namespace MinhasColecoes.API.Controllers
 		}
 	
 		[Authorize]
-		[HttpDelete("{id}")]
+		[HttpDelete("{idItem}")]
 		public IActionResult Delete(int idItem)
 		{
 			int idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
