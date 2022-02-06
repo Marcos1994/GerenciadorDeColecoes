@@ -207,7 +207,7 @@ namespace MinhasColecoes.Aplicacao.Services
 		{
 			Item item = repositorioItem.GetById(idItem);
 			Colecao colecao = repositorioColecao.GetById(item.IdColecao);
-			if (colecao.IdDono != idUsuario || item.IdDonoParticular != idUsuario)
+			if (!(item.IdDonoParticular == idUsuario || (item.IdDonoParticular == null && colecao.IdDono == idUsuario)))
 				throw new UsuarioNaoAutorizadoException("excluir", "item");
 
 			List<ItemUsuario> relacoes = repositorioItem.GetAllRelacoes(idItem).ToList();
