@@ -69,7 +69,7 @@ namespace MinhasColecoes.API
 			{
 				o.AddPolicy("CorsPolicy", b =>
 				//b.AllowAnyOrigin()
-				b.WithOrigins("https://localhost:44384", "http://localhost:8080")
+				b.WithOrigins("https://localhost:44384", "http://localhost:8080", "http://localhost:5003")
 				.SetIsOriginAllowedToAllowWildcardSubdomains()
 				.AllowAnyMethod()
 				.AllowAnyHeader());
